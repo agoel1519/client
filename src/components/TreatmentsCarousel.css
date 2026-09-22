@@ -1,0 +1,256 @@
+/* ===================================================
+   AEVORA TREATMENTS CAROUSEL SECTION STYLES
+   =================================================== */
+
+.treatments-section {
+  padding: 2.5rem 1.5rem 3.5rem;
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.treatments-container {
+  max-width: 1420px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.treatments-slider-wrapper {
+  position: relative;
+  padding: 0 1.5rem;
+}
+
+.treatments-track-viewport {
+  overflow: hidden;
+  padding: 0.5rem 0.2rem;
+}
+
+.treatments-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.treatment-card-slide {
+  flex-shrink: 0;
+  padding: 0 0.85rem;
+  box-sizing: border-box;
+}
+
+/* Category Card */
+.treatment-category-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.treatment-category-header {
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1a2a24;
+  margin-bottom: 0.9rem;
+  display: block;
+}
+
+/* Image Frame - Portrait rounded card matching reference */
+.treatment-img-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.18;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #f1f6f3;
+  box-shadow: 0 10px 28px rgba(13, 56, 44, 0.08);
+  border: 1px solid rgba(13, 56, 44, 0.06);
+}
+
+.treatment-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.treatment-category-card:hover .treatment-img {
+  transform: scale(1.04);
+}
+
+/* Card Content */
+.treatment-card-content {
+  padding-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.treatment-headline {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #111e19;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.treatment-subtext {
+  color: #4a5d55;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 1.1rem;
+  min-height: 2.7rem;
+}
+
+.treatment-knowmore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #0d382c;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  align-self: flex-start;
+  transition: all 0.25s ease;
+  margin-top: auto;
+}
+
+.btn-chevron {
+  font-weight: 800;
+  font-size: 1rem;
+  transition: transform 0.25s ease;
+}
+
+.treatment-knowmore-btn:hover {
+  color: #c59d5f;
+}
+
+.treatment-knowmore-btn:hover .btn-chevron {
+  transform: translateX(4px);
+}
+
+/* Navigation Arrows */
+.treatment-nav-arrow {
+  position: absolute;
+  top: 42%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2ece5;
+  color: var(--aevora-emerald);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  transition: all 0.25s ease;
+}
+
+.treatment-nav-arrow:hover {
+  background: var(--aevora-emerald);
+  color: #ffffff;
+  border-color: var(--aevora-emerald);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.arrow-prev {
+  left: -1.2rem;
+}
+
+.arrow-next {
+  right: -1.2rem;
+}
+
+/* Pagination Dots */
+.treatment-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.8rem;
+}
+
+.treatment-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.treatment-dot.active {
+  background: var(--aevora-emerald);
+  width: 24px;
+  border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .treatments-section {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .treatments-slider-wrapper {
+    padding: 0 0.5rem;
+  }
+
+  .arrow-prev {
+    left: -0.3rem;
+  }
+
+  .arrow-next {
+    right: -0.3rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .treatments-section {
+    padding: 1.2rem 0.75rem 2.5rem;
+  }
+
+  .treatments-slider-wrapper {
+    padding: 0;
+  }
+
+  .treatment-card-slide {
+    padding: 0 0.5rem;
+  }
+
+  .treatment-nav-arrow {
+    width: 36px;
+    height: 36px;
+    top: 40%;
+  }
+
+  .arrow-prev {
+    left: 0.2rem;
+  }
+
+  .arrow-next {
+    right: 0.2rem;
+  }
+
+  .treatment-category-header {
+    font-size: 0.85rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .treatment-headline {
+    font-size: 1rem;
+  }
+
+  .treatment-subtext {
+    font-size: 0.84rem;
+    min-height: unset;
+    margin-bottom: 0.8rem;
+  }
+}

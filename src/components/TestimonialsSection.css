@@ -1,0 +1,393 @@
+/* ===================================================
+   AEVORA TESTIMONIALS & CLIENT REVIEWS SECTION
+   =================================================== */
+
+.testimonials-section {
+  padding: 5.5rem 1.5rem 4.5rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f7faf8 50%, #ffffff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonials-container {
+  max-width: 1420px;
+  margin: 0 auto;
+}
+
+/* Header */
+.testimonials-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3.5rem;
+}
+
+.testimonials-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.2rem;
+  background: rgba(13, 56, 44, 0.07);
+  border: 1px solid rgba(13, 56, 44, 0.15);
+  border-radius: 50px;
+  color: #0d382c;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin-bottom: 1.1rem;
+  text-transform: uppercase;
+}
+
+.badge-gold-icon {
+  color: #c59d5f;
+}
+
+.testimonials-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #0d382c;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.testimonials-title span {
+  color: #c59d5f;
+  font-style: italic;
+  font-family: var(--font-playfair, serif);
+  font-weight: 700;
+}
+
+.testimonials-desc {
+  color: #4a5d55;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin-bottom: 1.8rem;
+}
+
+/* Google Rating Pill */
+.google-rating-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1.4rem;
+  background: #ffffff;
+  border-radius: 50px;
+  border: 1px solid rgba(197, 157, 95, 0.35);
+  box-shadow: 0 4px 16px rgba(13, 56, 44, 0.06);
+}
+
+.google-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.rating-score {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #0d382c;
+}
+
+.rating-divider {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.rating-source {
+  font-size: 0.86rem;
+  color: #556960;
+  font-weight: 600;
+}
+
+/* Carousel Wrapper */
+.testimonials-carousel-wrapper {
+  position: relative;
+  padding: 0 1rem;
+}
+
+.testimonials-viewport {
+  overflow: hidden;
+  padding: 1.5rem 0.3rem 2rem;
+}
+
+.testimonials-track {
+  display: flex;
+  transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.testimonial-slide-item {
+  flex-shrink: 0;
+  padding: 0 0.85rem;
+  box-sizing: border-box;
+}
+
+/* Testimonial Card */
+.testimonial-card {
+  background: #ffffff;
+  border-radius: 22px;
+  border: 1px solid rgba(13, 56, 44, 0.08);
+  padding: 2.2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(13, 56, 44, 0.05);
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.testimonial-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 45px rgba(13, 56, 44, 0.12);
+  border-color: rgba(197, 157, 95, 0.4);
+}
+
+/* Top Card Row */
+.testi-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.testi-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.testi-treatment-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0d382c;
+  background: #edf5f0;
+  padding: 0.3rem 0.75rem;
+  border-radius: 50px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Watermark Quote */
+.testi-quote-icon {
+  position: absolute;
+  top: 1.8rem;
+  right: 1.8rem;
+  color: rgba(197, 157, 95, 0.15);
+  pointer-events: none;
+}
+
+/* Review Title & Body */
+.testi-card-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #0d382c;
+  line-height: 1.4;
+  margin: 0 0 0.85rem;
+  letter-spacing: -0.01em;
+}
+
+.testi-card-body {
+  color: #4b5e55;
+  font-size: 0.92rem;
+  line-height: 1.68;
+  margin: 0 0 1.8rem;
+  flex-grow: 1;
+}
+
+/* Patient Profile */
+.testi-patient-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid #edf3f0;
+  margin-top: auto;
+}
+
+.testi-avatar-frame {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #c59d5f;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.testi-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.verified-check-dot {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  background: #0d382c;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+}
+
+.testi-patient-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.patient-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111e19;
+}
+
+.verified-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #0d382c;
+  background: #e1efe7;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.patient-meta {
+  font-size: 0.78rem;
+  color: #71857c;
+  margin-top: 0.2rem;
+}
+
+/* Navigation Arrows */
+.testi-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(13, 56, 44, 0.12);
+  color: #0d382c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(13, 56, 44, 0.1);
+  z-index: 10;
+  transition: all 0.25s ease;
+}
+
+.testi-nav-arrow:hover {
+  background: #0d382c;
+  color: #ffffff;
+  border-color: #0d382c;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.arrow-left {
+  left: -1rem;
+}
+
+.arrow-right {
+  right: -1rem;
+}
+
+/* Pagination Dots */
+.testimonials-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.testi-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.testi-dot.active {
+  background: #0d382c;
+  width: 26px;
+  border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .testimonials-section {
+    padding: 3.5rem 1rem 2.5rem;
+  }
+
+  .testimonials-title {
+    font-size: 2.3rem;
+  }
+
+  .arrow-left {
+    left: -0.5rem;
+  }
+
+  .arrow-right {
+    right: -0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .testimonials-title {
+    font-size: 1.85rem;
+  }
+
+  .testimonials-carousel-wrapper {
+    padding: 0;
+  }
+
+  .testimonial-slide-item {
+    padding: 0 0.4rem;
+  }
+
+  .testimonial-card {
+    padding: 1.6rem 1.3rem;
+  }
+
+  .testi-nav-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .arrow-left {
+    left: 0.2rem;
+  }
+
+  .arrow-right {
+    right: 0.2rem;
+  }
+
+  .google-rating-pill {
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .rating-divider {
+    display: none;
+  }
+}

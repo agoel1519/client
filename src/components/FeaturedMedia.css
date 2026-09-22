@@ -1,0 +1,118 @@
+/* ===================================================
+   AEVORA FEATURED ON SECTION STYLES (SLIDER / MARQUEE)
+   =================================================== */
+
+.featured-media-section {
+  padding: 3rem 1rem 3.5rem;
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(13, 56, 44, 0.05);
+  border-bottom: 1px solid rgba(13, 56, 44, 0.05);
+}
+
+.featured-media-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Section Title */
+.featured-section-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #0d382c;
+  margin-bottom: 2.2rem;
+  font-family: var(--font-outfit, sans-serif);
+}
+
+/* Slider Track Wrapper with smooth fade masks on left/right edges */
+.featured-logos-slider-track-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+.featured-logos-slider-track {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  width: max-content;
+  animation: marqueeScroll 28s linear infinite;
+  will-change: transform;
+}
+
+.featured-logos-slider-track-wrap:hover .featured-logos-slider-track {
+  animation-play-state: paused;
+}
+
+/* Logo Items */
+.featured-logo-item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  min-width: 120px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+}
+
+.featured-logo-item:hover {
+  transform: scale(1.08);
+}
+
+.featured-brand-svg {
+  height: 38px;
+  width: auto;
+  max-width: 160px;
+  display: block;
+}
+
+/* Seamless infinite scroll animation */
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .featured-media-section {
+    padding: 2.2rem 0.5rem 2.5rem;
+  }
+
+  .featured-section-title {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .featured-logos-slider-track {
+    gap: 2rem;
+    animation-duration: 20s;
+  }
+
+  .featured-brand-svg {
+    height: 30px;
+    max-width: 130px;
+  }
+}

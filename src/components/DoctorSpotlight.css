@@ -1,0 +1,208 @@
+/* ===================================================
+   AEVORA DOCTOR SPOTLIGHT SECTION STYLES
+   =================================================== */
+
+.doctor-spotlight-section {
+  padding: 1.2rem 1.5rem 1.5rem;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.doctor-spotlight-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.doctor-spotlight-card {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  background: linear-gradient(135deg, #f4f8f5 0%, #edf5f0 100%);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 14px 40px rgba(13, 56, 44, 0.08);
+  border: 1px solid #dcebe2;
+  position: relative;
+  transition: all 0.35s ease;
+}
+
+.doctor-spotlight-card:hover {
+  box-shadow: 0 20px 48px rgba(13, 56, 44, 0.12);
+  border-color: rgba(197, 157, 95, 0.45);
+}
+
+/* Left Info Column */
+.doctor-info-column {
+  padding: 4rem 3.5rem 4rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+}
+
+.doctor-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(13, 56, 44, 0.08);
+  color: var(--aevora-emerald);
+  border: 1px solid rgba(13, 56, 44, 0.2);
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  align-self: flex-start;
+}
+
+.badge-icon {
+  color: var(--aevora-gold);
+}
+
+.doctor-name {
+  font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+  font-weight: 700;
+  color: var(--aevora-emerald);
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.doctor-bio {
+  color: #4a5c53;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-bottom: 1.8rem;
+  max-width: 580px;
+}
+
+.doctor-credentials {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 2.2rem;
+}
+
+.cred-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1b2520;
+}
+
+.doctor-knowmore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, var(--aevora-emerald) 0%, var(--aevora-emerald-dark) 100%);
+  color: #ffffff;
+  padding: 0.85rem 2rem;
+  border-radius: 35px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  align-self: flex-start;
+  box-shadow: 0 6px 20px rgba(13, 56, 44, 0.25);
+  border: 1px solid rgba(197, 157, 95, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.doctor-knowmore-btn:hover {
+  background: linear-gradient(135deg, var(--aevora-gold-hover) 0%, var(--aevora-gold) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(197, 157, 95, 0.45);
+  border-color: transparent;
+}
+
+.btn-arrow {
+  transition: transform 0.25s ease;
+}
+
+.doctor-knowmore-btn:hover .btn-arrow {
+  transform: translateX(5px);
+}
+
+/* Right Image Column */
+.doctor-image-column {
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  overflow: hidden;
+  background: #08241c;
+}
+
+.doctor-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.doctor-spotlight-card:hover .doctor-portrait-img {
+  transform: scale(1.03);
+}
+
+.doctor-img-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(to right, #edf5f0 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .doctor-spotlight-card {
+    grid-template-columns: 1fr;
+    border-radius: 22px;
+  }
+
+  .doctor-info-column {
+    padding: 3rem 2rem 2.5rem;
+  }
+
+  .doctor-image-column {
+    min-height: 380px;
+  }
+
+  .doctor-img-gradient {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .doctor-spotlight-section {
+    padding: 1.2rem 1rem 3.5rem;
+  }
+
+  .doctor-spotlight-card {
+    border-radius: 18px;
+  }
+
+  .doctor-info-column {
+    padding: 2rem 1.25rem;
+  }
+
+  .doctor-name {
+    font-size: 2rem;
+  }
+
+  .doctor-bio {
+    font-size: 0.95rem;
+  }
+
+  .doctor-knowmore-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,707 @@
+/* ===================================================
+   AEVORA LUXURY HEADER - RESPONSIVE DESIGN SYSTEM
+   =================================================== */
+
+:root {
+  --aevora-emerald: #0d382c;
+  --aevora-emerald-dark: #08241c;
+  --aevora-emerald-light: #164e3f;
+  --aevora-gold: #c59d5f;
+  --aevora-gold-hover: #b38748;
+  --aevora-gold-light: #f7f2e9;
+  --aevora-text-dark: #1b2520;
+  --aevora-text-muted: #5f6f67;
+  --aevora-border: #e8eee9;
+}
+
+.aevora-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 15px rgba(13, 56, 44, 0.04);
+}
+
+.aevora-header.scrolled {
+  box-shadow: 0 4px 20px rgba(13, 56, 44, 0.08);
+}
+
+/* ---------------------------------------------------
+   TOP STRIP / ANNOUNCEMENT BAR
+   --------------------------------------------------- */
+.top-bar {
+  background-color: var(--aevora-emerald);
+  color: #f1f5f3;
+  font-size: 0.78rem;
+  padding: 0.45rem 1.5rem;
+  border-bottom: 1px solid rgba(197, 157, 95, 0.2);
+}
+
+.top-bar-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-bar-left,
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.top-bar-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  letter-spacing: 0.02em;
+}
+
+.top-icon {
+  color: var(--aevora-gold);
+}
+
+.top-bar-divider {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.top-phone {
+  color: #f1f5f3;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.top-phone:hover {
+  color: var(--aevora-gold);
+}
+
+.top-bar-badge {
+  background: rgba(197, 157, 95, 0.18);
+  color: #f3e5cb;
+  border: 1px solid rgba(197, 157, 95, 0.35);
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* ---------------------------------------------------
+   MAIN NAVIGATION
+   --------------------------------------------------- */
+.main-nav {
+  background-color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--aevora-border);
+  position: relative;
+}
+
+.nav-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Logo */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.logo-wrapper:hover {
+  transform: scale(1.02);
+}
+
+.aevora-logo {
+  height: 52px;
+  max-width: 230px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Desktop Navigation Links */
+.desktop-nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  color: var(--aevora-text-dark);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--aevora-emerald);
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--aevora-emerald);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+  color: var(--aevora-text-muted);
+}
+
+.chevron.rotate {
+  transform: rotate(180deg);
+  color: var(--aevora-emerald);
+}
+
+/* ---------------------------------------------------
+   STANDARD DROPDOWN MENU
+   --------------------------------------------------- */
+.dropdown-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #ffffff;
+  min-width: 240px;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.09);
+  border: 1px solid #f0f0f0;
+  border-top: 2px solid var(--aevora-emerald);
+  padding: 0.8rem 0;
+  display: flex;
+  flex-direction: column;
+  animation: dropdownFadeIn 0.2s ease-out;
+  z-index: 1001;
+}
+
+/* Invisible hover bridge above dropdown */
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: transparent;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  color: #2b3531;
+  text-decoration: none;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background-color: #f7f9f8;
+  color: var(--aevora-emerald);
+  padding-left: 1.65rem;
+}
+
+/* ---------------------------------------------------
+   TREATMENTS MEGA MENU
+   --------------------------------------------------- */
+.mega-menu-wrapper {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+}
+
+.mega-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border-top: 2px solid var(--aevora-emerald);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid #e8eee9;
+  padding: 2.2rem 2rem 2.8rem;
+  animation: dropdownFadeIn 0.25s ease-out;
+  z-index: 1001;
+}
+
+/* Invisible hover bridge above mega menu */
+.mega-menu-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: transparent;
+}
+
+.mega-menu-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2.2fr 1.15fr 1.2fr 1.15fr;
+  gap: 2.5rem;
+}
+
+.mega-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.mega-category-title {
+  color: var(--aevora-emerald);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-bottom: 0.55rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid #edf2ef;
+}
+
+.mega-category-link {
+  color: var(--aevora-emerald);
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.mega-category-link:hover {
+  color: var(--aevora-gold);
+}
+
+.face-subgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.mega-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+  padding: 0;
+  margin: 0;
+}
+
+.mega-link {
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.mega-link:hover {
+  color: var(--aevora-emerald);
+  transform: translateX(3px);
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------
+   ACTION BUTTONS
+   --------------------------------------------------- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-shrink: 0;
+}
+
+.btn-book {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--aevora-emerald) 0%, var(--aevora-emerald-dark) 100%);
+  color: #ffffff;
+  padding: 0.68rem 1.3rem;
+  border-radius: 30px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(13, 56, 44, 0.25);
+  border: 1px solid rgba(197, 157, 95, 0.3);
+  white-space: nowrap;
+}
+
+.btn-book:hover {
+  background: linear-gradient(135deg, var(--aevora-gold-hover) 0%, var(--aevora-gold) 100%);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(197, 157, 95, 0.4);
+  border-color: transparent;
+}
+
+/* Mobile Toggle */
+.mobile-toggle-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--aevora-emerald);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.mobile-toggle-btn:hover {
+  background-color: #f1f5f3;
+  color: var(--aevora-gold);
+}
+
+/* ---------------------------------------------------
+   RESPONSIVE: LAPTOPS / MEDIUM SCREENS (1024px - 1280px)
+   --------------------------------------------------- */
+@media (max-width: 1280px) and (min-width: 1024px) {
+  .nav-list {
+    gap: 0.85rem;
+  }
+
+  .nav-link {
+    font-size: 0.77rem;
+    letter-spacing: 0.04em;
+  }
+
+  .aevora-logo {
+    height: 46px;
+    max-width: 190px;
+  }
+
+  .btn-book.desktop-btn-book {
+    padding: 0.6rem 1rem;
+    font-size: 0.78rem;
+  }
+
+  .mega-menu-container {
+    gap: 1.5rem;
+  }
+}
+
+/* ---------------------------------------------------
+   MOBILE / TABLET DRAWER & OVERLAY (< 1024px)
+   --------------------------------------------------- */
+.mobile-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(8, 36, 28, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1090;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mobile-backdrop.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: min(88vw, 380px);
+  height: 100vh;
+  background: #ffffff;
+  z-index: 1100;
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-drawer.open {
+  right: 0;
+}
+
+.mobile-drawer-header {
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--aevora-border);
+  background: #ffffff;
+}
+
+.mobile-drawer-logo {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+
+.mobile-close-btn {
+  background: #f1f5f3;
+  border: none;
+  color: var(--aevora-emerald);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-close-btn:hover {
+  background: var(--aevora-emerald);
+  color: #ffffff;
+}
+
+.mobile-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.2rem 1.5rem;
+}
+
+.mobile-menu-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-menu-item {
+  border-bottom: 1px solid #f1f5f3;
+  padding: 0.35rem 0;
+}
+
+.mobile-link {
+  color: var(--aevora-text-dark);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  display: block;
+  padding: 0.6rem 0;
+  transition: color 0.2s ease;
+}
+
+.mobile-link:hover {
+  color: var(--aevora-emerald);
+}
+
+.mobile-accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0.6rem 0;
+  user-select: none;
+}
+
+.mobile-link-text {
+  color: var(--aevora-text-dark);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.mobile-chevron {
+  color: var(--aevora-text-muted);
+  transition: transform 0.25s ease, color 0.2s ease;
+}
+
+.mobile-chevron.open {
+  transform: rotate(180deg);
+  color: var(--aevora-emerald);
+}
+
+.mobile-submenu {
+  padding: 0.6rem 0.8rem;
+  background: #f8faf9;
+  border-radius: 10px;
+  margin: 0.4rem 0 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: dropdownFadeIn 0.2s ease-out;
+}
+
+.mobile-submenu a {
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.3rem 0;
+  display: block;
+  transition: color 0.2s ease;
+}
+
+.mobile-submenu a:hover {
+  color: var(--aevora-emerald);
+  padding-left: 4px;
+}
+
+.mobile-category-block {
+  margin-bottom: 0.8rem;
+}
+
+.mobile-category-block h5 {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--aevora-emerald);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.mobile-tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.mobile-treatment-tag {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #334155 !important;
+  font-size: 0.72rem !important;
+  padding: 0.25rem 0.6rem !important;
+  border-radius: 6px;
+  text-transform: capitalize;
+}
+
+.mobile-treatment-tag:hover {
+  background: var(--aevora-emerald) !important;
+  color: #ffffff !important;
+  border-color: var(--aevora-emerald) !important;
+}
+
+.mobile-drawer-footer {
+  padding: 1.2rem 1.5rem;
+  border-top: 1px solid var(--aevora-border);
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mobile-phone-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--aevora-emerald);
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  padding: 0.65rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 25px;
+}
+
+.mobile-action-book-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--aevora-emerald) 0%, var(--aevora-emerald-dark) 100%);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  padding: 0.75rem;
+  border-radius: 25px;
+  box-shadow: 0 4px 14px rgba(13, 56, 44, 0.2);
+}
+
+@media (max-width: 1023px) {
+  .top-bar {
+    display: none;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .desktop-btn-book {
+    display: none;
+  }
+
+  .mobile-toggle-btn {
+    display: flex;
+  }
+
+  .aevora-logo {
+    height: 44px;
+    max-width: 180px;
+  }
+}

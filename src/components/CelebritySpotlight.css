@@ -1,0 +1,210 @@
+/* ===================================================
+   AEVORA CELEBRITY & VIP SPOTLIGHT SECTION STYLES
+   =================================================== */
+
+.celebrity-section {
+  padding: 2.2rem 1.5rem 4.5rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.celebrity-container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Header */
+.celebrity-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 2rem auto;
+}
+
+.celeb-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(13, 56, 44, 0.08);
+  color: var(--aevora-emerald);
+  border: 1px solid rgba(13, 56, 44, 0.2);
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.celeb-badge-icon {
+  color: var(--aevora-gold);
+}
+
+.celebrity-title {
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  font-weight: 800;
+  color: #0d211a;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.8rem;
+}
+
+.gold-text {
+  background: linear-gradient(135deg, #0d382c 0%, #c59d5f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.celebrity-subtitle {
+  color: #556960;
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+
+/* Slider Viewport */
+.celebrity-slider-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.celeb-track-wrapper {
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 0.5rem 0.2rem;
+}
+
+.celeb-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.celeb-card-slide {
+  flex-shrink: 0;
+  padding: 0 0.65rem;
+  box-sizing: border-box;
+}
+
+/* Pure Clean Photo Card */
+.celeb-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(13, 56, 44, 0.08);
+  border: 1px solid #e2ece5;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.celeb-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(13, 56, 44, 0.16);
+  border-color: rgba(197, 157, 95, 0.5);
+}
+
+.celeb-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #f1f5f3;
+}
+
+.celeb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+}
+
+.celeb-card:hover .celeb-img {
+  transform: scale(1.06);
+}
+
+/* Arrows */
+.celeb-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: var(--aevora-emerald);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+  transition: all 0.25s ease;
+}
+
+.celeb-arrow:hover {
+  background: var(--aevora-emerald);
+  color: #ffffff;
+  border-color: var(--aevora-emerald);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.celeb-arrow-left {
+  left: -1.2rem;
+}
+
+.celeb-arrow-right {
+  right: -1.2rem;
+}
+
+/* Dots */
+.celeb-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+}
+
+.celeb-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.celeb-dot.active {
+  background: var(--aevora-emerald);
+  width: 24px;
+  border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .celebrity-section {
+    padding: 1.8rem 1rem 3.5rem;
+  }
+
+  .celeb-arrow-left {
+    left: -0.5rem;
+  }
+
+  .celeb-arrow-right {
+    right: -0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .celeb-arrow {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .celebrity-title {
+    font-size: 1.85rem;
+  }
+}

@@ -1,0 +1,221 @@
+/* ===================================================
+   AEVORA TEAM OF SPECIALISTS SECTION STYLES
+   =================================================== */
+
+.team-section {
+  padding: 1.5rem 1.5rem 4.5rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.team-container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Header */
+.team-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 2.2rem auto;
+}
+
+.team-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(13, 56, 44, 0.08);
+  color: var(--aevora-emerald);
+  border: 1px solid rgba(13, 56, 44, 0.2);
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.team-badge-icon {
+  color: var(--aevora-gold);
+}
+
+.team-main-title {
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
+  font-weight: 800;
+  color: #0d211a;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.8rem;
+}
+
+.team-subtitle {
+  color: #556960;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* 4 Specialists Grid */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.specialist-card {
+  background: #ffffff;
+  border: 1px solid #e2ece5;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(13, 56, 44, 0.06);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.specialist-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(13, 56, 44, 0.14);
+  border-color: rgba(197, 157, 95, 0.5);
+}
+
+/* Photo Frame */
+.specialist-img-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.5;
+  overflow: hidden;
+  background: #0d382c;
+}
+
+.specialist-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.specialist-card:hover .specialist-photo {
+  transform: scale(1.06);
+}
+
+.exp-badge {
+  position: absolute;
+  bottom: 0.85rem;
+  right: 0.85rem;
+  background: rgba(13, 56, 44, 0.9);
+  backdrop-filter: blur(6px);
+  color: #f7e6c4;
+  border: 1px solid rgba(197, 157, 95, 0.4);
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Info Section */
+.specialist-info {
+  padding: 1.5rem 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.specialist-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0d211a;
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.01em;
+}
+
+.specialist-role {
+  color: #b38748;
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.6rem;
+}
+
+.specialist-qual {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #64748b;
+  font-size: 0.76rem;
+  margin-bottom: 1rem;
+}
+
+.qual-icon {
+  color: var(--aevora-emerald);
+  flex-shrink: 0;
+}
+
+/* Specialties Pills */
+.specialties-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.4rem;
+}
+
+.spec-pill {
+  background: #f1f6f3;
+  color: #2d453b;
+  border: 1px solid #dce8e0;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+/* Book CTA Button */
+.specialist-book-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background: linear-gradient(135deg, var(--aevora-emerald) 0%, var(--aevora-emerald-dark) 100%);
+  color: #ffffff;
+  padding: 0.65rem 1.2rem;
+  border-radius: 25px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(197, 157, 95, 0.3);
+  margin-top: auto;
+  transition: all 0.25s ease;
+}
+
+.specialist-book-btn:hover {
+  background: linear-gradient(135deg, var(--aevora-gold-hover) 0%, var(--aevora-gold) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(197, 157, 95, 0.4);
+  border-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .team-section {
+    padding: 3rem 1rem 4rem;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .specialist-img-box {
+    aspect-ratio: 4 / 4.5;
+  }
+}

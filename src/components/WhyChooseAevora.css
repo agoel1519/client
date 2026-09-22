@@ -1,0 +1,213 @@
+/* ===================================================
+   AEVORA WHY CHOOSE US SECTION STYLING
+   =================================================== */
+
+.why-choose-section {
+  padding: 1.5rem 1.5rem 4.5rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f6faf7 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.why-choose-container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Header */
+.why-choose-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 2.2rem auto;
+}
+
+.why-choose-title {
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
+  font-weight: 800;
+  color: #0d211a;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.8rem;
+}
+
+.why-choose-subtitle {
+  color: #556960;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* 4 Pillars Grid */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.pillar-card {
+  background: #ffffff;
+  border: 1px solid #e3ede6;
+  border-radius: 20px;
+  padding: 2.2rem 1.75rem;
+  box-shadow: 0 8px 25px rgba(13, 56, 44, 0.05);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pillar-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(13, 56, 44, 0.12);
+  border-color: rgba(197, 157, 95, 0.5);
+}
+
+.card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.pillar-icon-box {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(13, 56, 44, 0.06);
+  border: 1px solid rgba(13, 56, 44, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--aevora-emerald);
+  transition: all 0.3s ease;
+}
+
+.pillar-card:hover .pillar-icon-box {
+  background: var(--aevora-emerald);
+  color: #ffffff;
+  border-color: var(--aevora-emerald);
+  transform: scale(1.08);
+}
+
+.pillar-number {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #d1ddd6;
+  letter-spacing: -0.02em;
+  font-family: inherit;
+}
+
+.pillar-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0d211a;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
+}
+
+.pillar-tagline {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #b38748;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.pillar-desc {
+  color: #556960;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.pillar-card-footer {
+  border-top: 1px solid #f1f5f3;
+  padding-top: 1rem;
+  margin-top: auto;
+}
+
+.pillar-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #0d382c;
+}
+
+/* Trust Stats Bar */
+.trust-stats-bar {
+  background: linear-gradient(135deg, var(--aevora-emerald) 0%, var(--aevora-emerald-dark) 100%);
+  border-radius: 20px;
+  padding: 2.2rem 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  box-shadow: 0 16px 35px rgba(13, 56, 44, 0.2);
+  border: 1px solid rgba(197, 157, 95, 0.25);
+  color: #ffffff;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -1rem;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.stat-value {
+  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, #faeed6 50%, #c59d5f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  color: #cbd5e1;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .why-choose-section {
+    padding: 1.2rem 1rem 3.5rem;
+  }
+
+  .pillars-grid {
+    grid-template-columns: 1fr;
+    margin-bottom: 2.5rem;
+  }
+
+  .trust-stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 1.5rem;
+    gap: 1.5rem 1rem;
+  }
+
+  .stat-item:not(:last-child)::after {
+    display: none;
+  }
+}
