@@ -14,6 +14,7 @@ const AboutClinicIntro = () => {
               alt="Aevora Luxury Aesthetics Clinic Ambiance" 
               className="about-clinic-img"
               loading="lazy"
+              decoding="async"
             />
           </div>
 

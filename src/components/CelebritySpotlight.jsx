@@ -101,6 +101,7 @@ const CelebritySpotlight = () => {
                         alt={celeb.alt} 
                         className="celeb-img"
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   </div>

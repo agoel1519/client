@@ -38,6 +38,8 @@ const VideoShowcase = () => {
               src={featuredVideo.thumbnail} 
               alt="Aevora Video" 
               className="featured-thumbnail"
+              loading="lazy"
+              decoding="async"
             />
 
             {/* Centered Glowing Play Button */}

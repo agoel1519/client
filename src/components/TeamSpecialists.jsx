@@ -80,6 +80,7 @@ const TeamSpecialists = () => {
                   alt={doc.name} 
                   className="specialist-photo" 
                   loading="lazy"
+                  decoding="async"
                 />
                 <span className="exp-badge">{doc.experience}</span>
               </div>

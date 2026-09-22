@@ -46,6 +46,7 @@ const DoctorSpotlight = () => {
               alt="Doctor Profile - Founder & Medical Director at Aevora" 
               className="doctor-portrait-img"
               loading="lazy"
+              decoding="async"
             />
             <div className="doctor-img-gradient"></div>
           </div>

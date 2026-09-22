@@ -132,6 +132,7 @@ const TreatmentsCarousel = () => {
                         alt={item.category} 
                         className="treatment-img"
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
 
