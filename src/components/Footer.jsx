@@ -192,7 +192,7 @@ const Footer = () => {
             <div className="footer-direct-contact">
               <div className="contact-row">
                 <Phone size={16} className="contact-icon" />
-                <a href="tel:+917018610136">+91 70186 10136 / 0172 258 0000</a>
+                <a href="tel:01722580000">0172 258 0000</a>
               </div>
               <div className="contact-row">
                 <Mail size={16} className="contact-icon" />
