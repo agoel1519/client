@@ -15,7 +15,7 @@ const DoctorSpotlight = () => {
             </div>
 
             <h2 className="doctor-name">
-              DOCTOR <span className="gold-text">NAME</span>
+              DR. MEGHNA <span className="gold-text">MOUR</span>
             </h2>
 
             <p className="doctor-bio">

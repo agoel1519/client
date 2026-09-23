@@ -13,7 +13,7 @@ import './TeamSpecialists.css';
 const specialists = [
   {
     id: 1,
-    name: 'Dr. Doctor Name 1',
+    name: 'Dr. Vivek Anand',
     role: 'Chief Consultant Dermatologist',
     qualification: 'MD, DNB (Dermatology) • Global Fellow',
     experience: '16+ Years Experience',
@@ -22,7 +22,7 @@ const specialists = [
   },
   {
     id: 2,
-    name: 'Dr. Doctor Name 2',
+    name: 'Dr. Ananya Sharma',
     role: 'Senior Aesthetic Physician & Injector',
     qualification: 'MBBS, FAM (Aesthetic Medicine - UK)',
     experience: '12+ Years Experience',
@@ -31,7 +31,7 @@ const specialists = [
   },
   {
     id: 3,
-    name: 'Dr. Doctor Name 3',
+    name: 'Dr. Kabir Oberoi',
     role: 'Consultant Plastic & Reconstructive Surgeon',
     qualification: 'MS, MCh (Plastic Surgery)',
     experience: '18+ Years Experience',
@@ -40,7 +40,7 @@ const specialists = [
   },
   {
     id: 4,
-    name: 'Dr. Doctor Name 4',
+    name: 'Dr. Priya Singhania',
     role: 'Lead Trichologist & Hair Transplant Surgeon',
     qualification: 'MD, Member ISHRS (USA)',
     experience: '14+ Years Experience',

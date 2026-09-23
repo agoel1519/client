@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import HeroSlider from './components/HeroSlider';
 import CelebritySpotlight from './components/CelebritySpotlight';
@@ -6,16 +6,15 @@ import VideoShowcase from './components/VideoShowcase';
 import WhyChooseAevora from './components/WhyChooseAevora';
 import AboutClinicIntro from './components/AboutClinicIntro';
 import DoctorSpotlight from './components/DoctorSpotlight';
+import TeamSpecialists from './components/TeamSpecialists';
+import TreatmentsCarousel from './components/TreatmentsCarousel';
+import BeforeAfterSection from './components/BeforeAfterSection';
+import TestimonialsSection from './components/TestimonialsSection';
+import FeaturedMedia from './components/FeaturedMedia';
+import FaqSection from './components/FaqSection';
+import Footer from './components/Footer';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { MessageCircle, Calendar } from 'lucide-react';
-
-// Lazy-load below-the-fold sections for instant initial page rendering
-const TeamSpecialists = lazy(() => import('./components/TeamSpecialists'));
-const TreatmentsCarousel = lazy(() => import('./components/TreatmentsCarousel'));
-const TestimonialsSection = lazy(() => import('./components/TestimonialsSection'));
-const FeaturedMedia = lazy(() => import('./components/FeaturedMedia'));
-const FaqSection = lazy(() => import('./components/FaqSection'));
-const Footer = lazy(() => import('./components/Footer'));
 
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -84,36 +83,38 @@ function App() {
           <DoctorSpotlight />
         </div>
 
-        {/* Below-the-fold lazy-loaded components with Suspense */}
-        <Suspense fallback={<div style={{ minHeight: '120px' }}></div>}>
-          {/* Our Team of Specialists */}
-          <div className="reveal-fade-up">
-            <TeamSpecialists />
-          </div>
+        {/* Our Team of Specialists */}
+        <div className="reveal-fade-up">
+          <TeamSpecialists />
+        </div>
 
-          {/* Core Treatments Carousel Showcase */}
-          <div className="reveal-fade-up">
-            <TreatmentsCarousel />
-          </div>
+        {/* Core Treatments Carousel Showcase */}
+        <div className="reveal-fade-up">
+          <TreatmentsCarousel />
+        </div>
 
-          {/* Verified Patient Testimonials */}
-          <div className="reveal-fade-up">
-            <TestimonialsSection />
-          </div>
+        {/* Clinically Proven Transformations (Before & After Slider) */}
+        <div className="reveal-fade-up">
+          <BeforeAfterSection />
+        </div>
 
-          {/* As Featured In / Press & Media Recognition */}
-          <div className="reveal-fade-in">
-            <FeaturedMedia />
-          </div>
+        {/* Verified Patient Testimonials */}
+        <div className="reveal-fade-up">
+          <TestimonialsSection />
+        </div>
 
-          {/* Frequently Asked Questions (FAQ) Section */}
-          <div className="reveal-fade-up">
-            <FaqSection />
-          </div>
+        {/* As Featured In / Press & Media Recognition */}
+        <div className="reveal-fade-in">
+          <FeaturedMedia />
+        </div>
 
-          {/* Luxury Brand Footer & Contact Information */}
-          <Footer />
-        </Suspense>
+        {/* Frequently Asked Questions (FAQ) Section */}
+        <div className="reveal-fade-up">
+          <FaqSection />
+        </div>
+
+        {/* Luxury Brand Footer & Contact Information */}
+        <Footer />
       </main>
 
       {/* Floating Action Buttons */}
