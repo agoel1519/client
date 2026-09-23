@@ -8,7 +8,6 @@ import AboutClinicIntro from './components/AboutClinicIntro';
 import DoctorSpotlight from './components/DoctorSpotlight';
 import TeamSpecialists from './components/TeamSpecialists';
 import TreatmentsCarousel from './components/TreatmentsCarousel';
-import BeforeAfterSection from './components/BeforeAfterSection';
 import TestimonialsSection from './components/TestimonialsSection';
 import FeaturedMedia from './components/FeaturedMedia';
 import FaqSection from './components/FaqSection';
@@ -91,11 +90,6 @@ function App() {
         {/* Core Treatments Carousel Showcase */}
         <div className="reveal-fade-up">
           <TreatmentsCarousel />
-        </div>
-
-        {/* Clinically Proven Transformations (Before & After Slider) */}
-        <div className="reveal-fade-up">
-          <BeforeAfterSection />
         </div>
 
         {/* Verified Patient Testimonials */}
