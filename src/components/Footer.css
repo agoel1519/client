@@ -436,47 +436,6 @@
   margin: 0;
 }
 
-.developer-credit-text {
-  font-size: 0.82rem;
-  color: #8faea2;
-  margin: 0.35rem 0 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.developer-credit-text a {
-  text-decoration: none;
-  transition: all 0.25s ease;
-}
-
-.dev-highlight {
-  color: #c59d5f;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.dev-highlight:hover {
-  color: #ffd899;
-  text-decoration: underline;
-}
-
-.dev-phone {
-  color: #ffffff;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  background: rgba(197, 157, 95, 0.15);
-  padding: 0.12rem 0.55rem;
-  border-radius: 4px;
-  border: 1px solid rgba(197, 157, 95, 0.3);
-}
-
-.dev-phone:hover {
-  background: #c59d5f;
-  color: #061c16;
-  border-color: #c59d5f;
-}
-
 .bottom-right-links {
   display: flex;
   align-items: center;

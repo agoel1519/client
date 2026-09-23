@@ -216,9 +216,6 @@ const Footer = () => {
             <p className="copyright-text">
               &copy; {new Date().getFullYear()} AEVORA by Kian Clinics. All rights reserved.
             </p>
-            <p className="developer-credit-text">
-              Developed by <a href="tel:7018610136" className="dev-highlight">Vikas</a> • <a href="tel:7018610136" className="dev-phone">7018610136</a>
-            </p>
           </div>
 
           <div className="bottom-right-links">
