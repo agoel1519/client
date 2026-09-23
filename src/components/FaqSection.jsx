@@ -155,9 +155,7 @@ const FaqSection = () => {
 
               <div className="concierge-actions">
                 <a 
-                  href="https://wa.me/919136100000" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                  href="#" 
                   className="concierge-btn whatsapp-btn"
                 >
                   <MessageCircle size={18} />
@@ -165,7 +163,7 @@ const FaqSection = () => {
                 </a>
 
                 <a 
-                  href="#appointment" 
+                  href="#" 
                   className="concierge-btn appointment-btn"
                 >
                   <PhoneCall size={18} />

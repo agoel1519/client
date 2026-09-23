@@ -13,7 +13,7 @@ import FeaturedMedia from './components/FeaturedMedia';
 import FaqSection from './components/FaqSection';
 import Footer from './components/Footer';
 import { useScrollReveal } from './hooks/useScrollReveal';
-import { MessageCircle, Calendar } from 'lucide-react';
+import { MessageCircle, Phone } from 'lucide-react';
 
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -113,9 +113,7 @@ function App() {
 
       {/* Floating Action Buttons */}
       <a 
-        href="https://wa.me/919136100000" 
-        target="_blank" 
-        rel="noopener noreferrer" 
+        href="#" 
         className="floating-whatsapp-widget"
         aria-label="Chat on WhatsApp with Aevora Concierge"
       >
@@ -124,12 +122,12 @@ function App() {
       </a>
 
       <a 
-        href="#appointment" 
+        href="#" 
         className="floating-call-widget"
-        aria-label="Book a private consultation"
+        aria-label="Call Now"
       >
-        <Calendar size={18} />
-        <span>Book Consultation</span>
+        <Phone size={18} />
+        <span>Call Now</span>
       </a>
     </div>
   );
