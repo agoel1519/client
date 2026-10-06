@@ -99,9 +99,9 @@
   color: #94a3b8;
 }
 
-.input-with-icon input {
+.admin-login-form .input-with-icon input {
   width: 100%;
-  padding: 12px 15px 12px 42px;
+  padding: 12px 15px 12px 42px !important;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   font-size: 0.95rem;
@@ -110,7 +110,7 @@
   background: #f8fafc;
 }
 
-.input-with-icon input:focus {
+.admin-login-form .input-with-icon input:focus {
   outline: none;
   border-color: #0d382c;
   background: white;

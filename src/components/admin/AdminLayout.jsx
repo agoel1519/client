@@ -13,8 +13,7 @@ import {
   Sparkles,
   ShieldCheck,
   ChevronDown,
-  Layers,
-  LogOut
+  Layers
 } from 'lucide-react';
 import './AdminLayout.css';
 import AdminLogin from './AdminLogin';
