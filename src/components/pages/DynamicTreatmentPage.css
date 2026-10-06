@@ -1,0 +1,1337 @@
+/* ===================================================
+   AEVORA LUXURY DYNAMIC TREATMENT PAGE STYLES
+   =================================================== */
+
+.dynamic-page-container {
+  width: 100%;
+  background-color: #fafbfc;
+  min-height: 100vh;
+}
+
+/* ---------------------------------------------------
+   HERO BANNER
+   --------------------------------------------------- */
+.dt-hero {
+  background: linear-gradient(135deg, var(--aevora-emerald-dark, #08241c) 0%, var(--aevora-emerald, #0d382c) 100%);
+  padding: 32px 24px 32px;
+  text-align: center;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.dt-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(197, 157, 95, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.dt-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.dt-breadcrumb {
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  color: var(--aevora-gold, #c59d5f);
+  font-weight: 500;
+}
+
+.dt-title {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
+  font-size: 2.8rem;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  margin: 0;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.dt-hero-badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.dt-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(197, 157, 95, 0.35);
+  color: #f7f2e9;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(8px);
+}
+
+/* ---------------------------------------------------
+   MAIN CONTAINER
+   --------------------------------------------------- */
+.dt-main {
+  padding: 40px 32px 80px;
+}
+
+.dt-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.dt-center {
+  text-align: center;
+}
+
+.dt-eyebrow {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 2.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--aevora-gold, #c59d5f);
+  margin-bottom: 8px;
+}
+
+.dt-section-header-box {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+/* Intro Text (Full-Width) */
+.dt-intro-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 35px 0;
+  text-align: left;
+}
+
+.dt-intro {
+  font-size: 1.12rem;
+  line-height: 1.8;
+  color: #2d3748;
+  font-weight: 400;
+}
+
+/* ---------------------------------------------------
+   QUESTION, ANSWER & FULL-WIDTH IMAGE
+   --------------------------------------------------- */
+.dt-qa-section {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 50px 0;
+  text-align: left;
+}
+
+.dt-question-heading {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
+  color: #111827; /* Soft luxury lavender/plum accent */
+  font-size: 2.3rem;
+  font-weight: 500;
+  margin: 25px 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.3;
+}
+
+.dt-answer-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #374151;
+  margin-bottom: 30px;
+}
+
+.dt-fullwidth-image-wrapper {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  margin: 25px 0 60px 0;
+}
+
+.dt-fullwidth-image {
+  width: 100%;
+  height: auto;
+  max-height: 580px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------------------------------------------------
+   EMPOWER OVERVIEW ACCORDION (Full-Width / Wide)
+   --------------------------------------------------- */
+.dt-empower-section {
+  width: 100%;
+  max-width: 100%;
+  margin: 50px 0 80px 0;
+  padding: 0;
+}
+
+.dt-empower-heading {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
+  color: #111827; /* Matching luxury plum heading */
+  font-size: 2.1rem;
+  font-weight: 400;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.35;
+  margin-bottom: 45px;
+}
+
+.dt-empower-accordion {
+  border-top: 1px solid #e5e7eb;
+}
+
+.dt-empower-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dt-empower-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.dt-empower-header:hover .dt-empower-title {
+  color: #724c80;
+}
+
+.dt-empower-title {
+  font-size: 1.08rem;
+  font-weight: 500;
+  color: #1f2937;
+  letter-spacing: 0.2px;
+}
+
+.dt-empower-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 300;
+  color: #724c80;
+  margin-left: 16px;
+  user-select: none;
+}
+
+.dt-empower-content {
+  padding: 0 4px 22px 4px;
+  color: #4b5563;
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.dt-action-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.dt-cta-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--aevora-emerald, #0d382c);
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.dt-cta-link-btn:hover {
+  background: var(--aevora-gold, #c59d5f);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.dt-whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25d366;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.dt-whatsapp-btn:hover {
+  background: #1eb954;
+  transform: translateY(-2px);
+}
+
+.dt-image-wrapper {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+  max-height: 420px;
+}
+
+.dt-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------------------------------------------------
+   ACCORDIONS & FAQS
+   --------------------------------------------------- */
+.dt-accordion-section, .dt-faq-section {
+  margin-bottom: 70px;
+  background-color: #ffffff;
+  padding: 50px 40px;
+  border-radius: 16px;
+  border: 1px solid rgba(13, 56, 44, 0.08);
+  box-shadow: 0 8px 24px rgba(13, 56, 44, 0.03);
+}
+
+.dt-accordion-list {
+  max-width: 850px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dt-accordion-item {
+  border: 1px solid rgba(13, 56, 44, 0.12);
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.dt-accordion-item.active {
+  border-color: var(--aevora-gold, #c59d5f);
+}
+
+.dt-accordion-header {
+  width: 100%;
+  text-align: left;
+  padding: 18px 22px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--aevora-emerald, #0d382c);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1.4;
+}
+
+.dt-accordion-header:hover, .dt-accordion-item.active .dt-accordion-header {
+  color: var(--aevora-gold, #c59d5f);
+}
+
+.dt-accordion-content {
+  padding: 0 22px 20px;
+  color: var(--aevora-text-muted, #4a5951);
+  line-height: 1.75;
+  font-size: 0.96rem;
+}
+
+/* ---------------------------------------------------
+   FEATURES GRID
+   --------------------------------------------------- */
+.dt-features-section {
+  margin-bottom: 70px;
+}
+
+.dt-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+}
+
+.dt-feature-card {
+  background: #ffffff;
+  border: 1px solid rgba(13, 56, 44, 0.09);
+  padding: 34px 28px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+  transition: all 0.35s ease;
+  position: relative;
+}
+
+.dt-feature-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--aevora-gold, #c59d5f);
+  box-shadow: 0 14px 35px rgba(197, 157, 95, 0.12);
+}
+
+.dt-feature-num {
+  font-family: var(--font-serif, serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--aevora-gold, #c59d5f);
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.dt-feature-title {
+  color: var(--aevora-emerald, #0d382c);
+  font-size: 1.18rem;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.dt-feature-desc {
+  color: var(--aevora-text-muted, #4a5951);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ---------------------------------------------------
+   CTA BANNER
+   --------------------------------------------------- */
+.dt-cta-section {
+  margin: 70px 0;
+  padding: 60px 30px;
+  background: linear-gradient(135deg, var(--aevora-emerald-dark, #08241c) 0%, var(--aevora-emerald, #0d382c) 100%);
+  color: #ffffff;
+  border-radius: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dt-cta-section .dt-section-heading {
+  color: #ffffff;
+  margin-bottom: 14px;
+}
+
+.dt-cta-text {
+  font-size: 1.1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0.9;
+  line-height: 1.75;
+}
+
+.dt-banner-action-btn {
+  display: inline-block;
+  background: var(--aevora-gold, #c59d5f);
+  color: #0d382c;
+  padding: 14px 32px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.dt-banner-action-btn:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Removed duplicate BEFORE AND AFTER CAROUSEL */
+
+/* ---------------------------------------------------
+   RELATED PROCEDURES
+   --------------------------------------------------- */
+.dt-related-section {
+  margin-bottom: 70px;
+}
+
+.dt-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.dt-related-card {
+  background: #ffffff;
+  border: 1px solid rgba(13, 56, 44, 0.1);
+  padding: 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.dt-related-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--aevora-gold, #c59d5f);
+  box-shadow: 0 10px 25px rgba(197, 157, 95, 0.15);
+}
+
+.dt-related-cat {
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--aevora-gold, #c59d5f);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.dt-related-name {
+  color: var(--aevora-emerald, #0d382c);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.dt-related-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--aevora-text-muted, #4a5951);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.dt-related-card:hover .dt-related-arrow {
+  color: var(--aevora-gold, #c59d5f);
+}
+
+/* ---------------------------------------------------
+   APPOINTMENT BOOKING FORM
+   --------------------------------------------------- */
+.dt-appointment-section {
+  background: #ffffff;
+  padding: 50px 40px;
+  border-radius: 16px;
+  box-shadow: 0 12px 45px rgba(13, 56, 44, 0.08);
+  border: 1px solid rgba(13, 56, 44, 0.08);
+  margin-bottom: 40px;
+}
+
+.dt-app-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.dt-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.dt-contact-item h4 {
+  color: var(--aevora-emerald, #0d382c);
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+.dt-contact-item p {
+  color: var(--aevora-text-muted, #4a5951);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.dt-icon {
+  color: var(--aevora-gold, #c59d5f);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.dt-app-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dt-form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.dt-app-form input, 
+.dt-app-form select, 
+.dt-app-form textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid rgba(13, 56, 44, 0.18);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #1b2520;
+  background-color: #fcfdfd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.dt-app-form input:focus, 
+.dt-app-form select:focus, 
+.dt-app-form textarea:focus {
+  outline: none;
+  border-color: var(--aevora-gold, #c59d5f);
+  box-shadow: 0 0 0 3px rgba(197, 157, 95, 0.15);
+  background-color: #ffffff;
+}
+
+.dt-submit-btn {
+  background: var(--aevora-emerald, #0d382c);
+  color: #ffffff;
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.dt-submit-btn:hover {
+  background: var(--aevora-gold, #c59d5f);
+  transform: translateY(-2px);
+}
+
+.dt-success-box {
+  background: #f7f9f7;
+  border: 1px solid #c59d5f;
+  padding: 40px 30px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.dt-success-box h3 {
+  font-family: var(--font-serif, serif);
+  color: var(--aevora-emerald, #0d382c);
+  font-size: 1.6rem;
+  margin: 0 0 12px 0;
+}
+
+.dt-success-box p {
+  color: var(--aevora-text-muted, #4a5951);
+  line-height: 1.7;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ---------------------------------------------------
+   CUSTOM DYNAMIC SECTIONS (ADMIN CREATED)
+   --------------------------------------------------- */
+.dt-custom-section {
+  margin-bottom: 70px;
+}
+
+.dt-custom-sub {
+  color: var(--aevora-text-muted, #4a5951);
+  font-size: 1.05rem;
+  margin-top: -10px;
+  margin-bottom: 25px;
+}
+
+/* Process Steps Grid */
+.dt-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-top: 25px;
+}
+
+.dt-step-card {
+  background: #ffffff;
+  border: 1px solid rgba(13, 56, 44, 0.09);
+  padding: 30px 24px;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.dt-step-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--aevora-gold, #c59d5f);
+  box-shadow: 0 10px 25px rgba(197, 157, 95, 0.12);
+}
+
+.dt-step-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--aevora-gold, #c59d5f);
+  background: rgba(197, 157, 95, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+
+.dt-step-card h4 {
+  font-family: var(--font-serif, serif);
+  color: var(--aevora-emerald, #0d382c);
+  font-size: 1.18rem;
+  margin: 0 0 10px 0;
+}
+
+.dt-step-card p {
+  color: var(--aevora-text-muted, #4a5951);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Stats / Metrics Grid */
+.dt-stats-section {
+  background: linear-gradient(135deg, var(--aevora-emerald-dark, #08241c) 0%, var(--aevora-emerald, #0d382c) 100%);
+  padding: 50px 30px;
+  border-radius: 16px;
+  color: #ffffff;
+}
+
+.dt-stats-section .dt-section-heading {
+  color: #ffffff;
+}
+
+.dt-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  margin-top: 35px;
+  text-align: center;
+}
+
+.dt-stat-box h3 {
+  font-family: var(--font-serif, serif);
+  font-size: 2.8rem;
+  color: var(--aevora-gold, #c59d5f);
+  margin: 0 0 8px 0;
+  font-weight: 400;
+}
+
+.dt-stat-box p {
+  color: #f7f2e9;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Doctor Quote Box */
+.dt-quote-card {
+  background: #ffffff;
+  border-left: 4px solid var(--aevora-gold, #c59d5f);
+  padding: 40px;
+  border-radius: 0 14px 14px 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+.dt-quote-text {
+  font-family: var(--font-serif, serif);
+  font-size: 1.35rem;
+  line-height: 1.7;
+  color: var(--aevora-emerald, #0d382c);
+  font-style: italic;
+  margin: 0 0 16px 0;
+}
+
+.dt-quote-author {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--aevora-gold, #c59d5f);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+}
+
+/* Custom Text Block Card */
+.dt-text-block-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(13, 56, 44, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+}
+
+/* ---------------------------------------------------
+   1. SOLUTIONS FOR VARIOUS TYPES SECTION (SCREENSHOT 1)
+   --------------------------------------------------- */
+.dt-types-section {
+  width: 100%;
+  margin: 50px 0 40px 0;
+}
+
+.dt-types-heading {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
+  color: #111827;
+  font-size: clamp(1.7rem, 2.8vw, 2.2rem);
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 35px;
+  line-height: 1.3;
+}
+
+.dt-types-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 26px;
+  width: 100%;
+}
+
+.dt-type-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #edf0f5;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+  padding: 34px 30px;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.dt-type-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(114, 76, 128, 0.3);
+  box-shadow: 0 10px 28px rgba(114, 76, 128, 0.08);
+}
+
+.dt-type-card-title {
+  color: #724c80;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 14px 0;
+  letter-spacing: 0.3px;
+}
+
+.dt-type-card-desc {
+  color: #4b5563;
+  font-size: 0.98rem;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ---------------------------------------------------
+   2. PATHWAY SECTION (SCREENSHOT 2)
+   --------------------------------------------------- */
+.dt-pathway-section {
+  width: 100%;
+  margin: 60px 0 45px 0;
+}
+
+.dt-pathway-heading {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
+  color: #111827;
+  font-size: clamp(1.7rem, 2.8vw, 2.2rem);
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 28px;
+  line-height: 1.35;
+}
+
+.dt-pathway-text-content {
+  width: 100%;
+}
+
+.dt-pathway-p {
+  color: #374151;
+  font-size: 1.08rem;
+  line-height: 1.85;
+  margin: 0 0 16px 0;
+}
+
+/* ---------------------------------------------------
+   3. BEFORE & AFTERS SECTION (SCREENSHOT 3)
+   --------------------------------------------------- */
+.dt-ba-section {
+  width: 100%;
+  margin: 65px 0 50px 0;
+  overflow: hidden;
+  padding-bottom: 20px;
+}
+
+.dt-ba-heading {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
+  color: #8A5C99;
+  font-size: 2.2rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  margin-bottom: 40px;
+}
+
+.dt-ba-carousel-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.dt-ba-carousel-viewport {
+  overflow: hidden;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.dt-ba-cards-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.dt-ba-slide-item {
+  width: 100%;
+  flex-shrink: 0;
+  display: block;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.dt-ba-pair-card {
+  width: 100%;
+  height: 250px;
+  background: #ffffff;
+  border: 2px solid #c0392b;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+}
+
+.dt-ba-img {
+  width: 50%;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block;
+}
+
+.dt-ba-img.full-width {
+  width: 100%;
+}
+
+.dt-ba-labels-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.dt-ba-label-col {
+  flex: 1;
+  text-align: center;
+}
+
+.dt-ba-tag {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-align: center;
+  background: transparent;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+.dt-ba-tag.before-tag {
+  color: #111;
+  border-bottom: 2px solid #111;
+}
+
+.dt-ba-tag.after-tag {
+  color: #28a745;
+  border-bottom: 2px solid #28a745;
+}
+
+.dt-ba-arrow-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  color: #8A5C99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  position: absolute;
+  top: 125px; /* Half of 250px image height */
+  transform: translateY(-50%);
+  border: none;
+}
+
+.dt-ba-arrow-left {
+  left: 0px;
+}
+
+.dt-ba-arrow-right {
+  right: 0px;
+}
+
+.dt-ba-arrow-circle:hover {
+  background: #fdfbfd;
+  color: #724c80;
+  transform: translateY(-50%) scale(1.05);
+}
+
+@media (max-width: 600px) {
+  .dt-ba-img { height: 160px; }
+  .dt-ba-arrow-circle { top: 80px; width: 36px; height: 36px; }
+  .dt-ba-heading { font-size: 1.6rem; }
+}
+
+/* ---------------------------------------------------
+   4. FREQUENTLY ASKED QUESTIONS (SCREENSHOT 4)
+   --------------------------------------------------- */
+.dt-faq-clean-section {
+  width: 100%;
+  margin: 65px 0 50px 0;
+}
+
+.dt-faq-clean-heading {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
+  color: #111827;
+  font-size: clamp(1.7rem, 2.8vw, 2.2rem);
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+}
+
+.dt-faq-clean-list {
+  border-top: 1px solid #e5e7eb;
+  width: 100%;
+}
+
+.dt-faq-clean-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dt-faq-clean-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.dt-faq-clean-question {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #1f2937;
+  letter-spacing: 0.2px;
+}
+
+.dt-faq-clean-header:hover .dt-faq-clean-question {
+  color: #724c80;
+}
+
+.dt-faq-clean-icon {
+  color: #724c80;
+  font-size: 1.6rem;
+  line-height: 1;
+  font-weight: 300;
+  margin-left: 16px;
+  user-select: none;
+}
+
+.dt-faq-clean-body {
+  padding: 0 4px 22px 4px;
+  color: #4b5563;
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+/* ---------------------------------------------------
+   5. BOOK AN APPOINTMENT SECTION (SCREENSHOT 5)
+   --------------------------------------------------- */
+.dt-appointment-section {
+  width: 100%;
+  margin: 70px 0 40px 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.dt-app-layout-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 55px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.dt-app-info-col {
+  padding-top: 8px;
+}
+
+.dt-app-heading {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
+  color: #111827;
+  font-size: clamp(1.8rem, 2.8vw, 2.3rem);
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 0 0 32px 0;
+}
+
+.dt-app-detail-item {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: flex-start;
+}
+
+.dt-app-detail-icon {
+  color: #724c80;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.dt-app-detail-label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1f2937;
+  letter-spacing: 0.5px;
+  margin: 0 0 5px 0;
+  text-transform: uppercase;
+}
+
+.dt-app-detail-val {
+  color: #4b5563;
+  font-size: 0.96rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.dt-app-form-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 36px 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid #edf0f5;
+}
+
+.dt-booking-clean-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dt-clean-form-row-2 {
+  display: flex;
+  gap: 16px;
+}
+
+.dt-clean-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1f2937;
+  background-color: #ffffff;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.dt-clean-input:focus {
+  border-color: #724c80;
+  box-shadow: 0 0 0 3px rgba(114, 76, 128, 0.12);
+}
+
+.dt-clean-select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+.dt-clean-textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.dt-clean-submit-btn {
+  background: #724c80;
+  color: #ffffff;
+  border: none;
+  padding: 16px;
+  border-radius: 40px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+  margin-top: 6px;
+}
+
+.dt-clean-submit-btn:hover {
+  background: #5f3a6d;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(114, 76, 128, 0.3);
+}
+
+/* ---------------------------------------------------
+   STICKY & FLOATING ACTIONS (SCREENSHOTS COMMON)
+   --------------------------------------------------- */
+.dt-sticky-contact-tab {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #724c80;
+  color: #ffffff;
+  padding: 16px 8px;
+  border-radius: 6px 0 0 6px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  z-index: 999;
+  text-decoration: none;
+  box-shadow: -2px 4px 12px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease;
+}
+
+.dt-sticky-contact-tab:hover {
+  background: #5f3a6d;
+  color: #ffffff;
+}
+
+.dt-floating-whatsapp-btn {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+  z-index: 999;
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.dt-floating-whatsapp-btn:hover {
+  transform: scale(1.1);
+  color: #ffffff;
+}
+
+.dt-floating-call-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #724c80;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(114, 76, 128, 0.4);
+  z-index: 999;
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.dt-floating-call-btn:hover {
+  transform: scale(1.1);
+  background: #5f3a6d;
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------
+   RESPONSIVENESS
+   --------------------------------------------------- */
+@media (max-width: 992px) {
+  .dt-types-grid {
+    grid-template-columns: 1fr;
+  }
+  .dt-ba-cards-row {
+    grid-template-columns: 1fr;
+  }
+  .dt-app-layout-two-col {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dt-hero {
+    padding: 24px 16px 36px;
+  }
+
+  .dt-title {
+    font-size: 2rem;
+  }
+
+  .dt-clean-form-row-2 {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .dt-floating-whatsapp-btn {
+    left: 16px;
+    bottom: 16px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .dt-floating-call-btn {
+    right: 16px;
+    bottom: 16px;
+    width: 48px;
+    height: 48px;
+  }
+}
+

@@ -53,15 +53,32 @@ const slidesData = [
 ];
 
 const HeroSlider = () => {
+  const [slides, setSlides] = useState(slidesData);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  const nextSlide = useCallback(() => {
-    setCurrentSlide(prev => (prev === slidesData.length - 1 ? 0 : prev + 1));
+  useEffect(() => {
+    const saved = localStorage.getItem('aevora_home_settings');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSlides(parsed); // Legacy fallback
+        } else if (parsed && parsed.heroSlides && parsed.heroSlides.length > 0) {
+          setSlides(parsed.heroSlides);
+        }
+      } catch (e) {
+        console.error("Failed to parse home settings", e);
+      }
+    }
   }, []);
 
+  const nextSlide = useCallback(() => {
+    setCurrentSlide(prev => (prev === slides.length - 1 ? 0 : prev + 1));
+  }, [slides.length]);
+
   const prevSlide = () => {
-    setCurrentSlide(prev => (prev === 0 ? slidesData.length - 1 : prev - 1));
+    setCurrentSlide(prev => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
   const goToSlide = (index) => {
@@ -84,7 +101,7 @@ const HeroSlider = () => {
       aria-label="Hero Carousel"
     >
       <div className="slider-wrapper">
-        {slidesData.map((slide, index) => {
+        {slides.map((slide, index) => {
           const isActive = index === currentSlide;
           return (
             <div 
@@ -116,7 +133,7 @@ const HeroSlider = () => {
 
                   {/* Features Pills */}
                   <div className="slide-features animate-features">
-                    {slide.features.map((feat, fIdx) => (
+                    {slide.features && slide.features.map((feat, fIdx) => (
                       <span key={fIdx} className="feature-pill">
                         <Activity size={13} className="pill-icon" />
                         {feat}
@@ -162,7 +179,7 @@ const HeroSlider = () => {
       {/* Indicators and Progress Bar */}
       <div className="slider-bottom-controls">
         <div className="slider-indicators">
-          {slidesData.map((_, idx) => (
+          {slides.map((_, idx) => (
             <button
               key={idx}
               className={`indicator-dot ${idx === currentSlide ? 'active' : ''}`}

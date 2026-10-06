@@ -1,0 +1,308 @@
+/* Press.css */
+.press-page-container {
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  background-color: #ffffff;
+}
+
+/* HERO SECTION */
+.press-hero-section {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.press-hero-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.6) sepia(0.5) hue-rotate(100deg) saturate(0.5); /* Tinted toward emerald if needed, or just dark overlay */
+}
+.press-hero-bg::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(13, 56, 44, 0.6); /* Aevora Emerald tint */
+}
+
+.press-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.press-hero-title {
+  font-family: var(--font-serif, "Cinzel", serif);
+  font-size: 3.5rem;
+  letter-spacing: 5px;
+  margin: 0 0 10px 0;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.press-hero-subtitle {
+  font-size: 1.1rem;
+  color: #c59d5f; /* Aevora Gold */
+  margin: 0 0 20px 0;
+  font-family: var(--font-serif, serif);
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.press-breadcrumb {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.press-breadcrumb span {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* MEDIA SECTION */
+.press-media-section {
+  padding: 80px 20px;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.press-section-title {
+  font-family: var(--font-serif, serif);
+  color: #c59d5f; /* Aevora Gold */
+  font-size: 2.2rem;
+  letter-spacing: 3px;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+/* CAROUSEL */
+.press-carousel-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+}
+
+.press-carousel-arrow {
+  background: none;
+  border: none;
+  color: #0d382c; /* Aevora Emerald */
+  cursor: pointer;
+  padding: 10px;
+  transition: transform 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.press-carousel-arrow:hover {
+  transform: scale(1.1);
+  color: #c59d5f;
+}
+
+.press-carousel-viewport {
+  overflow: hidden;
+  width: 100%;
+  max-width: 1110px; /* roughly 4 cards of 280px + gaps */
+}
+
+.press-carousel-track {
+  display: flex;
+  gap: 30px;
+  transition: transform 0.5s ease-in-out;
+}
+
+.press-card {
+  width: 280px;
+  flex-shrink: 0;
+  background: #fff;
+  border: 1px solid #f1f5f9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.press-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.press-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  min-height: 400px; /* Keep articles tall and legible */
+}
+
+
+/* ---------------------------------------------------
+   BOOKING SECTION (Copied from dt-appointment)
+   --------------------------------------------------- */
+.dt-appointment-section {
+  background-color: #f9f9fa;
+  padding: 80px 20px;
+}
+
+.dt-app-layout-two-col {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 55px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.dt-app-info-col {
+  padding-top: 8px;
+}
+
+.dt-app-heading {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
+  color: #0d382c;
+  font-size: clamp(1.8rem, 2.8vw, 2.3rem);
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 0 0 32px 0;
+}
+
+.dt-app-detail-item {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: flex-start;
+}
+
+.dt-app-detail-icon {
+  color: #c59d5f;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.dt-app-detail-label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #0d382c;
+  letter-spacing: 0.5px;
+  margin: 0 0 5px 0;
+  text-transform: uppercase;
+}
+
+.dt-app-detail-val {
+  color: #4b5563;
+  font-size: 0.96rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.dt-app-form-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 36px 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid #edf0f5;
+}
+
+.dt-booking-clean-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dt-clean-form-row-2 {
+  display: flex;
+  gap: 16px;
+}
+
+.dt-clean-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1f2937;
+  background-color: #ffffff;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.dt-clean-input:focus {
+  border-color: #0d382c;
+  box-shadow: 0 0 0 3px rgba(13, 56, 44, 0.12);
+}
+
+.dt-clean-select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+.dt-clean-textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.dt-clean-submit-btn {
+  background: #0d382c;
+  color: #ffffff;
+  border: none;
+  padding: 16px;
+  border-radius: 40px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+  margin-top: 6px;
+}
+
+.dt-clean-submit-btn:hover {
+  background: #08241c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(13, 56, 44, 0.3);
+}
+
+.dt-success-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  min-height: 300px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .press-carousel-viewport { max-width: 800px; } /* 3 cards */
+}
+
+@media (max-width: 992px) {
+  .press-carousel-viewport { max-width: 590px; } /* 2 cards */
+  .dt-app-layout-two-col { grid-template-columns: 1fr; gap: 35px; }
+}
+
+@media (max-width: 768px) {
+  .press-hero-title { font-size: 2.5rem; }
+  .press-carousel-viewport { max-width: 280px; } /* 1 card */
+  .dt-clean-form-row-2 { flex-direction: column; gap: 16px; }
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -14,7 +15,7 @@ const treatmentCategories = [
     title: 'Lift. Define. Soften.',
     description: 'Non-surgical work that never looks overdone',
     image: '/treatments/treatment-skin.jpg',
-    link: '#skin'
+    link: '/treatments/chemical-peels'
   },
   {
     id: 2,
@@ -22,7 +23,7 @@ const treatmentCategories = [
     title: 'Contour. Tighten. Align.',
     description: 'Precise, structured changes, never excessive',
     image: '/treatments/treatment-body.jpg',
-    link: '#body'
+    link: '/treatments/emsculpt-neo'
   },
   {
     id: 3,
@@ -30,7 +31,7 @@ const treatmentCategories = [
     title: 'Regrow. Strengthen. Stabilise.',
     description: 'Medical and procedural solutions designed for continuity',
     image: '/treatments/treatment-hair.jpg',
-    link: '#hair'
+    link: '/treatments/fue'
   },
   {
     id: 4,
@@ -38,7 +39,7 @@ const treatmentCategories = [
     title: 'Restore. Replenish. Revive.',
     description: 'Targeted IV infusions to restore hydration, energy and essential nutrients.',
     image: '/treatments/treatment-iv.jpg',
-    link: '#wellness'
+    link: '/treatments/nad-plus-iv-drip'
   },
   {
     id: 5,
@@ -46,7 +47,7 @@ const treatmentCategories = [
     title: 'Empower. Restore. Rejuvenate.',
     description: 'Specialized intimate wellness with clinical privacy and gentle non-invasive care.',
     image: '/treatments/treatment-body.jpg',
-    link: '#gynaecology'
+    link: '/treatments/emsella'
   }
 ];
 
@@ -141,10 +142,10 @@ const TreatmentsCarousel = () => {
                       <h3 className="treatment-headline">{item.title}</h3>
                       <p className="treatment-subtext">{item.description}</p>
 
-                      <a href={item.link} className="treatment-knowmore-btn">
+                      <Link to={item.link} className="treatment-knowmore-btn">
                         <span>KNOW MORE</span>
                         <span className="btn-chevron">&gt;</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

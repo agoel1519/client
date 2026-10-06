@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   MapPin, 
   Phone, 
@@ -124,14 +125,14 @@ const Footer = () => {
           <div className="footer-col">
             <h4 className="footer-heading">CLINICAL TREATMENTS</h4>
             <ul className="footer-nav-list">
-              <li><a href="#treatments">Face &amp; Skin Rejuvenation</a></li>
-              <li><a href="#treatments">Laser Pigment &amp; Melasma Toning</a></li>
-              <li><a href="#treatments">EXION Non-Surgical Contouring</a></li>
-              <li><a href="#treatments">GFC &amp; Hair Bio-Restoration</a></li>
-              <li><a href="#treatments">Intravenous Longevity Infusions</a></li>
-              <li><a href="#treatments">Ultherapy Prime &amp; Jawline Lift</a></li>
-              <li><a href="#treatments">Medi-Facials &amp; HydraGlow</a></li>
-              <li><a href="#treatments">Aesthetic Gynaecology</a></li>
+              <li><Link to="/treatments/chemical-peels">Chemical Peels &amp; Resurfacing</Link></li>
+              <li><Link to="/treatments/pigment-laser">Laser Pigment &amp; Melasma Toning</Link></li>
+              <li><Link to="/treatments/exion-mnrf">EXION™ MNRF Non-Surgical Contouring</Link></li>
+              <li><Link to="/treatments/hair-regrowth">Hair Regrowth &amp; Bio-Restoration</Link></li>
+              <li><Link to="/treatments/nad-plus-iv-drip">NAD+ Cellular Longevity Infusions</Link></li>
+              <li><Link to="/treatments/ultherapy-prime">Ultherapy Prime &amp; Jawline Lift</Link></li>
+              <li><Link to="/treatments/medi-facial">Medi-Facials &amp; HydraGlow</Link></li>
+              <li><Link to="/treatments/emsella">BTL Emsella® Aesthetic Gynaecology</Link></li>
             </ul>
           </div>
 

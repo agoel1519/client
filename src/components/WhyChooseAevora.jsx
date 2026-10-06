@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Sliders, 
   ShieldCheck, 
@@ -47,7 +47,7 @@ const features = [
   }
 ];
 
-const stats = [
+const defaultStats = [
   { value: '15,000+', label: 'Successful Procedures' },
   { value: '100%', label: 'US-FDA Approved Tech' },
   { value: '15+ Yrs', label: 'Clinical Experience' },
@@ -55,16 +55,35 @@ const stats = [
 ];
 
 const WhyChooseAevora = () => {
+  const [content, setContent] = useState({
+    title: 'Why Choose',
+    titleHighlight: 'AEVORA',
+    subtitle: 'Redefining aesthetic excellence through customized clinical science, world-class technology, and harmonized natural results.',
+    stats: defaultStats
+  });
+
+  React.useEffect(() => {
+    const saved = localStorage.getItem('aevora_home_settings');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.whyChoose) {
+          setContent(parsed.whyChoose);
+        }
+      } catch (e) {}
+    }
+  }, []);
+
   return (
     <section className="why-choose-section" id="why-choose-us">
       <div className="why-choose-container">
         {/* Section Header */}
         <div className="why-choose-header">
           <h2 className="why-choose-title">
-            Why Choose <span className="gold-text">AEVORA</span>
+            {content.title} <span className="gold-text">{content.titleHighlight}</span>
           </h2>
           <p className="why-choose-subtitle">
-            Redefining aesthetic excellence through customized clinical science, world-class technology, and harmonized natural results.
+            {content.subtitle}
           </p>
         </div>
 
@@ -98,7 +117,7 @@ const WhyChooseAevora = () => {
 
         {/* Trust Metrics / Stats Bar */}
         <div className="trust-stats-bar">
-          {stats.map((stat, sIdx) => (
+          {content.stats && content.stats.map((stat, sIdx) => (
             <div key={sIdx} className="stat-item">
               <span className="stat-value">{stat.value}</span>
               <span className="stat-label">{stat.label}</span>

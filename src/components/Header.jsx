@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Phone, 
   MapPin, 
@@ -10,6 +11,7 @@ import {
   ShieldCheck,
   ChevronRight
 } from 'lucide-react';
+import { slugify } from '../data/treatmentsData';
 import './Header.css';
 
 const treatmentsData = {
@@ -206,19 +208,19 @@ const Header = () => {
         <div className="main-nav">
           <div className="nav-container">
             {/* Brand Logo */}
-            <a href="/" className="logo-wrapper" title="Aevora by Kian Clinics">
+            <Link to="/" className="logo-wrapper" title="Aevora by Kian Clinics">
               <img 
                 src="/aevora-logo-clean.png" 
                 alt="Aevora by Kian Clinics" 
                 className="aevora-logo"
               />
-            </a>
+            </Link>
 
             {/* Desktop Navigation Links */}
             <nav className="desktop-nav" aria-label="Main Navigation">
               <ul className="nav-list">
                 <li>
-                  <a href="#home" className="nav-link active">HOME</a>
+                  <Link to="/" className="nav-link active">HOME</Link>
                 </li>
 
                 {/* ABOUT DROPDOWN */}
@@ -227,19 +229,19 @@ const Header = () => {
                   onMouseEnter={() => handleDropdownEnter('about')}
                   onMouseLeave={handleDropdownLeave}
                 >
-                  <a href="#about" className="nav-link dropdown-trigger">
+                  <Link to="/about" className="nav-link dropdown-trigger">
                     ABOUT <ChevronDown size={13} className={`chevron ${activeDropdown === 'about' ? 'rotate' : ''}`} />
-                  </a>
+                  </Link>
                   {activeDropdown === 'about' && (
                     <div 
                       className="dropdown-menu"
                       onMouseEnter={() => handleDropdownEnter('about')}
                       onMouseLeave={handleDropdownLeave}
                     >
-                      <a href="#philosophy" className="dropdown-item">PHILOSOPHY</a>
-                      <a href="#founding-team" className="dropdown-item">FOUNDING TEAM</a>
-                      <a href="#experience" className="dropdown-item">EXPERIENCE</a>
-                      <a href="#gallery" className="dropdown-item">GALLERY</a>
+                      <a href="/about#philosophy" className="dropdown-item">PHILOSOPHY</a>
+                      <a href="/about#founding-team" className="dropdown-item">FOUNDING TEAM</a>
+                      <a href="/about#experience" className="dropdown-item">EXPERIENCE</a>
+                      <a href="/about#gallery" className="dropdown-item">GALLERY</a>
                     </div>
                   )}
                 </li>
@@ -250,7 +252,7 @@ const Header = () => {
                   onMouseEnter={() => handleDropdownEnter('treatments')}
                   onMouseLeave={handleDropdownLeave}
                 >
-                  <a href="#treatments" className="nav-link dropdown-trigger">
+                  <a href="/#treatments" className="nav-link dropdown-trigger">
                     TREATMENTS <ChevronDown size={13} className={`chevron ${activeDropdown === 'treatments' ? 'rotate' : ''}`} />
                   </a>
                   {activeDropdown === 'treatments' && (
@@ -267,18 +269,26 @@ const Header = () => {
                             <ul className="mega-list">
                               {treatmentsData.faceSkinCol1.map((item, idx) => (
                                 <li key={idx}>
-                                  <a href={`#${item.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="mega-link">
+                                  <Link 
+                                    to={`/treatments/${slugify(item)}`} 
+                                    className="mega-link"
+                                    onClick={() => setActiveDropdown(null)}
+                                  >
                                     {item}
-                                  </a>
+                                  </Link>
                                 </li>
                               ))}
                             </ul>
                             <ul className="mega-list">
                               {treatmentsData.faceSkinCol2.map((item, idx) => (
                                 <li key={idx}>
-                                  <a href={`#${item.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="mega-link">
+                                  <Link 
+                                    to={`/treatments/${slugify(item)}`} 
+                                    className="mega-link"
+                                    onClick={() => setActiveDropdown(null)}
+                                  >
                                     {item}
-                                  </a>
+                                  </Link>
                                 </li>
                               ))}
                             </ul>
@@ -291,9 +301,13 @@ const Header = () => {
                           <ul className="mega-list" style={{ marginBottom: '1.2rem' }}>
                             {treatmentsData.body.map((item, idx) => (
                               <li key={idx}>
-                                <a href={`#${item.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="mega-link">
+                                <Link 
+                                  to={`/treatments/${slugify(item)}`} 
+                                  className="mega-link"
+                                  onClick={() => setActiveDropdown(null)}
+                                >
                                   {item}
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -302,15 +316,25 @@ const Header = () => {
                           <ul className="mega-list" style={{ marginBottom: '1.2rem' }}>
                             {treatmentsData.ivTherapy.map((item, idx) => (
                               <li key={idx}>
-                                <a href={`#${item.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="mega-link">
+                                <Link 
+                                  to={`/treatments/${slugify(item)}`} 
+                                  className="mega-link"
+                                  onClick={() => setActiveDropdown(null)}
+                                >
                                   {item}
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>
 
                           <h4 className="mega-category-title">
-                            <a href="#laser-hair-removal" className="mega-category-link">LASER HAIR REMOVAL</a>
+                            <Link 
+                              to="/treatments/laser-hair-removal" 
+                              className="mega-category-link"
+                              onClick={() => setActiveDropdown(null)}
+                            >
+                              LASER HAIR REMOVAL
+                            </Link>
                           </h4>
                         </div>
 
@@ -320,9 +344,13 @@ const Header = () => {
                           <ul className="mega-list">
                             {treatmentsData.hair.map((item, idx) => (
                               <li key={idx}>
-                                <a href={`#${item.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="mega-link">
+                                <Link 
+                                  to={`/treatments/${slugify(item)}`} 
+                                  className="mega-link"
+                                  onClick={() => setActiveDropdown(null)}
+                                >
                                   {item}
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -334,9 +362,13 @@ const Header = () => {
                           <ul className="mega-list">
                             {treatmentsData.aestheticGynaecology.map((item, idx) => (
                               <li key={idx}>
-                                <a href={`#${item.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="mega-link">
+                                <Link 
+                                  to={`/treatments/${slugify(item)}`} 
+                                  className="mega-link"
+                                  onClick={() => setActiveDropdown(null)}
+                                >
                                   {item}
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </ul>
@@ -346,32 +378,11 @@ const Header = () => {
                   )}
                 </li>
 
-                {/* PROGRAMS DROPDOWN */}
-                <li 
-                  className="dropdown-wrapper"
-                  onMouseEnter={() => handleDropdownEnter('programs')}
-                  onMouseLeave={handleDropdownLeave}
-                >
-                  <a href="#programs" className="nav-link dropdown-trigger">
-                    PROGRAMS <ChevronDown size={13} className={`chevron ${activeDropdown === 'programs' ? 'rotate' : ''}`} />
-                  </a>
-                  {activeDropdown === 'programs' && (
-                    <div 
-                      className="dropdown-menu"
-                      onMouseEnter={() => handleDropdownEnter('programs')}
-                      onMouseLeave={handleDropdownLeave}
-                    >
-                      <a href="#bridal-program" className="dropdown-item">Signature Bridal Glow Program</a>
-                      <a href="#longevity-program" className="dropdown-item">Cellular Longevity & Anti-Age</a>
-                      <a href="#executive-glow" className="dropdown-item">Executive Express Revival</a>
-                      <a href="#custom-care" className="dropdown-item">Tailored Bespoke Treatment Plans</a>
-                    </div>
-                  )}
-                </li>
+
 
                 {/* EXPERTS */}
                 <li>
-                  <a href="#experts" className="nav-link">EXPERTS</a>
+                  <Link to="/experts" className="nav-link">EXPERTS</Link>
                 </li>
 
                 {/* MEDIA DROPDOWN */}
@@ -389,8 +400,8 @@ const Header = () => {
                       onMouseEnter={() => handleDropdownEnter('media')}
                       onMouseLeave={handleDropdownLeave}
                     >
-                      <a href="#press" className="dropdown-item">PRESS</a>
-                      <a href="#blogs" className="dropdown-item">BLOGS</a>
+                      <Link to="/press" className="dropdown-item">PRESS</Link>
+                      <Link to="/blog" className="dropdown-item">BLOGS</Link>
                     </div>
                   )}
                 </li>
@@ -402,7 +413,7 @@ const Header = () => {
 
                 {/* CONTACT */}
                 <li>
-                  <a href="#contact" className="nav-link">CONTACT</a>
+                  <Link to="/contact" className="nav-link">CONTACT</Link>
                 </li>
               </ul>
             </nav>
@@ -438,11 +449,13 @@ const Header = () => {
       {/* Mobile Drawer (Slide in from Right / Top Accordion) */}
       <aside className={`mobile-drawer ${mobileMenuOpen ? 'open' : ''}`} aria-label="Mobile Navigation">
         <div className="mobile-drawer-header">
-          <img 
-            src="/aevora-logo-clean.png" 
-            alt="Aevora Logo" 
-            className="mobile-drawer-logo"
-          />
+          <Link to="/" onClick={closeMobileMenu}>
+            <img 
+              src="/aevora-logo-clean.png" 
+              alt="Aevora Logo" 
+              className="mobile-drawer-logo"
+            />
+          </Link>
           <button className="mobile-close-btn" onClick={closeMobileMenu} aria-label="Close menu">
             <X size={24} />
           </button>
@@ -452,9 +465,9 @@ const Header = () => {
           <ul className="mobile-menu-list">
             {/* HOME */}
             <li className="mobile-menu-item">
-              <a href="#home" className="mobile-link" onClick={closeMobileMenu}>
+              <Link to="/" className="mobile-link" onClick={closeMobileMenu}>
                 HOME
-              </a>
+              </Link>
             </li>
 
             {/* ABOUT ACCORDION */}
@@ -468,10 +481,10 @@ const Header = () => {
               </div>
               {mobileAccordions.about && (
                 <div className="mobile-submenu">
-                  <a href="#philosophy" onClick={closeMobileMenu}>Philosophy</a>
-                  <a href="#founding-team" onClick={closeMobileMenu}>Founding Team</a>
-                  <a href="#experience" onClick={closeMobileMenu}>Experience</a>
-                  <a href="#gallery" onClick={closeMobileMenu}>Gallery</a>
+                  <a href="/about#philosophy" onClick={closeMobileMenu}>Philosophy</a>
+                  <a href="/about#founding-team" onClick={closeMobileMenu}>Founding Team</a>
+                  <a href="/about#experience" onClick={closeMobileMenu}>Experience</a>
+                  <a href="/about#gallery" onClick={closeMobileMenu}>Gallery</a>
                 </div>
               )}
             </li>
@@ -490,8 +503,8 @@ const Header = () => {
                   <div className="mobile-category-block">
                     <h5>FACE / SKIN</h5>
                     <div className="mobile-tag-grid">
-                      {['Chemical Peels', 'Botox', 'Laser Fotona', 'Fillers', 'Ultherapy Prime', 'Skin Booster', 'HIFU Facial', 'Microneedling'].map((t, i) => (
-                        <a key={i} href="#treatments" onClick={closeMobileMenu} className="mobile-treatment-tag">{t}</a>
+                      {['Chemical Peels', 'Botox', 'Filler', 'Laser Fotona', 'Ultherapy Prime', 'Skin Booster', 'HIFU Facial', 'Derma Pen', 'Scar', 'Threads'].map((t, i) => (
+                        <Link key={i} to={`/treatments/${slugify(t)}`} onClick={closeMobileMenu} className="mobile-treatment-tag">{t}</Link>
                       ))}
                     </div>
                   </div>
@@ -499,8 +512,8 @@ const Header = () => {
                   <div className="mobile-category-block">
                     <h5>BODY & IV THERAPY</h5>
                     <div className="mobile-tag-grid">
-                      {['Emsculpt Neo', 'Emerald Laser', 'Coolsculpting', 'NAD+ IV Drip', 'Limitless IV', 'Instaglo'].map((t, i) => (
-                        <a key={i} href="#treatments" onClick={closeMobileMenu} className="mobile-treatment-tag">{t}</a>
+                      {['Emsculpt Neo', 'Emerald Laser', 'Coolsculpting', 'Body Contouring', 'NAD+ IV Drip', 'Limitless', 'Instaglo', 'Laser Hair Removal'].map((t, i) => (
+                        <Link key={i} to={`/treatments/${slugify(t)}`} onClick={closeMobileMenu} className="mobile-treatment-tag">{t}</Link>
                       ))}
                     </div>
                   </div>
@@ -508,8 +521,8 @@ const Header = () => {
                   <div className="mobile-category-block">
                     <h5>HAIR & GYNAECOLOGY</h5>
                     <div className="mobile-tag-grid">
-                      {['Hair Regrowth', 'FUE Transplant', 'Dermapen Hair', 'Emsella', 'Vulvo-Vaginal'].map((t, i) => (
-                        <a key={i} href="#treatments" onClick={closeMobileMenu} className="mobile-treatment-tag">{t}</a>
+                      {['Hair Regrowth', 'FUE', 'High-Density FUE', 'Dermapen', 'Scalp Micro Pigmentation', 'Emsella', 'Vulvo-Vaginal', 'Labiaplasty'].map((t, i) => (
+                        <Link key={i} to={`/treatments/${slugify(t)}`} onClick={closeMobileMenu} className="mobile-treatment-tag">{t}</Link>
                       ))}
                     </div>
                   </div>
@@ -517,30 +530,13 @@ const Header = () => {
               )}
             </li>
 
-            {/* PROGRAMS ACCORDION */}
-            <li className="mobile-menu-item">
-              <div 
-                className="mobile-accordion-header"
-                onClick={() => toggleMobileAccordion('programs')}
-              >
-                <span className="mobile-link-text">PROGRAMS</span>
-                <ChevronDown size={18} className={`mobile-chevron ${mobileAccordions.programs ? 'open' : ''}`} />
-              </div>
-              {mobileAccordions.programs && (
-                <div className="mobile-submenu">
-                  <a href="#bridal-program" onClick={closeMobileMenu}>Signature Bridal Glow Program</a>
-                  <a href="#longevity-program" onClick={closeMobileMenu}>Cellular Longevity & Anti-Age</a>
-                  <a href="#executive-glow" onClick={closeMobileMenu}>Executive Express Revival</a>
-                  <a href="#custom-care" onClick={closeMobileMenu}>Tailored Bespoke Treatment Plans</a>
-                </div>
-              )}
-            </li>
+
 
             {/* EXPERTS */}
             <li className="mobile-menu-item">
-              <a href="#experts" className="mobile-link" onClick={closeMobileMenu}>
+              <Link to="/experts" className="mobile-link" onClick={closeMobileMenu}>
                 EXPERTS
-              </a>
+              </Link>
             </li>
 
             {/* MEDIA ACCORDION */}
@@ -554,8 +550,8 @@ const Header = () => {
               </div>
               {mobileAccordions.media && (
                 <div className="mobile-submenu">
-                  <a href="#press" onClick={closeMobileMenu}>Press & Publications</a>
-                  <a href="#blogs" onClick={closeMobileMenu}>Blogs & Articles</a>
+                  <Link to="/press" onClick={closeMobileMenu}>Press & Publications</Link>
+                  <Link to="/blog" onClick={closeMobileMenu}>Blogs & Articles</Link>
                 </div>
               )}
             </li>
@@ -569,9 +565,9 @@ const Header = () => {
 
             {/* CONTACT */}
             <li className="mobile-menu-item">
-              <a href="#contact" className="mobile-link" onClick={closeMobileMenu}>
+              <Link to="/contact" className="mobile-link" onClick={closeMobileMenu}>
                 CONTACT
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

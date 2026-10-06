@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Play, 
   Pause, 
@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import './VideoShowcase.css';
 
-const featuredVideo = {
+const defaultVideo = {
   id: 1,
   thumbnail: '/banners/banner-wellness.jpg',
   videoUrl: ''
@@ -17,6 +17,19 @@ const featuredVideo = {
 const VideoShowcase = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [content, setContent] = useState(defaultVideo);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('aevora_home_settings');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.videoShowcase) {
+          setContent(parsed.videoShowcase);
+        }
+      } catch (e) {}
+    }
+  }, []);
 
   const handlePlayVideo = () => {
     setShowModal(true);
@@ -35,7 +48,7 @@ const VideoShowcase = () => {
         <div className="featured-video-card">
           <div className="featured-video-media">
             <img 
-              src={featuredVideo.thumbnail} 
+              src={content.thumbnail} 
               alt="Aevora Video" 
               className="featured-thumbnail"
               loading="lazy"
@@ -67,15 +80,27 @@ const VideoShowcase = () => {
 
             <div className="modal-player-wrapper">
               <div className="simulated-player">
-                <img 
-                  src={featuredVideo.thumbnail} 
-                  alt="Aevora Video" 
-                  className="modal-backdrop-img" 
-                />
-                <div className="modal-player-overlay">
-                  <div className="player-brand-tag">
-                    <img src="/aevora-logo-clean.png" alt="Aevora" className="player-logo" />
-                  </div>
+                {content.videoUrl ? (
+                  <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src={content.videoUrl} 
+                    frameBorder="0" 
+                    allow="autoplay; encrypted-media" 
+                    allowFullScreen
+                    style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+                  ></iframe>
+                ) : (
+                  <>
+                    <img 
+                      src={content.thumbnail} 
+                      alt="Aevora Video" 
+                      className="modal-backdrop-img" 
+                    />
+                    <div className="modal-player-overlay">
+                      <div className="player-brand-tag">
+                        <img src="/aevora-logo-clean.png" alt="Aevora" className="player-logo" />
+                      </div>
 
                   {/* Player Controls Bar */}
                   <div className="player-controls-bar">
@@ -98,6 +123,8 @@ const VideoShowcase = () => {
                     </button>
                   </div>
                 </div>
+                </>
+                )}
               </div>
             </div>
           </div>

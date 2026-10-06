@@ -166,7 +166,7 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
-.stat-value {
+.stat-item .stat-value {
   font-size: clamp(1.8rem, 2.8vw, 2.5rem);
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -176,7 +176,7 @@
   margin-bottom: 0.25rem;
 }
 
-.stat-label {
+.stat-item .stat-label {
   color: #cbd5e1;
   font-size: 0.88rem;
   font-weight: 500;
