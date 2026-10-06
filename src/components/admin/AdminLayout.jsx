@@ -13,18 +13,33 @@ import {
   Sparkles,
   ShieldCheck,
   ChevronDown,
-  Layers
+  Layers,
+  LogOut
 } from 'lucide-react';
 import './AdminLayout.css';
+import AdminLogin from './AdminLogin';
 
 const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem('aevora_admin_auth') === 'true'
+  );
   
   // Check if current path is a settings path to auto-open menu
   const isSettingsActive = ['/admin/settings', '/admin/about-settings', '/admin/experts-settings', '/admin/press-settings', '/admin/blog-settings', '/admin/home-settings'].includes(location.pathname);
   
   const [isPagesOpen, setIsPagesOpen] = useState(isSettingsActive);
+
+  const handleLogout = () => {
+    localStorage.removeItem('aevora_admin_auth');
+    setIsAuthenticated(false);
+    navigate('/admin');
+  };
+
+  if (!isAuthenticated) {
+    return <AdminLogin onLogin={() => setIsAuthenticated(true)} />;
+  }
 
   return (
     <div className="admin-layout">
@@ -116,9 +131,9 @@ const AdminLayout = () => {
             <span>View Public Site</span>
           </Link>
 
-          <button onClick={() => navigate('/')} className="admin-nav-item logout-btn">
+          <button onClick={handleLogout} className="admin-nav-item logout-btn">
             <LogOut size={18} />
-            <span>Exit Admin</span>
+            <span>Secure Logout</span>
           </button>
         </div>
       </aside>
