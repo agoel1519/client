@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Save, CheckCircle2, Plus, Trash2 } from 'lucide-react';
+import ImageUploader from './ImageUploader';
+import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 import './AdminAboutSettings.css';
 
 const defaultSettings = {
+  heroTitle: "ABOUT US",
   heroTagline: "DESIGNED BY MEDICINE\nCRAFTED BY TECHNOLOGY\nPAMPERED BY LUXURY",
   introHeading: "We are India's Premium Aesthetic Clinic",
   introText: "Our only focus when crafting or rendering any treatment is YOU. Driven by a deep commitment to clinical excellence and cutting-edge aesthetics, we have achieved the perfect synergy between science and art to elevate your natural beauty.",
   introFooter: "AEVORA HAS AN INFINITE LOVE FOR THE HUMAN FORM.",
   teamTitle: "FOUNDING TEAM",
   team: [
-    { name: "Dr. Meghna Mour", role: "Co-Founder & Chief Medical Director", image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80" },
-    { name: "Karan Rekhi", role: "Co-Founder", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80" },
-    { name: "Kunal Kold", role: "Co-Founder", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80" }
+    { 
+      name: "Dr Misha Goel", 
+      role: "Aesthetic Physician • Trained in UK (MBBS, MD, FFAC)", 
+      image: "/doctors/dr-misha-goel.jpg" 
+    },
+    { 
+      name: "Dr Anupam Goel", 
+      role: "Minimal Access Gastrointestinal, Bariatric & Robotic Surgeon (MBBS, MS, FNB)", 
+      image: "/doctors/dr-anupam-goel.jpg" 
+    }
   ],
   expTitle: "THE AEVORA EXPERIENCE",
   experience: [
@@ -33,14 +43,23 @@ const AdminAboutSettings = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('aevora_about_settings');
-    if (saved) {
-      try {
-        setSettings(JSON.parse(saved));
-      } catch (e) {
-        console.error("Could not parse settings", e);
+    getDbSetting('about_page').then((saved) => {
+      if (saved) {
+        const hasLegacy = saved.team && saved.team.some(t => t.name && (t.name.includes('Meghna Mour') || t.name.includes('Karan Rekhi')));
+        if (hasLegacy) {
+          setSettings(prev => ({ ...prev, ...saved, team: defaultSettings.team }));
+        } else {
+          setSettings(prev => ({ ...prev, ...saved }));
+        }
+      } else {
+        const legacy = localStorage.getItem('aevora_about_settings');
+        if (legacy) {
+          try {
+            setSettings(prev => ({ ...prev, ...JSON.parse(legacy) }));
+          } catch (e) {}
+        }
       }
-    }
+    });
   }, []);
 
   const handleChange = (e) => {
@@ -76,14 +95,21 @@ const AdminAboutSettings = () => {
     setSettings(prev => ({ ...prev, gallery: newGallery }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsSaving(true);
-    setTimeout(() => {
-      localStorage.setItem('aevora_about_settings', JSON.stringify(settings));
+    try {
+      await saveDbSetting('about_page', settings);
+      try {
+        localStorage.setItem('aevora_about_settings', JSON.stringify(settings));
+      } catch (e) {}
+      window.dispatchEvent(new CustomEvent('aboutSettingsUpdated', { detail: settings }));
       setIsSaving(false);
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
-    }, 800);
+    } catch (err) {
+      console.error(err);
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -107,24 +133,12 @@ const AdminAboutSettings = () => {
       )}
 
       <div className="settings-sections">
-        {/* HERO & INTRO */}
+        {/* HERO */}
         <div className="settings-card">
-          <h3 className="settings-card-title">Hero & Introduction (Philosophy)</h3>
+          <h3 className="settings-card-title">Hero Banner</h3>
           <div className="form-group">
-            <label>Hero Tagline (Line breaks allowed)</label>
-            <textarea name="heroTagline" value={settings.heroTagline} onChange={handleChange} rows="3" />
-          </div>
-          <div className="form-group">
-            <label>Intro Heading</label>
-            <input type="text" name="introHeading" value={settings.introHeading} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Intro Paragraph</label>
-            <textarea name="introText" value={settings.introText} onChange={handleChange} rows="4" />
-          </div>
-          <div className="form-group">
-            <label>Intro Footer Tagline</label>
-            <input type="text" name="introFooter" value={settings.introFooter} onChange={handleChange} />
+            <label>Page Title</label>
+            <input type="text" name="heroTitle" value={settings.heroTitle || 'ABOUT US'} onChange={handleChange} />
           </div>
         </div>
 
@@ -142,7 +156,9 @@ const AdminAboutSettings = () => {
                 <h4>Team Member {idx + 1}</h4>
                 <div className="form-group"><label>Name</label><input type="text" value={member.name} onChange={(e) => handleTeamChange(idx, 'name', e.target.value)} /></div>
                 <div className="form-group"><label>Role / Designation</label><input type="text" value={member.role} onChange={(e) => handleTeamChange(idx, 'role', e.target.value)} /></div>
-                <div className="form-group"><label>Image URL</label><input type="text" value={member.image} onChange={(e) => handleTeamChange(idx, 'image', e.target.value)} /></div>
+                <div className="form-group" style={{ marginBottom: '20px' }}>
+                  <ImageUploader currentUrl={member.image} onSelect={(url) => handleTeamChange(idx, 'image', url)} label="Image" />
+                </div>
               </div>
             ))}
           </div>
@@ -164,7 +180,9 @@ const AdminAboutSettings = () => {
                   <div className="form-group"><label>Step Number</label><input type="text" value={exp.step} onChange={(e) => handleExpChange(idx, 'step', e.target.value)} /></div>
                   <div className="form-group"><label>Title</label><input type="text" value={exp.title} onChange={(e) => handleExpChange(idx, 'title', e.target.value)} /></div>
                 </div>
-                <div className="form-group"><label>Background Image URL</label><input type="text" value={exp.image} onChange={(e) => handleExpChange(idx, 'image', e.target.value)} /></div>
+                <div className="form-group" style={{ marginBottom: '20px' }}>
+                  <ImageUploader currentUrl={exp.image} onSelect={(url) => handleExpChange(idx, 'image', url)} label="Background Image" />
+                </div>
               </div>
             ))}
           </div>
@@ -180,9 +198,13 @@ const AdminAboutSettings = () => {
           
           <div className="gallery-admin-list">
             {settings.gallery.map((url, idx) => (
-              <div key={idx} className="gallery-admin-row">
+              <div key={idx} className="gallery-admin-row" style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '20px' }}>
                 <div className="form-group" style={{ margin: 0, flex: 1 }}>
-                  <input type="text" value={url} onChange={(e) => handleGalleryChange(idx, e.target.value)} placeholder="Image URL..." />
+                  <ImageUploader 
+                    currentUrl={url} 
+                    onSelect={(newUrl) => handleGalleryChange(idx, newUrl)} 
+                    label={`Gallery Image ${idx + 1}`} 
+                  />
                 </div>
                 <button className="btn-icon-danger" onClick={() => removeGalleryImage(idx)}><Trash2 size={18} /></button>
               </div>

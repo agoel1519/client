@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 import Header from '../Header';
 import Footer from '../Footer';
 import { MapPin, Phone, Mail, Clock, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -20,21 +21,33 @@ const Press = () => {
   });
 
   const [clinicInfo, setClinicInfo] = useState({
-    address: "1st Floor, Forum Building, Raghuvanshi Mills Compound Senapati Bapat Marg, Gandhi Nagar, Upper Worli, Worli, Lower Parel, Mumbai, Maharashtra 400018.",
-    phone: "+91 72400 13002\n+91 72400 12002",
-    email: "hello@skuccii.com"
+    address: "SCO 205 FF, Sector 5, Panchkula – 134114",
+    phone: "+91 97797 66933",
+    email: "concierge@aevoraclinics.com"
   });
+
+  const loadData = () => {
+    getDbSetting('press_settings').then((saved) => {
+      if (saved) {
+        setSettings(saved);
+      }
+    });
+    getDbSetting('clinic_settings').then((saved) => {
+      if (saved) {
+        setClinicInfo(saved);
+      }
+    });
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const saved = localStorage.getItem('aevora_press_settings');
-    if (saved) {
-      try { setSettings(JSON.parse(saved)); } catch (e) {}
-    }
-    const savedClinic = localStorage.getItem('aevora_clinic_settings');
-    if (savedClinic) {
-      try { setClinicInfo(JSON.parse(savedClinic)); } catch (e) {}
-    }
+    loadData();
+    window.addEventListener('pressSettingsUpdated', loadData);
+    window.addEventListener('clinicSettingsUpdated', loadData);
+    return () => {
+      window.removeEventListener('pressSettingsUpdated', loadData);
+      window.removeEventListener('clinicSettingsUpdated', loadData);
+    };
   }, []);
 
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', treatment: '', message: '' });

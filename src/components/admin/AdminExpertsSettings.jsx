@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Save, CheckCircle2, Plus, Trash2, Upload } from 'lucide-react';
+import ImageUploader from './ImageUploader';
+import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
+import { uploadToCloudinary } from '../../utils/cloudinary';
 
 const defaultSettings = {
   heroTitle: "OUR EXPERTS",
   heroSubtitle: "Accomplished specialists dedicated to your care",
-  groupPhoto: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
+  groupPhoto: "",
   sectionTitle: "OUR TEAM OF SPECIALISTS",
   sectionIntro: "Led by a team of highly qualified medical practitioners who are brilliant in their fields and dedicated to providing you with the personalized care you deserve.",
   experts: [
-    { name: "Dr. Meghna Mour", role: "FOUNDER & MEDICAL HEAD", exp: "23+ Years Experience", image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80" },
-    { name: "Dr. Harish Balaji", role: "DERMATOLOGIST & HAIR TRANSPLANT SURGEON", exp: "10+ Years Experience", image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=600&q=80" },
-    { name: "Dr. Meghna Singh", role: "MD DERMATOLOGY, VENEREOLOGY & LEPROSY", exp: "6+ Years Experience", image: "https://images.unsplash.com/photo-1594824432258-29177a4eb312?auto=format&fit=crop&w=600&q=80" },
-    { name: "Dr. Prachi Zawar", role: "DERMATOLOGIST & VENEREOLOGIST", exp: "5+ Years Experience", image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80" },
-    { name: "Dr. Dipal Patel", role: "COSMETOLOGIST & AESTHETIC DOCTOR", exp: "12+ Years Experience", image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80" },
-    { name: "Dr. Vishwa Parsana", role: "COSMETOLOGIST & AESTHETIC DOCTOR", exp: "3+ Years Experience", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" }
+    { 
+      name: "Dr Misha Goel", 
+      role: "Aesthetic Physician • Trained in UK", 
+      exp: "MBBS, MD, FFAC", 
+      image: "/doctors/dr-misha-goel.jpg" 
+    },
+    { 
+      name: "Dr Anupam Goel", 
+      role: "Minimal Access Gastrointestinal, Bariatric (Weight-loss) & Robotic Surgeon", 
+      exp: "MBBS, MS, FNB", 
+      image: "/doctors/dr-anupam-goel.jpg" 
+    }
   ]
 };
 
@@ -23,14 +32,23 @@ const AdminExpertsSettings = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('aevora_experts_settings');
-    if (saved) {
-      try {
-        setSettings(JSON.parse(saved));
-      } catch (e) {
-        console.error("Could not parse settings", e);
+    getDbSetting('experts_settings').then((saved) => {
+      if (saved) {
+        const hasLegacy = saved.experts && saved.experts.some(e => e.name && (e.name.includes('Meghna Mour') || e.name.includes('Harish Balaji')));
+        if (hasLegacy) {
+          setSettings(prev => ({ ...prev, ...saved, experts: defaultSettings.experts }));
+        } else {
+          setSettings(prev => ({ ...prev, ...saved }));
+        }
+      } else {
+        const legacy = localStorage.getItem('aevora_experts_settings');
+        if (legacy) {
+          try {
+            setSettings(prev => ({ ...prev, ...JSON.parse(legacy) }));
+          } catch (e) {}
+        }
       }
-    }
+    });
   }, []);
 
   const handleChange = (e) => {
@@ -57,9 +75,23 @@ const AdminExpertsSettings = () => {
     setSettings(prev => ({ ...prev, experts: newExperts }));
   };
 
-  const handleImageUpload = (e, index = null, isGroupPhoto = false) => {
+  const handleImageUpload = async (e, index = null, isGroupPhoto = false) => {
     const file = e.target.files[0];
     if (file) {
+      try {
+        const cldRes = await uploadToCloudinary(file);
+        if (cldRes && cldRes.success && cldRes.url) {
+          if (isGroupPhoto) {
+            setSettings(prev => ({ ...prev, groupPhoto: cldRes.url }));
+          } else if (index !== null) {
+            handleExpertChange(index, 'image', cldRes.url);
+          }
+          return;
+        }
+      } catch (err) {
+        console.warn('Cloudinary upload notice:', err.message);
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result;
@@ -73,14 +105,21 @@ const AdminExpertsSettings = () => {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsSaving(true);
-    setTimeout(() => {
-      localStorage.setItem('aevora_experts_settings', JSON.stringify(settings));
+    try {
+      await saveDbSetting('experts_settings', settings);
+      try {
+        localStorage.setItem('aevora_experts_settings', JSON.stringify(settings));
+      } catch (e) {}
+      window.dispatchEvent(new CustomEvent('expertsSettingsUpdated', { detail: settings }));
       setIsSaving(false);
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
-    }, 800);
+    } catch (err) {
+      console.error(err);
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -117,18 +156,12 @@ const AdminExpertsSettings = () => {
               <input type="text" name="heroSubtitle" value={settings.heroSubtitle} onChange={handleChange} />
             </div>
           </div>
-          <div className="form-group">
-            <label>Group Photo (URL or Upload)</label>
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-              <input type="text" name="groupPhoto" value={settings.groupPhoto} onChange={handleChange} style={{ flex: 1 }} placeholder="Paste image URL here" />
-              <label className="btn-save-settings" style={{ padding: '10px 15px', cursor: 'pointer', background: '#e2e8f0', color: '#334155', border: '1px solid #cbd5e1' }}>
-                <Upload size={16} /> Upload
-                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => handleImageUpload(e, null, true)} />
-              </label>
-            </div>
-            {settings.groupPhoto && settings.groupPhoto.length > 500 && (
-              <p style={{ fontSize: '0.8rem', color: '#10b981', marginTop: '5px' }}>✓ Custom image uploaded</p>
-            )}
+          <div className="form-group" style={{ marginBottom: '20px' }}>
+            <ImageUploader 
+              currentUrl={settings.groupPhoto} 
+              onSelect={(url) => setSettings({ ...settings, groupPhoto: url })} 
+              label="Group Photo" 
+            />
           </div>
         </div>
 
@@ -168,18 +201,12 @@ const AdminExpertsSettings = () => {
                 <div className="form-group"><label>Name</label><input type="text" value={expert.name} onChange={(e) => handleExpertChange(idx, 'name', e.target.value)} /></div>
                 <div className="form-group"><label>Role / Designation</label><input type="text" value={expert.role} onChange={(e) => handleExpertChange(idx, 'role', e.target.value)} /></div>
                 <div className="form-group"><label>Experience</label><input type="text" value={expert.exp} onChange={(e) => handleExpertChange(idx, 'exp', e.target.value)} /></div>
-                <div className="form-group">
-                  <label>Photo (URL or Upload)</label>
-                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                    <input type="text" value={expert.image} onChange={(e) => handleExpertChange(idx, 'image', e.target.value)} style={{ flex: 1 }} placeholder="Paste image URL here" />
-                    <label className="btn-save-settings" style={{ padding: '10px 15px', cursor: 'pointer', background: '#e2e8f0', color: '#334155', border: '1px solid #cbd5e1' }}>
-                      <Upload size={16} /> Upload
-                      <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => handleImageUpload(e, idx, false)} />
-                    </label>
-                  </div>
-                  {expert.image && expert.image.length > 500 && (
-                    <p style={{ fontSize: '0.8rem', color: '#10b981', marginTop: '5px', marginBottom: 0 }}>✓ Custom image uploaded</p>
-                  )}
+                <div className="form-group" style={{ marginBottom: '20px' }}>
+                  <ImageUploader 
+                    currentUrl={expert.image} 
+                    onSelect={(url) => handleExpertChange(idx, 'image', url)} 
+                    label="Expert Image" 
+                  />
                 </div>
               </div>
             ))}

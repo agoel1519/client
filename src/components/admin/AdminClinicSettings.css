@@ -85,27 +85,27 @@
   padding-bottom: 16px;
 }
 
-.form-group {
+.admin-settings-container .form-group {
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
 }
 
-.form-group-row {
+.admin-settings-container .form-group-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-.form-group label {
+.admin-settings-container .form-group label {
   font-size: 0.9rem;
   font-weight: 600;
   color: #475569;
   margin-bottom: 8px;
 }
 
-.form-group input,
-.form-group textarea {
+.admin-settings-container .form-group input,
+.admin-settings-container .form-group textarea {
   padding: 12px 16px;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
@@ -115,14 +115,14 @@
   transition: all 0.2s ease;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
+.admin-settings-container .form-group input:focus,
+.admin-settings-container .form-group textarea:focus {
   outline: none;
   border-color: #0d382c;
   box-shadow: 0 0 0 3px rgba(13, 56, 44, 0.1);
 }
 
-.form-help {
+.admin-settings-container .form-help {
   font-size: 0.8rem;
   color: #94a3b8;
   margin-top: 6px;

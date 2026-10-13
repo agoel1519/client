@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Save, CheckCircle2, Plus, Trash2 } from 'lucide-react';
+import ImageUploader from './ImageUploader';
+import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 
 const defaultSettings = {
   heroTitle: "PRESS & MEDIA",
@@ -21,14 +23,18 @@ const AdminPressSettings = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('aevora_press_settings');
-    if (saved) {
-      try {
-        setSettings(JSON.parse(saved));
-      } catch (e) {
-        console.error("Could not parse settings", e);
+    getDbSetting('press_settings').then((saved) => {
+      if (saved) {
+        setSettings(prev => ({ ...prev, ...saved }));
+      } else {
+        const legacy = localStorage.getItem('aevora_press_settings');
+        if (legacy) {
+          try {
+            setSettings(prev => ({ ...prev, ...JSON.parse(legacy) }));
+          } catch (e) {}
+        }
       }
-    }
+    });
   }, []);
 
   const handleChange = (e) => {
@@ -55,14 +61,21 @@ const AdminPressSettings = () => {
     setSettings(prev => ({ ...prev, articles: newArticles }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsSaving(true);
-    setTimeout(() => {
-      localStorage.setItem('aevora_press_settings', JSON.stringify(settings));
+    try {
+      await saveDbSetting('press_settings', settings);
+      try {
+        localStorage.setItem('aevora_press_settings', JSON.stringify(settings));
+      } catch (e) {}
+      window.dispatchEvent(new CustomEvent('pressSettingsUpdated', { detail: settings }));
       setIsSaving(false);
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
-    }, 800);
+    } catch (err) {
+      console.error(err);
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -99,9 +112,12 @@ const AdminPressSettings = () => {
               <input type="text" name="heroSubtitle" value={settings.heroSubtitle} onChange={handleChange} />
             </div>
           </div>
-          <div className="form-group">
-            <label>Hero Background Image URL</label>
-            <input type="text" name="heroBg" value={settings.heroBg} onChange={handleChange} />
+          <div className="form-group" style={{ marginBottom: '20px' }}>
+            <ImageUploader 
+              currentUrl={settings.heroBg} 
+              onSelect={(url) => handleChange({ target: { name: 'heroBg', value: url }})} 
+              label="Hero Background Image" 
+            />
           </div>
         </div>
 
@@ -126,9 +142,12 @@ const AdminPressSettings = () => {
                 </button>
                 <h4 style={{ marginBottom: '15px' }}>Article {idx + 1}</h4>
                 <div className="form-group-row">
-                  <div className="form-group">
-                    <label>Image URL (Clipping Thumbnail)</label>
-                    <input type="text" value={article.image} onChange={(e) => handleArticleChange(idx, 'image', e.target.value)} />
+                  <div className="form-group" style={{ marginBottom: '20px' }}>
+                    <ImageUploader 
+                      currentUrl={article.image} 
+                      onSelect={(url) => handleArticleChange(idx, 'image', url)} 
+                      label="Image (Clipping Thumbnail)" 
+                    />
                   </div>
                   <div className="form-group">
                     <label>Link URL (Optional)</label>

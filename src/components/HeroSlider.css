@@ -70,7 +70,7 @@
 
 /* Badge */
 .slide-badge {
-  display: inline-flex;
+  display: none !important;
   align-items: center;
   gap: 0.5rem;
   background: rgba(197, 157, 95, 0.16);

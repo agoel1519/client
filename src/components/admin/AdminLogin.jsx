@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Lock, User, LogIn, AlertCircle } from 'lucide-react';
+import { Lock, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
 import './AdminLogin.css';
 
 const AdminLogin = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -13,74 +13,89 @@ const AdminLogin = ({ onLogin }) => {
     setError('');
     setIsLoading(true);
 
-    // Simulate network request
+    // Simulate network authentication
     setTimeout(() => {
-      // Hardcoded credentials as requested
-      if (username === 'admin' && password === 'aevoraadmin123') {
+      if ((email === 'admin@aevora.com' || email === 'admin') && password === 'aevoraadmin123') {
         localStorage.setItem('aevora_admin_auth', 'true');
         onLogin(true);
       } else {
-        setError('Invalid username or password.');
+        setError('Invalid credentials. Please try again.');
       }
       setIsLoading(false);
-    }, 800);
+    }, 1000);
   };
 
   return (
-    <div className="admin-login-wrapper">
-      <div className="admin-login-card">
-        <div className="admin-login-header">
-          <div className="admin-login-brand">
-            <h2>AEVORA</h2>
-            <span>SECURE PORTAL</span>
-          </div>
-          <p>Please enter your credentials to access the admin dashboard.</p>
+    <div className="premium-login-layout">
+      <div className="login-visual-panel">
+        <div className="visual-content">
+          <div className="logo-badge">Aevora CMS</div>
+          <h1>Manage your digital sanctuary.</h1>
+          <p>Sign in to the unified content management system to edit pages, manage media, and configure your website.</p>
         </div>
-
-        <form onSubmit={handleSubmit} className="admin-login-form">
-          {error && (
-            <div className="admin-login-error">
-              <AlertCircle size={16} />
-              <span>{error}</span>
-            </div>
-          )}
-
-          <div className="form-group">
-            <label>Username</label>
-            <div className="input-with-icon">
-              <User size={18} className="input-icon" />
-              <input 
-                type="text" 
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter admin username"
-                required
-              />
-            </div>
+      </div>
+      
+      <div className="login-form-panel">
+        <div className="login-form-container">
+          <div className="form-header">
+            <h2>Welcome back</h2>
+            <p>Please enter your details to sign in.</p>
           </div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <div className="input-with-icon">
-              <Lock size={18} className="input-icon" />
-              <input 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                required
-              />
-            </div>
-          </div>
+          <form onSubmit={handleSubmit} className="premium-form">
+            {error && (
+              <div className="error-alert">
+                {error}
+              </div>
+            )}
 
-          <button type="submit" className="btn-login-submit" disabled={isLoading}>
-            {isLoading ? <span className="spinner"></span> : <LogIn size={18} />}
-            <span>{isLoading ? 'Authenticating...' : 'Sign In'}</span>
-          </button>
-        </form>
-        
-        <div className="admin-login-footer">
-          <p>Aevora by Kian Clinics &copy; {new Date().getFullYear()}</p>
+            <div className="form-group">
+              <label>Email or Username</label>
+              <div className="input-wrapper">
+                <Mail size={18} className="input-icon" />
+                <input 
+                  type="text" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="admin@aevora.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="label-row">
+                <label>Password</label>
+                <a href="#" className="forgot-link">Forgot password?</a>
+              </div>
+              <div className="input-wrapper">
+                <Lock size={18} className="input-icon" />
+                <input 
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" className="login-submit-btn" disabled={isLoading}>
+              {isLoading ? (
+                <span className="spinner-loader"></span>
+              ) : (
+                <>
+                  <span>Sign In</span>
+                  <ArrowRight size={18} />
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="security-notice">
+            <ShieldCheck size={16} />
+            <span>Secure, encrypted connection</span>
+          </div>
         </div>
       </div>
     </div>

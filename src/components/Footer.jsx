@@ -16,6 +16,83 @@ import './Footer.css';
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [clinicSettings, setClinicSettings] = useState({
+    address: "SCO 205 FF, Sector 5, Panchkula – 134114",
+    phone: "+91 97797 66933",
+    email: "concierge@aevoraclinics.com",
+    hours: "Mon – Sat: 10:00 AM – 8:00 PM | Sun: By Appointment",
+    website: "www.Aevoraclinics.com"
+  });
+
+  const [footerSettings, setFooterSettings] = useState({
+    tagline: "A bespoke aesthetic and longevity sanctuary founded on clinical precision, US FDA-cleared science, and undetectable elegance.",
+    founderName: "Dr Misha Goel & Dr Anupam Goel",
+    founderTitle: "Clinical Aesthetics & Minimal Access Surgery",
+    instagramUrl: "https://instagram.com",
+    facebookUrl: "https://facebook.com",
+    linkedinUrl: "https://linkedin.com",
+    youtubeUrl: "https://youtube.com",
+    copyrightText: "AEVORA by Kian Clinics. All rights reserved.",
+    columns: [
+      { id: '1', title: 'CLINICAL SERVICES', links: [
+        { label: 'Hydrafacials & Medical Facials', url: '/treatments/hydrafacials-medifacials' },
+        { label: 'Laser Facial Toning & Glass Skin', url: '/treatments/laser-facial-toning' },
+        { label: 'Laser Hair Reduction', url: '/treatments/laser-hair-reduction' },
+        { label: 'Muscle Contouring & Sculpting', url: '/treatments/muscle-contouring' },
+        { label: 'Intravenous Longevity Drips', url: '/treatments/intravenous-longevity-drips' },
+        { label: 'Hair Regrowth & Regeneration', url: '/treatments/hair-regrowth-regeneration' },
+        { label: 'Intimacy & Sexual Wellness', url: '/treatments/intimacy-rejuvenation' },
+        { label: 'Advanced Robotic Surgery', url: '/treatments/robotic-surgery' }
+      ] },
+      { id: '2', title: 'THE SANCTUARY', links: [
+        { label: 'About Aevora & Philosophy', url: '#about' },
+        { label: 'Our Specialist Doctors', url: '#doctors' },
+        { label: 'The VIP Clinic Experience', url: '#about' },
+        { label: 'Celebrity & VIP Spotlight', url: '#celebrity' },
+        { label: 'Press & Media Features', url: '#media' },
+        { label: 'Patient Reviews & Testimonials', url: '#testimonials' },
+        { label: 'Frequently Asked Questions', url: '#faq' },
+        { label: 'Book Private Consultation', url: '#book' }
+      ] }
+    ],
+    logoUrl: "/aevora-logo-clean.png",
+    logoWidth: "150"
+  });
+
+  const loadSettings = () => {
+    import('../api/mongoApi').then(({ getDbSetting }) => {
+      getDbSetting('clinic_settings').then(saved => {
+        if (saved) {
+          setClinicSettings(prev => ({
+            ...prev,
+            ...saved,
+            address: (saved.address && !saved.address.includes('SCO 14-15')) ? saved.address : "SCO 205 FF, Sector 5, Panchkula – 134114",
+            phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : "+91 97797 66933",
+            website: saved.website || "www.Aevoraclinics.com"
+          }));
+        }
+      });
+      getDbSetting('footer_settings').then(saved => {
+        if (saved) {
+          setFooterSettings(prev => ({
+            ...prev,
+            ...saved,
+            founderName: (saved.founderName && !saved.founderName.includes('Meghna Mour')) ? saved.founderName : "Dr Misha Goel & Dr Anupam Goel"
+          }));
+        }
+      });
+    });
+  };
+
+  React.useEffect(() => {
+    loadSettings();
+    window.addEventListener('footerSettingsUpdated', loadSettings);
+    window.addEventListener('clinicSettingsUpdated', loadSettings);
+    return () => {
+      window.removeEventListener('footerSettingsUpdated', loadSettings);
+      window.removeEventListener('clinicSettingsUpdated', loadSettings);
+    };
+  }, []);
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -76,43 +153,44 @@ const Footer = () => {
           <div className="footer-col footer-brand-col">
             <a href="#home" className="footer-logo-link">
               <img 
-                src="/aevora-logo-clean.png" 
+                src={footerSettings.logoUrl} 
                 alt="Aevora by Kian Clinics" 
                 className="footer-brand-logo"
+                style={{ width: `${footerSettings.logoWidth}px` }}
               />
             </a>
 
             <p className="footer-brand-tagline">
-              A bespoke aesthetic and longevity sanctuary founded on clinical precision, US FDA-cleared science, and undetectable elegance.
+              {footerSettings.tagline}
             </p>
 
             <div className="footer-doctor-founder">
               <span className="founder-badge">FOUNDED &amp; LED BY</span>
-              <strong className="founder-name">Dr. Meghna Mour</strong>
-              <span className="founder-title">Chief Aesthetic Dermatologist</span>
+              <strong className="founder-name">{footerSettings.founderName}</strong>
+              <span className="founder-title">{footerSettings.founderTitle}</span>
             </div>
 
             <div className="footer-social-links">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="social-icon-btn">
+              <a href={footerSettings.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="social-icon-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                   <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
                 </svg>
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="social-icon-btn">
+              <a href={footerSettings.facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="social-icon-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
                 </svg>
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="social-icon-btn">
+              <a href={footerSettings.linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="social-icon-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
                   <rect width="4" height="12" x="2" y="9"/>
                   <circle cx="4" cy="4" r="2"/>
                 </svg>
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="social-icon-btn">
+              <a href={footerSettings.youtubeUrl} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="social-icon-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
                   <polygon points="10 15 15 12 10 9 10 15"/>
@@ -121,35 +199,22 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Column 2: Treatments Mega Navigation */}
-          <div className="footer-col">
-            <h4 className="footer-heading">CLINICAL TREATMENTS</h4>
-            <ul className="footer-nav-list">
-              <li><Link to="/treatments/chemical-peels">Chemical Peels &amp; Resurfacing</Link></li>
-              <li><Link to="/treatments/pigment-laser">Laser Pigment &amp; Melasma Toning</Link></li>
-              <li><Link to="/treatments/exion-mnrf">EXION™ MNRF Non-Surgical Contouring</Link></li>
-              <li><Link to="/treatments/hair-regrowth">Hair Regrowth &amp; Bio-Restoration</Link></li>
-              <li><Link to="/treatments/nad-plus-iv-drip">NAD+ Cellular Longevity Infusions</Link></li>
-              <li><Link to="/treatments/ultherapy-prime">Ultherapy Prime &amp; Jawline Lift</Link></li>
-              <li><Link to="/treatments/medi-facial">Medi-Facials &amp; HydraGlow</Link></li>
-              <li><Link to="/treatments/emsella">BTL Emsella® Aesthetic Gynaecology</Link></li>
-            </ul>
-          </div>
-
-          {/* Column 3: Quick Links & Experience */}
-          <div className="footer-col">
-            <h4 className="footer-heading">THE SANCTUARY</h4>
-            <ul className="footer-nav-list">
-              <li><a href="#about">About Aevora &amp; Philosophy</a></li>
-              <li><a href="#team">Our Specialist Doctors</a></li>
-              <li><a href="#experience">The VIP Clinic Experience</a></li>
-              <li><a href="#celebrities">Celebrity &amp; VIP Spotlight</a></li>
-              <li><a href="#media">Press &amp; Media Features</a></li>
-              <li><a href="#testimonials">Patient Reviews &amp; Testimonials</a></li>
-              <li><a href="#faq">Frequently Asked Questions</a></li>
-              <li><a href="#appointment">Book Private Consultation</a></li>
-            </ul>
-          </div>
+          {/* Dynamic Columns */}
+          {footerSettings.columns?.map(col => (
+            <div className="footer-col" key={col.id}>
+              <h4 className="footer-heading">{col.title}</h4>
+              <ul className="footer-nav-list">
+                {col.links?.map((link, i) => (
+                  <li key={i}>
+                    {link.url.startsWith('/') && !link.url.includes('#') ? 
+                      <Link to={link.url}>{link.label}</Link> : 
+                      <a href={link.url}>{link.label}</a>
+                    }
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           {/* Column 4: Contact & Locations (With Coming Soon) */}
           <div className="footer-col footer-contact-col">
@@ -164,7 +229,11 @@ const Footer = () => {
                 <MapPin size={18} className="loc-icon" />
                 <div>
                   <strong>Panchkula Sanctuary</strong>
-                  <p>SCO 14-15, Sector 5, Panchkula, Haryana 134109</p>
+                  <p>
+                    {clinicSettings.address.split('\n').map((line, i) => (
+                      <React.Fragment key={i}>{line}<br/></React.Fragment>
+                    ))}
+                  </p>
                   <span className="valet-tag">Valet Parking Available</span>
                 </div>
               </div>
@@ -193,15 +262,15 @@ const Footer = () => {
             <div className="footer-direct-contact">
               <div className="contact-row">
                 <Phone size={16} className="contact-icon" />
-                <a href="tel:01722580000">0172 258 0000</a>
+                <a href={`tel:${clinicSettings.phone.split('\n')[0]}`}>{clinicSettings.phone.split('\n')[0]}</a>
               </div>
               <div className="contact-row">
                 <Mail size={16} className="contact-icon" />
-                <a href="mailto:concierge@aevoraclinics.com">concierge@aevoraclinics.com</a>
+                <a href={`mailto:${clinicSettings.email}`}>{clinicSettings.email}</a>
               </div>
               <div className="contact-row">
                 <Clock size={16} className="contact-icon" />
-                <span>Mon – Sat: 10:00 AM – 8:00 PM | Sun: By Appointment</span>
+                <span>{clinicSettings.hours}</span>
               </div>
             </div>
 
@@ -215,7 +284,7 @@ const Footer = () => {
         <div className="footer-bottom-container">
           <div className="bottom-left">
             <p className="copyright-text">
-              &copy; {new Date().getFullYear()} AEVORA by Kian Clinics. All rights reserved.
+              &copy; {new Date().getFullYear()} {footerSettings.copyrightText}
             </p>
           </div>
 

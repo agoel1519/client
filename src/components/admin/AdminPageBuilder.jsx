@@ -24,6 +24,8 @@ import {
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
+import ImageUploader from './ImageUploader';
+import { uploadToCloudinary } from '../../utils/cloudinary';
 import { slugify, getTreatmentData, saveTreatmentPage, deleteTreatmentPage } from '../../data/treatmentsData';
 
 const emptyPageTemplate = {
@@ -83,10 +85,10 @@ const emptyPageTemplate = {
     { question: 'How can I clear my acne scars?', answer: 'Scheduling an in-depth dermatological skin assessment allows us to formulate a personalized multi-modality protocol combining clinical resurfacing with medical-grade barrier repair skincare.' }
   ],
   clinicInfo: {
-    address: '1st Floor, Forum Building, Raghuvanshi Mills Compound Senapati Bapat Marg, Gandhi Nagar, Upper Worli, Worli, Lower Parel, Mumbai, Maharashtra 400018.',
-    phones: ['+91 72400 13002', '+91 72400 12002'],
-    email: 'hello@skuccii.com',
-    hours: 'Monday – Sunday: 10:00 AM – 7:00 PM'
+    address: 'SCO 205 FF, Sector 5, Panchkula – 134114',
+    phones: ['+91 97797 66933'],
+    email: 'concierge@aevoraclinics.com',
+    hours: 'Mon – Sat: 10:00 AM – 8:00 PM | Sun: By Appointment'
   },
   accordionSection: { 
     heading: "HERE'S AN OVERVIEW OF HOW SCAR TREATMENT CAN EMPOWER YOU", 
@@ -119,6 +121,8 @@ const AdminPageBuilder = () => {
           ...emptyPageTemplate,
           ...existing,
           slug: slug,
+          contentSection: existing.contentSection || emptyPageTemplate.contentSection,
+          accordionSection: existing.accordionSection || emptyPageTemplate.accordionSection,
           treatmentTypesSection: existing.treatmentTypesSection || emptyPageTemplate.treatmentTypesSection,
           pathwaySection: existing.pathwaySection || emptyPageTemplate.pathwaySection,
           clinicInfo: existing.clinicInfo || emptyPageTemplate.clinicInfo,
@@ -127,6 +131,30 @@ const AdminPageBuilder = () => {
           customSections: existing.customSections || []
         });
       }
+
+      // Also fetch any remote updates from MongoDB/localStore
+      Promise.allSettled([
+        fetch(`http://localhost:5001/api/treatments/${slug}`).then(r => r.ok ? r.json() : null),
+        fetch(`http://localhost:5001/api/pages/${slug}`).then(r => r.ok ? r.json() : null)
+      ]).then(([treatRes, pageRes]) => {
+        const remote = (treatRes.status === 'fulfilled' && treatRes.value?.data) ||
+                       (pageRes.status === 'fulfilled' && pageRes.value);
+        if (remote && remote.title) {
+          setPageData(prev => ({
+            ...prev,
+            ...remote,
+            slug: slug,
+            contentSection: remote.contentSection || prev.contentSection,
+            accordionSection: remote.accordionSection || prev.accordionSection,
+            treatmentTypesSection: remote.treatmentTypesSection || prev.treatmentTypesSection,
+            pathwaySection: remote.pathwaySection || prev.pathwaySection,
+            clinicInfo: remote.clinicInfo || prev.clinicInfo,
+            beforeAfter: remote.beforeAfter || prev.beforeAfter,
+            faqs: remote.faqs || prev.faqs,
+            customSections: remote.customSections || prev.customSections
+          }));
+        }
+      }).catch(() => {});
     }
   }, [slug]);
 
@@ -177,12 +205,29 @@ const AdminPageBuilder = () => {
     });
   };
 
-  const handleImageFileUpload = (file, section = 'contentSection', field = 'image', index = null, subfield = null) => {
+  const handleImageFileUpload = async (file, section = 'contentSection', field = 'image', index = null, subfield = null) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) {
       showToast('Please select a valid image file (PNG, JPG, WEBP).', 'error');
       return;
     }
+
+    try {
+      showToast('Uploading to Cloudinary...');
+      const cldRes = await uploadToCloudinary(file);
+      if (cldRes && cldRes.success && cldRes.url) {
+        if (index !== null) {
+          handleInputChange(section, field, cldRes.url, index, subfield);
+        } else {
+          handleInputChange(section, field, cldRes.url);
+        }
+        showToast('Image uploaded to Cloudinary successfully!');
+        return;
+      }
+    } catch (err) {
+      console.warn('Cloudinary upload notice:', err.message);
+    }
+
     const reader = new FileReader();
     reader.onload = (e) => {
       const result = e.target.result;
@@ -351,7 +396,7 @@ const AdminPageBuilder = () => {
   // 8 Organized, Human-Friendly Tabs
   const tabsList = [
     { id: 'basic', label: '1. Basic Info', icon: FileText, count: null },
-    { id: 'content', label: '2. Main Q&A & Photo', icon: HelpCircle, count: null },
+    { id: 'content', label: '2. Main Q&A & Overview', icon: HelpCircle, count: pageData.accordionSection?.items?.length || null },
     { id: 'types', label: '3. Solution Cards', icon: LayoutGrid, count: pageData.treatmentTypesSection?.cards?.length || 0 },
     { id: 'pathway', label: '4. Pathway Banner', icon: Sparkles, count: null },
     { id: 'gallery', label: '5. Before & After', icon: ImageIcon, count: pageData.beforeAfter?.images?.length || 0 },
@@ -481,19 +526,16 @@ const AdminPageBuilder = () => {
             <div className="two-col-grid">
               <div className="form-field-group" style={{ margin: 0 }}>
                 <label className="field-label-clean">
-                  <span className="field-required-dot">●</span> Category
+                  <span className="field-required-dot">●</span> Category / Service Type
                 </label>
                 <select 
                   className="field-input-clean" 
-                  value={pageData.category} 
+                  value={pageData.category || 'CLINICAL SERVICES'} 
                   onChange={(e) => handleInputChange(null, 'category', e.target.value)}
                 >
-                  <option value="FACE / SKIN">Face / Skin</option>
-                  <option value="BODY">Body</option>
-                  <option value="IV THERAPY">IV Therapy</option>
-                  <option value="HAIR">Hair</option>
-                  <option value="AESTHETIC GYNAECOLOGY">Aesthetic Gynaecology</option>
-                  <option value="SPECIALIZED">Specialized</option>
+                  <option value="CLINICAL SERVICES">Clinical Services</option>
+                  <option value="SPECIALIZED">Specialized Care</option>
+                  <option value="CUSTOM">Custom Page</option>
                 </select>
               </div>
 
@@ -621,77 +663,86 @@ const AdminPageBuilder = () => {
 
             {/* Featured Photo Upload Box */}
             <div className="form-field-group" style={{ marginTop: '24px' }}>
-              <label className="field-label-clean">
-                <ImageIcon size={16} /> Featured Section Photo
-              </label>
+              <ImageUploader 
+                currentUrl={pageData.contentSection?.image} 
+                onSelect={(url) => handleInputChange('contentSection', 'image', url)} 
+                onRemove={() => handleInputChange('contentSection', 'image', '')}
+                label="Featured Section Photo" 
+              />
+            </div>
 
-              <div 
-                className="image-upload-box-simple"
-                onClick={() => document.getElementById('simple-featured-file-input').click()}
-                onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  const file = e.dataTransfer?.files?.[0];
-                  if (file) handleImageFileUpload(file, 'contentSection', 'image');
-                }}
-              >
-                <input 
-                  id="simple-featured-file-input"
-                  type="file" 
-                  accept="image/*" 
-                  style={{ display: 'none' }}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) handleImageFileUpload(file, 'contentSection', 'image');
-                  }}
-                />
-                <div className="upload-icon-circle">
-                  <Upload size={20} />
-                </div>
-                <div>
-                  <strong style={{ fontSize: '0.92rem', color: 'var(--adm-emerald)' }}>
-                    Click to Choose Image from Computer
-                  </strong>
-                  <p style={{ margin: '3px 0 0', fontSize: '0.8rem', color: 'var(--adm-text-muted)' }}>
-                    Supports JPG, PNG, WEBP (or Drag &amp; Drop here)
-                  </p>
-                </div>
+            {/* Overview / Accordion Section Editor */}
+            <div style={{ marginTop: '36px', borderTop: '1px solid var(--adm-border)', paddingTop: '24px' }}>
+              <div style={{ marginBottom: '16px' }}>
+                <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: 'var(--adm-emerald)' }}>
+                  Overview Accordion ("How Treatment Empowers You")
+                </h4>
+                <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--adm-text-muted)' }}>
+                  Expandable clinical benefits or overview accordion shown right below the featured photo on the live treatment page.
+                </p>
               </div>
 
-              <div style={{ marginTop: '12px' }}>
-                <span style={{ fontSize: '0.78rem', color: 'var(--adm-text-muted)', display: 'block', marginBottom: '6px' }}>
-                  Or enter image URL path:
-                </span>
+              <div className="form-field-group">
+                <label className="field-label-clean">Accordion Section Heading</label>
                 <input 
                   type="text" 
                   className="field-input-clean" 
-                  placeholder="/treatments/treatment-skin.jpg or https://..." 
-                  value={pageData.contentSection?.image} 
-                  onChange={(e) => handleInputChange('contentSection', 'image', e.target.value)} 
+                  placeholder="e.g. HERE'S AN OVERVIEW OF HOW THIS TREATMENT CAN EMPOWER YOU" 
+                  value={pageData.accordionSection?.heading || ''} 
+                  onChange={(e) => handleInputChange('accordionSection', 'heading', e.target.value)} 
                 />
               </div>
 
-              {pageData.contentSection?.image && (
-                <div className="image-preview-card">
-                  <div className="image-preview-topbar">
-                    <span>Photo Preview</span>
-                    <button 
-                      type="button" 
-                      className="btn-remove-photo"
-                      onClick={() => handleInputChange('contentSection', 'image', '')}
-                    >
-                      Remove Photo
-                    </button>
+              <div style={{ marginTop: '16px' }}>
+                <strong style={{ fontSize: '0.88rem', color: '#334155', display: 'block', marginBottom: '10px' }}>
+                  Accordion Points ({pageData.accordionSection?.items?.length || 0})
+                </strong>
+
+                {pageData.accordionSection?.items?.map((item, index) => (
+                  <div key={index} className="repeater-card-clean">
+                    <div className="repeater-card-header">
+                      <span className="repeater-card-badge">Point #{index + 1}</span>
+                      <button 
+                        type="button"
+                        className="btn-card-delete" 
+                        onClick={() => removeArrayItem('accordionSection', 'items', index)}
+                      >
+                        <Trash2 size={14} /> Remove Point
+                      </button>
+                    </div>
+                    <div className="repeater-card-body">
+                      <div className="form-field-group" style={{ margin: 0 }}>
+                        <label className="field-label-clean">Point Title / Heading</label>
+                        <input 
+                          type="text" 
+                          className="field-input-clean" 
+                          placeholder="e.g. Specialist-Led Medical Precision" 
+                          value={item.title || ''} 
+                          onChange={(e) => handleInputChange('accordionSection', 'items', e.target.value, index, 'title')} 
+                        />
+                      </div>
+                      <div className="form-field-group" style={{ margin: 0 }}>
+                        <label className="field-label-clean">Point Description</label>
+                        <textarea 
+                          className="field-textarea-clean" 
+                          rows="3" 
+                          placeholder="Detailed clinical explanation of this benefit..." 
+                          value={item.content || ''} 
+                          onChange={(e) => handleInputChange('accordionSection', 'items', e.target.value, index, 'content')}
+                        ></textarea>
+                      </div>
+                    </div>
                   </div>
-                  <img 
-                    src={pageData.contentSection.image} 
-                    alt="Preview" 
-                    className="image-preview-img"
-                    onError={(e) => { e.target.style.display = 'none'; }}
-                  />
-                </div>
-              )}
+                ))}
+
+                <button 
+                  type="button"
+                  className="btn-add-item-clean"
+                  onClick={() => addArrayItem('accordionSection', 'items', { title: '', content: '' })}
+                >
+                  <Plus size={16} /> + Add Another Overview Point
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -926,118 +977,22 @@ const AdminPageBuilder = () => {
                       
                       {/* Before Photo Box */}
                       <div style={{ background: '#f8fafc', padding: '14px', borderRadius: '10px', border: '1px solid var(--adm-border)' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                          <strong style={{ fontSize: '0.8rem', color: '#0f172a' }}>BEFORE PHOTO</strong>
-                          {img.before && (
-                            <button 
-                              type="button" 
-                              className="btn-remove-photo"
-                              onClick={() => handleInputChange('beforeAfter', 'images', '', index, 'before')}
-                            >
-                              Remove
-                            </button>
-                          )}
-                        </div>
-
-                        <div 
-                          style={{
-                            border: '1.5px dashed #cbd5e1',
-                            borderRadius: '8px',
-                            padding: '10px',
-                            textAlign: 'center',
-                            background: '#fff',
-                            cursor: 'pointer',
-                            marginBottom: '8px'
-                          }}
-                          onClick={() => document.getElementById(`simple-ba-before-${index}`).click()}
-                        >
-                          <input 
-                            id={`simple-ba-before-${index}`}
-                            type="file" 
-                            accept="image/*" 
-                            style={{ display: 'none' }}
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) handleImageFileUpload(file, 'beforeAfter', 'images', index, 'before');
-                            }}
-                          />
-                          <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--adm-emerald)' }}>
-                            Choose Before File
-                          </span>
-                        </div>
-
-                        <input 
-                          type="text" 
-                          className="field-input-clean" 
-                          style={{ fontSize: '0.8rem', padding: '6px 10px' }}
-                          placeholder="Or paste image URL" 
-                          value={img.before || ''} 
-                          onChange={(e) => handleInputChange('beforeAfter', 'images', e.target.value, index, 'before')} 
+                        <ImageUploader 
+                          currentUrl={img.before} 
+                          onSelect={(url) => handleInputChange('beforeAfter', 'images', url, index, 'before')} 
+                          onRemove={() => handleInputChange('beforeAfter', 'images', '', index, 'before')}
+                          label="BEFORE PHOTO" 
                         />
-
-                        {img.before && (
-                          <div style={{ marginTop: '8px', borderRadius: '6px', overflow: 'hidden', height: '120px', background: '#000' }}>
-                            <img src={img.before} alt="Before" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          </div>
-                        )}
                       </div>
 
                       {/* After Photo Box */}
                       <div style={{ background: '#f8fafc', padding: '14px', borderRadius: '10px', border: '1px solid var(--adm-border)' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                          <strong style={{ fontSize: '0.8rem', color: '#059669' }}>AFTER PHOTO</strong>
-                          {img.after && (
-                            <button 
-                              type="button" 
-                              className="btn-remove-photo"
-                              onClick={() => handleInputChange('beforeAfter', 'images', '', index, 'after')}
-                            >
-                              Remove
-                            </button>
-                          )}
-                        </div>
-
-                        <div 
-                          style={{
-                            border: '1.5px dashed #cbd5e1',
-                            borderRadius: '8px',
-                            padding: '10px',
-                            textAlign: 'center',
-                            background: '#fff',
-                            cursor: 'pointer',
-                            marginBottom: '8px'
-                          }}
-                          onClick={() => document.getElementById(`simple-ba-after-${index}`).click()}
-                        >
-                          <input 
-                            id={`simple-ba-after-${index}`}
-                            type="file" 
-                            accept="image/*" 
-                            style={{ display: 'none' }}
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) handleImageFileUpload(file, 'beforeAfter', 'images', index, 'after');
-                            }}
-                          />
-                          <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#059669' }}>
-                            Choose After File
-                          </span>
-                        </div>
-
-                        <input 
-                          type="text" 
-                          className="field-input-clean" 
-                          style={{ fontSize: '0.8rem', padding: '6px 10px' }}
-                          placeholder="Or paste image URL" 
-                          value={img.after || ''} 
-                          onChange={(e) => handleInputChange('beforeAfter', 'images', e.target.value, index, 'after')} 
+                        <ImageUploader 
+                          currentUrl={img.after} 
+                          onSelect={(url) => handleInputChange('beforeAfter', 'images', url, index, 'after')} 
+                          onRemove={() => handleInputChange('beforeAfter', 'images', '', index, 'after')}
+                          label="AFTER PHOTO" 
                         />
-
-                        {img.after && (
-                          <div style={{ marginTop: '8px', borderRadius: '6px', overflow: 'hidden', height: '120px', background: '#000' }}>
-                            <img src={img.after} alt="After" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          </div>
-                        )}
                       </div>
 
                     </div>

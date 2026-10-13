@@ -1,27 +1,53 @@
 import React, { useState, useEffect } from 'react';
+import { getDbSetting } from '../../api/mongoApi';
 import './ContactUs.css';
 import Header from '../Header';
 import Footer from '../Footer';
 import { MapPin, Phone, Mail } from 'lucide-react';
 
+const defaultSettings = {
+  heroTitle: "CONTACT US",
+  heroSubtitle: "We'd love to hear from you",
+  formEyebrow: "GET IN TOUCH",
+  formHeading: "Book Your Consultation",
+  clinicName: "Aevora Clinics",
+  address: "SCO 205 FF, Sector 5, Panchkula – 134114",
+  phone: "+91 97797 66933",
+  hours: "Mon – Sat: 10:00 AM – 8:00 PM | Sun: By Appointment",
+  email: "concierge@aevoraclinics.com",
+  responseTime: "We respond within 24 hours",
+  mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.722513470659!2d76.84852927647248!3d30.697334788975395!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f937248b1111b%3A0x6b801a61dd0d027e!2sSector%205%2C%20Panchkula%2C%20Haryana!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+};
+
 const ContactUs = () => {
-  const [settings, setSettings] = useState({
-    address: "1st Floor, Forum Building, Raghuvanshi Mills Compound Senapati Bapat Marg, Gandhi Nagar, Upper Worli, Worli, Lower Parel, Mumbai, Maharashtra 400018.",
-    phone: "+91 72400 13002\n+91 72400 12002",
-    hours: "Mon – Sun: 10:00 AM – 7:00 PM",
-    email: "hello@skuccii.com",
-    responseTime: "We respond within 24 hours",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3772.378951121041!2d72.82229557606346!3d18.99599585425421!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7ce8276f7596b%3A0x6b801a61dd0d027e!2sSkuccii%20Supercliniq!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
-  });
+  const [settings, setSettings] = useState(defaultSettings);
+
+  const loadSettings = () => {
+    getDbSetting('clinic_settings').then((saved) => {
+      if (saved) {
+        setSettings(prev => ({
+          ...prev,
+          ...saved,
+          clinicName: saved.clinicName || "Aevora Clinics",
+          address: (saved.address && !saved.address.includes('SCO 14-15')) ? saved.address : "SCO 205 FF, Sector 5, Panchkula – 134114",
+          phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : "+91 97797 66933"
+        }));
+      } else {
+        const legacy = localStorage.getItem('aevora_clinic_settings');
+        if (legacy) {
+          try {
+            setSettings(prev => ({ ...prev, ...JSON.parse(legacy) }));
+          } catch (e) {}
+        }
+      }
+    }).catch(() => {});
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const saved = localStorage.getItem('aevora_clinic_settings');
-    if (saved) {
-      try {
-        setSettings(JSON.parse(saved));
-      } catch(e) {}
-    }
+    loadSettings();
+    window.addEventListener('clinicSettingsUpdated', loadSettings);
+    return () => window.removeEventListener('clinicSettingsUpdated', loadSettings);
   }, []);
 
   const [formData, setFormData] = useState({
@@ -38,7 +64,7 @@ const ContactUs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Thank you! Your enquiry has been sent.');
+    alert('Thank you! Your enquiry has been sent to our medical concierge.');
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
@@ -48,8 +74,8 @@ const ContactUs = () => {
       
       {/* Top Hero Banner */}
       <div className="contact-header-section">
-        <h1 className="contact-page-title">CONTACT US</h1>
-        <p className="contact-page-subtitle">We'd love to hear from you</p>
+        <h1 className="contact-page-title">{settings.heroTitle || "CONTACT US"}</h1>
+        <p className="contact-page-subtitle">{settings.heroSubtitle || "We'd love to hear from you"}</p>
       </div>
 
       <div className="contact-main-wrapper">
@@ -106,8 +132,8 @@ const ContactUs = () => {
             {/* Form Column */}
             <div className="contact-form-col">
               <div className="contact-section-header">
-                <span className="contact-eyebrow"><span className="contact-dash"></span> GET IN TOUCH</span>
-                <h2 className="contact-heading">Book Your Consultation</h2>
+                <span className="contact-eyebrow"><span className="contact-dash"></span> {settings.formEyebrow || "GET IN TOUCH"}</span>
+                <h2 className="contact-heading">{settings.formHeading || "Book Your Consultation"}</h2>
               </div>
 
               <form className="contact-form" onSubmit={handleSubmit}>
@@ -145,7 +171,7 @@ const ContactUs = () => {
                 <div className="contact-form-row">
                   <textarea 
                     name="message" 
-                    placeholder="Message" 
+                    placeholder="Your inquiry or consultation request..." 
                     rows="6"
                     value={formData.message}
                     onChange={handleChange}
