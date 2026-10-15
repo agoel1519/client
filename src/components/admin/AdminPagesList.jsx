@@ -65,7 +65,7 @@ const AdminPagesList = () => {
     loadPages();
   };
 
-  const categories = ['ALL', 'CUSTOM'];
+  const categories = ['ALL', 'FACE / SKIN', 'BODY', 'IV THERAPY', 'HAIR', 'AESTHETIC GYNAECOLOGY', 'CUSTOM'];
 
   const filteredPages = pages.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 

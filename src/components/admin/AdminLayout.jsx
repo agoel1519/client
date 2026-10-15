@@ -14,7 +14,8 @@ import {
   LayoutTemplate,
   MonitorPlay,
   Search,
-  Bell
+  Bell,
+  Megaphone
 } from 'lucide-react';
 import './AdminLayout.css';
 import AdminLogin from './AdminLogin';
@@ -97,10 +98,7 @@ const AdminLayout = () => {
                     Press & Media
                   </NavLink>
                   <NavLink to="/admin/blog-settings" className={({ isActive }) => `submenu-item ${isActive ? 'active' : ''}`}>
-                    Blog & Journal
-                  </NavLink>
-                  <NavLink to="/admin/settings" className={({ isActive }) => `submenu-item ${isActive ? 'active' : ''}`}>
-                    Contact & Clinic
+                    Blog
                   </NavLink>
                 </div>
               )}
@@ -112,21 +110,21 @@ const AdminLayout = () => {
 
             <div className="nav-group">
               {sidebarOpen && <span className="nav-label">Design & Layout</span>}
-              <NavLink to="/admin/home-settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+              <NavLink to="/admin/visual-editor" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                 <MonitorPlay size={20} />
-                {sidebarOpen && <span>Homepage CMS</span>}
-              </NavLink>
-              <NavLink to="/admin/header-settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                <LayoutTemplate size={20} />
-                {sidebarOpen && <span>Header Navigation</span>}
-              </NavLink>
-              <NavLink to="/admin/footer-settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                <LayoutTemplate size={20} />
-                {sidebarOpen && <span>Footer Settings</span>}
+                {sidebarOpen && <span>Visual Editor</span>}
               </NavLink>
               <NavLink to="/admin/theme" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                 <Palette size={20} />
-                {sidebarOpen && <span>Theme &amp; Typography</span>}
+                {sidebarOpen && <span>Design & Typography</span>}
+              </NavLink>
+              <NavLink to="/admin/header-settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <LayoutTemplate size={20} />
+                {sidebarOpen && <span>Header & Footer</span>}
+              </NavLink>
+              <NavLink to="/admin/popup-settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <Megaphone size={20} />
+                {sidebarOpen && <span>Promo Popup</span>}
               </NavLink>
             </div>
 
@@ -134,7 +132,11 @@ const AdminLayout = () => {
               {sidebarOpen && <span className="nav-label">Configuration</span>}
               <NavLink to="/admin/settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                 <Settings size={20} />
-                {sidebarOpen && <span>Clinic &amp; Contact Info</span>}
+                {sidebarOpen && <span>Global Settings</span>}
+              </NavLink>
+              <NavLink to="/admin/users" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <Users size={20} />
+                {sidebarOpen && <span>Users & Roles</span>}
               </NavLink>
             </div>
           </nav>

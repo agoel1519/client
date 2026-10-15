@@ -1,0 +1,487 @@
+/* ==========================================================================
+   Aevora Luxury Website Announcement & Promotional Popup Modal
+   Supports Single Image & Multi-Image Carousel Slider
+   ========================================================================== */
+
+.aevora-popup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background-color: rgba(7, 34, 26, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow-y: auto;
+  animation: aevoraFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes aevoraFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.aevora-popup-card {
+  position: relative;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 
+    0 25px 60px -15px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(197, 157, 95, 0.35),
+    0 10px 30px rgba(13, 56, 44, 0.25);
+  transform-origin: center center;
+  animation: aevoraPopScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes aevoraPopScale {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Close Button */
+.aevora-popup-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 30;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(13, 56, 44, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.aevora-popup-close-btn:hover {
+  background: var(--aevora-gold, #c59d5f);
+  color: #07221a;
+  transform: rotate(90deg) scale(1.08);
+  border-color: #ffd899;
+}
+
+/* Preview Tag (when testing from admin) */
+.aevora-popup-preview-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(13, 56, 44, 0.85);
+  border: 1px solid rgba(197, 157, 95, 0.6);
+  color: #ffd899;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+}
+
+/* Media / Visual Container */
+.aevora-popup-media-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 260px;
+  max-height: 440px;
+  background: #07221a;
+  overflow: hidden;
+}
+
+.aevora-popup-slides-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.aevora-popup-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.03);
+  z-index: 1;
+}
+
+.aevora-popup-slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.aevora-popup-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.aevora-popup-img-wrapper.clickable {
+  cursor: pointer;
+}
+
+.aevora-popup-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  user-select: none;
+}
+
+.aevora-popup-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(7, 34, 26, 0.35) 0%,
+    rgba(7, 34, 26, 0.1) 40%,
+    rgba(7, 34, 26, 0.75) 100%
+  );
+  pointer-events: none;
+}
+
+/* Slide Caption Overlay */
+.aevora-popup-image-caption {
+  position: absolute;
+  bottom: 22px;
+  left: 24px;
+  right: 70px;
+  z-index: 5;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+.aevora-popup-image-caption .caption-title {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.aevora-popup-image-caption .caption-subtitle {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Nav Arrows (For Multi-Image Mode) */
+.aevora-popup-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(7, 34, 26, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.aevora-popup-nav-arrow:hover {
+  background: var(--aevora-emerald, #0d382c);
+  color: var(--aevora-gold, #c59d5f);
+  border-color: var(--aevora-gold, #c59d5f);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.aevora-popup-nav-arrow.arrow-prev {
+  left: 14px;
+}
+
+.aevora-popup-nav-arrow.arrow-next {
+  right: 14px;
+}
+
+/* Counter Badge (e.g. 1 / 3) */
+.aevora-popup-counter-badge {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 20;
+  padding: 4px 10px;
+  border-radius: 14px;
+  background: rgba(7, 34, 26, 0.7);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.aevora-popup-counter-badge span:first-child {
+  color: var(--aevora-gold-light, #ffd899);
+}
+
+/* Dots Indicator (Multi-image mode) */
+.aevora-popup-dots-container {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(7, 34, 26, 0.5);
+  padding: 6px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.aevora-popup-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+.aevora-popup-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.aevora-popup-dot.active {
+  width: 24px;
+  border-radius: 10px;
+  background: var(--aevora-gold, #c59d5f);
+  box-shadow: 0 0 10px rgba(197, 157, 95, 0.6);
+}
+
+/* Details Section below media */
+.aevora-popup-details {
+  padding: 1.75rem 2rem 1.5rem;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.aevora-popup-badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: #f4f8f5;
+  border: 1px solid rgba(13, 56, 44, 0.15);
+  color: var(--aevora-emerald, #0d382c);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.aevora-popup-badge .badge-sparkle {
+  color: var(--aevora-gold, #c59d5f);
+}
+
+.aevora-popup-heading {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: var(--aevora-dark-text, #111e19);
+  line-height: 1.25;
+  margin: 0;
+}
+
+.aevora-popup-description {
+  font-size: 0.925rem;
+  color: var(--aevora-body-text, #4b5e55);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Action Buttons */
+.aevora-popup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 0.4rem;
+}
+
+.aevora-popup-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #0d382c 0%, #164e3e 100%);
+  color: #ffffff;
+  border: 1px solid var(--aevora-gold, #c59d5f);
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(13, 56, 44, 0.25);
+}
+
+.aevora-popup-primary-btn:hover {
+  background: linear-gradient(135deg, #c59d5f 0%, #b38a4d 100%);
+  color: #07221a;
+  border-color: #ffd899;
+  box-shadow: 0 6px 20px rgba(197, 157, 95, 0.4);
+  transform: translateY(-2px);
+}
+
+.aevora-popup-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #f4f8f5;
+  color: var(--aevora-emerald, #0d382c);
+  border: 1px solid rgba(13, 56, 44, 0.15);
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.aevora-popup-secondary-btn:hover {
+  background: #e6f0ea;
+  border-color: var(--aevora-emerald, #0d382c);
+  transform: translateY(-2px);
+}
+
+/* Footer dismissal & checkbox */
+.aevora-popup-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.85rem;
+  margin-top: 0.35rem;
+  border-top: 1px solid #edf2ee;
+  font-size: 0.8rem;
+  color: #718096;
+}
+
+.dont-show-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dont-show-checkbox input {
+  accent-color: var(--aevora-emerald, #0d382c);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.aevora-popup-dismiss-link {
+  background: transparent;
+  border: none;
+  color: #a0aec0;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.aevora-popup-dismiss-link:hover {
+  color: var(--aevora-dark-text, #111e19);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 640px) {
+  .aevora-popup-backdrop {
+    padding: 1rem;
+  }
+
+  .aevora-popup-card {
+    border-radius: 16px;
+  }
+
+  .aevora-popup-media-container {
+    min-height: 200px;
+    aspect-ratio: 4 / 3;
+  }
+
+  .aevora-popup-details {
+    padding: 1.25rem 1.25rem 1rem;
+    gap: 0.65rem;
+  }
+
+  .aevora-popup-heading {
+    font-size: 1.25rem;
+  }
+
+  .aevora-popup-description {
+    font-size: 0.85rem;
+  }
+
+  .aevora-popup-nav-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .aevora-popup-actions {
+    flex-direction: column;
+  }
+
+  .aevora-popup-primary-btn,
+  .aevora-popup-secondary-btn {
+    width: 100%;
+  }
+
+  .aevora-popup-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

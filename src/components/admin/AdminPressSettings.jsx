@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Save, CheckCircle2, Plus, Trash2 } from 'lucide-react';
 import ImageUploader from './ImageUploader';
-import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 
 const defaultSettings = {
   heroTitle: "PRESS & MEDIA",
@@ -23,18 +22,14 @@ const AdminPressSettings = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    getDbSetting('press_settings').then((saved) => {
-      if (saved) {
-        setSettings(prev => ({ ...prev, ...saved }));
-      } else {
-        const legacy = localStorage.getItem('aevora_press_settings');
-        if (legacy) {
-          try {
-            setSettings(prev => ({ ...prev, ...JSON.parse(legacy) }));
-          } catch (e) {}
-        }
+    const saved = localStorage.getItem('aevora_press_settings');
+    if (saved) {
+      try {
+        setSettings(JSON.parse(saved));
+      } catch (e) {
+        console.error("Could not parse settings", e);
       }
-    });
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -61,21 +56,14 @@ const AdminPressSettings = () => {
     setSettings(prev => ({ ...prev, articles: newArticles }));
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     setIsSaving(true);
-    try {
-      await saveDbSetting('press_settings', settings);
-      try {
-        localStorage.setItem('aevora_press_settings', JSON.stringify(settings));
-      } catch (e) {}
-      window.dispatchEvent(new CustomEvent('pressSettingsUpdated', { detail: settings }));
+    setTimeout(() => {
+      localStorage.setItem('aevora_press_settings', JSON.stringify(settings));
       setIsSaving(false);
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
-    } catch (err) {
-      console.error(err);
-      setIsSaving(false);
-    }
+    }, 800);
   };
 
   return (

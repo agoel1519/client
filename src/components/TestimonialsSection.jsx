@@ -8,7 +8,6 @@ import {
   Sparkles,
   MessageSquareHeart
 } from 'lucide-react';
-import { getDbSetting } from '../api/mongoApi';
 import './TestimonialsSection.css';
 
 const testimonialsData = [
@@ -80,40 +79,9 @@ const testimonialsData = [
   }
 ];
 
-const defaultTestimonialsHeader = {
-  badge: 'AUTHENTIC PATIENT EXPERIENCES',
-  title: 'Words of Trust from',
-  titleHighlight: 'Our Cherished Clients',
-  description: "Discover why Panchkula's leading personalities, professionals, and aesthetic connoisseurs entrust their skin, hair, and wellness journeys to Aevora."
-};
-
 const TestimonialsSection = () => {
-  const [data, setData] = useState({
-    header: defaultTestimonialsHeader,
-    reviews: testimonialsData
-  });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
-
-  const loadData = () => {
-    getDbSetting('home_page').then((saved) => {
-      if (saved && saved.testimonials) {
-        setData({
-          header: { ...defaultTestimonialsHeader, ...(saved.testimonials.header || {}) },
-          reviews: saved.testimonials.reviews && saved.testimonials.reviews.length > 0 ? saved.testimonials.reviews : testimonialsData
-        });
-      }
-    });
-  };
-
-  useEffect(() => {
-    loadData();
-    window.addEventListener('homeSettingsUpdated', loadData);
-    return () => window.removeEventListener('homeSettingsUpdated', loadData);
-  }, []);
-
-  const reviewsList = data.reviews && data.reviews.length > 0 ? data.reviews : testimonialsData;
-  const headerInfo = data.header || defaultTestimonialsHeader;
 
   useEffect(() => {
     const handleResize = () => {
@@ -131,7 +99,7 @@ const TestimonialsSection = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const maxIndex = Math.max(0, reviewsList.length - itemsPerPage);
+  const maxIndex = Math.max(0, testimonialsData.length - itemsPerPage);
 
   const nextSlide = () => {
     setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
@@ -149,15 +117,16 @@ const TestimonialsSection = () => {
         <div className="testimonials-header">
           <div className="testimonials-badge">
             <Sparkles size={14} className="badge-gold-icon" />
-            <span>{headerInfo.badge || 'AUTHENTIC PATIENT EXPERIENCES'}</span>
+            <span>AUTHENTIC PATIENT EXPERIENCES</span>
           </div>
 
           <h2 className="testimonials-title">
-            {headerInfo.title || 'Words of Trust from'} <span>{headerInfo.titleHighlight || 'Our Cherished Clients'}</span>
+            Words of Trust from <span>Our Cherished Clients</span>
           </h2>
 
           <p className="testimonials-desc">
-            {headerInfo.description || "Discover why Panchkula's leading personalities, professionals, and aesthetic connoisseurs entrust their skin, hair, and wellness journeys to Aevora."}
+            Discover why Panchkula's leading personalities, professionals, and aesthetic connoisseurs 
+            entrust their skin, hair, and wellness journeys to Aevora.
           </p>
 
           {/* Google Review Rating Pill */}
@@ -201,7 +170,7 @@ const TestimonialsSection = () => {
                 transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)`
               }}
             >
-              {reviewsList.map((item) => (
+              {testimonialsData.map((item) => (
                 <div 
                   key={item.id} 
                   className="testimonial-slide-item"

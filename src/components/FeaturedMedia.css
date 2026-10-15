@@ -85,33 +85,6 @@
   display: block;
 }
 
-.featured-brand-img {
-  height: 36px;
-  max-height: 40px;
-  width: auto;
-  max-width: 170px;
-  object-fit: contain;
-  display: block;
-  filter: grayscale(100%);
-  opacity: 0.85;
-  transition: all 0.3s ease;
-}
-
-.featured-logo-item:hover .featured-brand-img {
-  filter: grayscale(0%);
-  opacity: 1;
-  transform: scale(1.06);
-}
-
-.featured-brand-text-fallback {
-  font-family: var(--font-outfit, 'Montserrat', sans-serif);
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #172b22;
-  text-transform: uppercase;
-}
-
 /* Seamless infinite scroll animation */
 @keyframes marqueeScroll {
   0% {

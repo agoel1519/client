@@ -3,43 +3,20 @@ import {
   ChevronLeft, 
   ChevronRight 
 } from 'lucide-react';
-import { getDbSetting } from '../api/mongoApi';
 import './CelebritySpotlight.css';
 
-const defaultCelebrityData = {
-  title: 'Celebrity &',
-  titleHighlight: 'VIP Spotlight',
-  subtitle: 'Trusted by renowned Bollywood stars, models, and industry leaders for red-carpet radiance and clinical perfection.',
-  images: [
-    { id: 1, image: '/celebrities/celeb-1.jpg', alt: 'Celebrity Visit 1' },
-    { id: 2, image: '/celebrities/celeb-2.jpg', alt: 'Celebrity Visit 2' },
-    { id: 3, image: '/celebrities/celeb-3.jpg', alt: 'Celebrity Visit 3' },
-    { id: 4, image: '/celebrities/celeb-4.jpg', alt: 'Celebrity Visit 4' },
-    { id: 5, image: '/celebrities/celeb-5.jpg', alt: 'Celebrity Visit 5' },
-    { id: 6, image: '/celebrities/celeb-6.jpg', alt: 'Celebrity Visit 6' }
-  ]
-};
+const celebrityImages = [
+  { id: 1, image: '/celebrities/celeb-1.jpg', alt: 'Celebrity Visit 1' },
+  { id: 2, image: '/celebrities/celeb-2.jpg', alt: 'Celebrity Visit 2' },
+  { id: 3, image: '/celebrities/celeb-3.jpg', alt: 'Celebrity Visit 3' },
+  { id: 4, image: '/celebrities/celeb-4.jpg', alt: 'Celebrity Visit 4' },
+  { id: 5, image: '/celebrities/celeb-5.jpg', alt: 'Celebrity Visit 5' },
+  { id: 6, image: '/celebrities/celeb-6.jpg', alt: 'Celebrity Visit 6' }
+];
 
 const CelebritySpotlight = () => {
-  const [data, setData] = useState(defaultCelebrityData);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4);
-
-  const loadData = () => {
-    getDbSetting('home_page').then((saved) => {
-      if (saved && saved.celebritySpotlight) {
-        setData(prev => ({ ...prev, ...saved.celebritySpotlight }));
-      }
-    });
-  };
-
-  useEffect(() => {
-    loadData();
-    window.addEventListener('homeSettingsUpdated', loadData);
-    return () => window.removeEventListener('homeSettingsUpdated', loadData);
-  }, []);
-
-  const celebrityImages = data.images && data.images.length > 0 ? data.images : defaultCelebrityData.images;
 
   // Responsive items per page
   useEffect(() => {
@@ -76,11 +53,11 @@ const CelebritySpotlight = () => {
         {/* Section Header */}
         <div className="celebrity-header">
           <h2 className="celebrity-title">
-            {data.title} <span className="gold-text">{data.titleHighlight}</span>
+            Celebrity & <span className="gold-text">VIP Spotlight</span>
           </h2>
 
           <p className="celebrity-subtitle">
-            {data.subtitle}
+            Trusted by renowned Bollywood stars, models, and industry leaders for red-carpet radiance and clinical perfection.
           </p>
         </div>
 

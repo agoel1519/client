@@ -9,53 +9,30 @@ const Experts = () => {
   const [settings, setSettings] = useState({
     heroTitle: "OUR EXPERTS",
     heroSubtitle: "Accomplished specialists dedicated to your care",
-    groupPhoto: "",
+    groupPhoto: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
     sectionTitle: "OUR TEAM OF SPECIALISTS",
     sectionIntro: "Led by a team of highly qualified medical practitioners who are brilliant in their fields and dedicated to providing you with the personalized care you deserve.",
     experts: [
-      { 
-        name: "Dr Misha Goel", 
-        role: "Aesthetic Physician • Trained in UK", 
-        exp: "MBBS, MD, FFAC", 
-        image: "/doctors/dr-misha-goel.jpg" 
-      },
-      { 
-        name: "Dr Anupam Goel", 
-        role: "Minimal Access Gastrointestinal, Bariatric (Weight-loss) & Robotic Surgeon", 
-        exp: "MBBS, MS, FNB", 
-        image: "/doctors/dr-anupam-goel.jpg" 
-      }
+      { name: "Dr. Meghna Mour", role: "FOUNDER & MEDICAL HEAD", exp: "23+ Years Experience", image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80" },
+      { name: "Dr. Harish Balaji", role: "DERMATOLOGIST & HAIR TRANSPLANT SURGEON", exp: "10+ Years Experience", image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=600&q=80" },
+      { name: "Dr. Meghna Singh", role: "MD DERMATOLOGY, VENEREOLOGY & LEPROSY", exp: "6+ Years Experience", image: "https://images.unsplash.com/photo-1594824432258-29177a4eb312?auto=format&fit=crop&w=600&q=80" },
+      { name: "Dr. Prachi Zawar", role: "DERMATOLOGIST & VENEREOLOGIST", exp: "5+ Years Experience", image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80" },
+      { name: "Dr. Dipal Patel", role: "COSMETOLOGIST & AESTHETIC DOCTOR", exp: "12+ Years Experience", image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80" },
+      { name: "Dr. Vishwa Parsana", role: "COSMETOLOGIST & AESTHETIC DOCTOR", exp: "3+ Years Experience", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" }
     ]
   });
 
   const [clinicInfo, setClinicInfo] = useState({
-    address: "SCO 205 FF, Sector 5, Panchkula – 134114",
-    phone: "+91 97797 66933",
-    email: "concierge@aevoraclinics.com"
+    address: "1st Floor, Forum Building, Raghuvanshi Mills Compound Senapati Bapat Marg, Gandhi Nagar, Upper Worli, Worli, Lower Parel, Mumbai, Maharashtra 400018.",
+    phone: "+91 72400 13002\n+91 72400 12002",
+    email: "hello@skuccii.com"
   });
 
-  const loadData = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
     getDbSetting('experts_settings').then((saved) => {
       if (saved) {
-        const hasLegacy = saved.experts && saved.experts.some(e => e.name && (e.name.includes('Meghna Mour') || e.name.includes('Harish Balaji')));
-        if (hasLegacy) {
-          setSettings(prev => ({ ...prev, ...saved, experts: [
-            { 
-              name: "Dr Misha Goel", 
-              role: "Aesthetic Physician • Trained in UK", 
-              exp: "MBBS, MD, FFAC", 
-              image: "/doctors/dr-misha-goel.jpg" 
-            },
-            { 
-              name: "Dr Anupam Goel", 
-              role: "Minimal Access Gastrointestinal, Bariatric (Weight-loss) & Robotic Surgeon", 
-              exp: "MBBS, MS, FNB", 
-              image: "/doctors/dr-anupam-goel.jpg" 
-            }
-          ] }));
-        } else {
-          setSettings(saved);
-        }
+        setSettings(saved);
       }
     });
     getDbSetting('clinic_settings').then((saved) => {
@@ -63,17 +40,6 @@ const Experts = () => {
         setClinicInfo(saved);
       }
     });
-  };
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    loadData();
-    window.addEventListener('expertsSettingsUpdated', loadData);
-    window.addEventListener('clinicSettingsUpdated', loadData);
-    return () => {
-      window.removeEventListener('expertsSettingsUpdated', loadData);
-      window.removeEventListener('clinicSettingsUpdated', loadData);
-    };
   }, []);
 
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', treatment: '', message: '' });
@@ -101,6 +67,11 @@ const Experts = () => {
         <div className="experts-breadcrumb">
           <span>HOME</span> &bull; <span>EXPERTS</span>
         </div>
+      </section>
+
+      {/* GROUP PHOTO */}
+      <section className="experts-group-photo-section">
+        <img src={settings.groupPhoto} alt="Our Experts Team" className="experts-group-photo" />
       </section>
 
       {/* INTRO TEXT */}

@@ -15,6 +15,8 @@ import AdminHeaderSettings from './components/admin/AdminHeaderSettings';
 import AdminFooterSettings from './components/admin/AdminFooterSettings';
 import AdminThemeSettings from './components/admin/AdminThemeSettings';
 import AdminMediaLibrary from './components/admin/AdminMediaLibrary';
+import AdminPopupSettings from './components/admin/AdminPopupSettings';
+import SitePopup from './components/SitePopup';
 import DynamicTreatmentPage from './components/pages/DynamicTreatmentPage';
 import ContactUs from './components/pages/ContactUs';
 import AboutUs from './components/pages/AboutUs';
@@ -26,6 +28,7 @@ import BlogPost from './components/pages/BlogPost';
 function App() {
   return (
     <Router>
+      <SitePopup />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
@@ -50,11 +53,11 @@ function App() {
           <Route path="press-settings" element={<AdminPressSettings />} />
           <Route path="blog-settings" element={<AdminBlogSettings />} />
           <Route path="home-settings" element={<AdminHomeSettings />} />
-          <Route path="visual-editor" element={<AdminHomeSettings />} />
           <Route path="header-settings" element={<AdminHeaderSettings />} />
           <Route path="footer-settings" element={<AdminFooterSettings />} />
           <Route path="theme" element={<AdminThemeSettings />} />
           <Route path="media" element={<AdminMediaLibrary />} />
+          <Route path="popup-settings" element={<AdminPopupSettings />} />
         </Route>
       </Routes>
     </Router>

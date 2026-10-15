@@ -13,12 +13,6 @@
   --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-outfit: 'Outfit', sans-serif;
-  --font-playfair: var(--font-serif);
-  --font-heading: var(--font-serif);
-  --font-body: var(--font-main);
-  --heading-weight: 600;
-  --heading-letter-spacing: normal;
-  --heading-line-height: 1.25;
 }
 
 *, *::before, *::after {
@@ -32,19 +26,6 @@ html {
   font-size: 16px;
   overflow-x: hidden;
   max-width: 100vw;
-}
-
-/* Universal Typography Enforcement */
-h1, h2, h3, h4, h5, h6,
-.hero-title, .section-heading, .section-title,
-.slide-title, .doctor-name, .expert-name,
-.treatment-title, .testimonial-title, .faq-question,
-.contact-page-title, .blog-hero-title, .about-hero-title,
-.contact-heading, .privilege-title, .footer-heading {
-  font-family: var(--font-serif) !important;
-  font-weight: var(--heading-weight, 600);
-  letter-spacing: var(--heading-letter-spacing, normal);
-  line-height: var(--heading-line-height, 1.25);
 }
 
 body {
@@ -279,59 +260,3 @@ button, a {
     font-size: 14.5px;
   }
 }
-
-/* --- WordPress Style Responsive Visibility & Typography Customizer --- */
-@media (max-width: 768px) {
-  .hide-on-mobile {
-    display: none !important;
-  }
-}
-
-@media (min-width: 769px) {
-  .hide-on-desktop {
-    display: none !important;
-  }
-}
-
-.font-scale-sm {
-  font-size: 0.9em !important;
-}
-.font-scale-normal {
-  font-size: 1em;
-}
-.font-scale-lg {
-  font-size: 1.15em !important;
-}
-.font-scale-xl {
-  font-size: 1.3em !important;
-}
-
-.dynamic-section-wrapper[style*="--section-font"],
-.dynamic-section-wrapper[style*="--section-font"] h1,
-.dynamic-section-wrapper[style*="--section-font"] h2,
-.dynamic-section-wrapper[style*="--section-font"] h3,
-.dynamic-section-wrapper[style*="--section-font"] h4,
-.dynamic-section-wrapper[style*="--section-font"] h5,
-.dynamic-section-wrapper[style*="--section-font"] h6,
-.dynamic-section-wrapper[style*="--section-font"] p,
-.dynamic-section-wrapper[style*="--section-font"] span,
-.dynamic-section-wrapper[style*="--section-font"] a,
-.dynamic-section-wrapper[style*="--section-font"] button,
-.dynamic-section-wrapper[style*="--section-font"] .hero-title,
-.dynamic-section-wrapper[style*="--section-font"] .slide-title,
-.dynamic-section-wrapper[style*="--section-font"] .section-heading,
-.dynamic-section-wrapper[style*="--section-font"] .section-title,
-.dynamic-section-wrapper[style*="--section-font"] .doctor-name,
-.dynamic-section-wrapper[style*="--section-font"] .treatment-title {
-  font-family: var(--section-font) !important;
-}
-
-.padding-compact {
-  padding-top: 2rem !important;
-  padding-bottom: 2rem !important;
-}
-.padding-spacious {
-  padding-top: 6rem !important;
-  padding-bottom: 6rem !important;
-}
-

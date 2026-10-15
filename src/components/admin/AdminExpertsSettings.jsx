@@ -1,28 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Save, CheckCircle2, Plus, Trash2, Upload } from 'lucide-react';
 import ImageUploader from './ImageUploader';
-import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
-import { uploadToCloudinary } from '../../utils/cloudinary';
 
 const defaultSettings = {
   heroTitle: "OUR EXPERTS",
   heroSubtitle: "Accomplished specialists dedicated to your care",
-  groupPhoto: "",
+  groupPhoto: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
   sectionTitle: "OUR TEAM OF SPECIALISTS",
   sectionIntro: "Led by a team of highly qualified medical practitioners who are brilliant in their fields and dedicated to providing you with the personalized care you deserve.",
   experts: [
-    { 
-      name: "Dr Misha Goel", 
-      role: "Aesthetic Physician • Trained in UK", 
-      exp: "MBBS, MD, FFAC", 
-      image: "/doctors/dr-misha-goel.jpg" 
-    },
-    { 
-      name: "Dr Anupam Goel", 
-      role: "Minimal Access Gastrointestinal, Bariatric (Weight-loss) & Robotic Surgeon", 
-      exp: "MBBS, MS, FNB", 
-      image: "/doctors/dr-anupam-goel.jpg" 
-    }
+    { name: "Dr. Meghna Mour", role: "FOUNDER & MEDICAL HEAD", exp: "23+ Years Experience", image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80" },
+    { name: "Dr. Harish Balaji", role: "DERMATOLOGIST & HAIR TRANSPLANT SURGEON", exp: "10+ Years Experience", image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=600&q=80" },
+    { name: "Dr. Meghna Singh", role: "MD DERMATOLOGY, VENEREOLOGY & LEPROSY", exp: "6+ Years Experience", image: "https://images.unsplash.com/photo-1594824432258-29177a4eb312?auto=format&fit=crop&w=600&q=80" },
+    { name: "Dr. Prachi Zawar", role: "DERMATOLOGIST & VENEREOLOGIST", exp: "5+ Years Experience", image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80" },
+    { name: "Dr. Dipal Patel", role: "COSMETOLOGIST & AESTHETIC DOCTOR", exp: "12+ Years Experience", image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80" },
+    { name: "Dr. Vishwa Parsana", role: "COSMETOLOGIST & AESTHETIC DOCTOR", exp: "3+ Years Experience", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" }
   ]
 };
 
@@ -32,23 +24,14 @@ const AdminExpertsSettings = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    getDbSetting('experts_settings').then((saved) => {
-      if (saved) {
-        const hasLegacy = saved.experts && saved.experts.some(e => e.name && (e.name.includes('Meghna Mour') || e.name.includes('Harish Balaji')));
-        if (hasLegacy) {
-          setSettings(prev => ({ ...prev, ...saved, experts: defaultSettings.experts }));
-        } else {
-          setSettings(prev => ({ ...prev, ...saved }));
-        }
-      } else {
-        const legacy = localStorage.getItem('aevora_experts_settings');
-        if (legacy) {
-          try {
-            setSettings(prev => ({ ...prev, ...JSON.parse(legacy) }));
-          } catch (e) {}
-        }
+    const saved = localStorage.getItem('aevora_experts_settings');
+    if (saved) {
+      try {
+        setSettings(JSON.parse(saved));
+      } catch (e) {
+        console.error("Could not parse settings", e);
       }
-    });
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -75,23 +58,9 @@ const AdminExpertsSettings = () => {
     setSettings(prev => ({ ...prev, experts: newExperts }));
   };
 
-  const handleImageUpload = async (e, index = null, isGroupPhoto = false) => {
+  const handleImageUpload = (e, index = null, isGroupPhoto = false) => {
     const file = e.target.files[0];
     if (file) {
-      try {
-        const cldRes = await uploadToCloudinary(file);
-        if (cldRes && cldRes.success && cldRes.url) {
-          if (isGroupPhoto) {
-            setSettings(prev => ({ ...prev, groupPhoto: cldRes.url }));
-          } else if (index !== null) {
-            handleExpertChange(index, 'image', cldRes.url);
-          }
-          return;
-        }
-      } catch (err) {
-        console.warn('Cloudinary upload notice:', err.message);
-      }
-
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result;
@@ -105,21 +74,14 @@ const AdminExpertsSettings = () => {
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     setIsSaving(true);
-    try {
-      await saveDbSetting('experts_settings', settings);
-      try {
-        localStorage.setItem('aevora_experts_settings', JSON.stringify(settings));
-      } catch (e) {}
-      window.dispatchEvent(new CustomEvent('expertsSettingsUpdated', { detail: settings }));
+    setTimeout(() => {
+      localStorage.setItem('aevora_experts_settings', JSON.stringify(settings));
       setIsSaving(false);
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
-    } catch (err) {
-      console.error(err);
-      setIsSaving(false);
-    }
+    }, 800);
   };
 
   return (

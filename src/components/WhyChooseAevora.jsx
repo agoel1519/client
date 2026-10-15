@@ -60,30 +60,16 @@ const WhyChooseAevora = () => {
     title: 'Why Choose',
     titleHighlight: 'AEVORA',
     subtitle: 'Redefining aesthetic excellence through customized clinical science, world-class technology, and harmonized natural results.',
-    stats: defaultStats,
-    pillars: features
+    stats: defaultStats
   });
 
-  const loadContent = () => {
+  React.useEffect(() => {
     getDbSetting('home_page').then((saved) => {
       if (saved && saved.whyChoose) {
-        setContent(prev => ({ 
-          ...prev, 
-          ...saved.whyChoose, 
-          stats: saved.whyChoose.stats || prev.stats,
-          pillars: saved.whyChoose.pillars || prev.pillars 
-        }));
+        setContent(saved.whyChoose);
       }
     });
-  };
-
-  React.useEffect(() => {
-    loadContent();
-    window.addEventListener('homeSettingsUpdated', loadContent);
-    return () => window.removeEventListener('homeSettingsUpdated', loadContent);
   }, []);
-
-  const currentPillars = content.pillars && content.pillars.length > 0 ? content.pillars : features;
 
   return (
     <section className="why-choose-section" id="why-choose-us">
@@ -100,8 +86,8 @@ const WhyChooseAevora = () => {
 
         {/* 4 Pillars Grid */}
         <div className="pillars-grid">
-          {currentPillars.map((item, index) => {
-            const IconComponent = item.icon || Sparkles;
+          {features.map((item, index) => {
+            const IconComponent = item.icon;
             return (
               <div key={item.id} className="pillar-card">
                 <div className="card-top-row">
@@ -126,7 +112,15 @@ const WhyChooseAevora = () => {
           })}
         </div>
 
-        {/* Trust Metrics / Stats Bar - Hidden as requested */}
+        {/* Trust Metrics / Stats Bar */}
+        <div className="trust-stats-bar">
+          {content.stats && content.stats.map((stat, sIdx) => (
+            <div key={sIdx} className="stat-item">
+              <span className="stat-value">{stat.value}</span>
+              <span className="stat-label">{stat.label}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

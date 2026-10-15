@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Plus, 
   Minus, 
@@ -9,10 +9,9 @@ import {
   ArrowRight,
   ShieldCheck
 } from 'lucide-react';
-import { getDbSetting } from '../api/mongoApi';
 import './FaqSection.css';
 
-const defaultFaqList = [
+const faqData = [
   {
     id: 1,
     category: 'general',
@@ -57,36 +56,9 @@ const defaultFaqList = [
   }
 ];
 
-const defaultFaqHeader = {
-  title: 'Frequently Asked',
-  titleHighlight: 'Questions',
-  subtitle: 'Everything you need to know about our specialized clinical treatments, safety standards, and consultation process.'
-};
-
 const FaqSection = () => {
-  const [data, setData] = useState({
-    header: defaultFaqHeader,
-    faqs: defaultFaqList
-  });
-  const [openFaq, setOpenFaq] = useState(1);
+  const [openFaq, setOpenFaq] = useState(1); // First item open by default
   const [activeCategory, setActiveCategory] = useState('all');
-
-  const loadData = () => {
-    getDbSetting('home_page').then((saved) => {
-      if (saved && saved.faqSection) {
-        setData({
-          header: { ...defaultFaqHeader, ...(saved.faqSection.header || {}) },
-          faqs: saved.faqSection.faqs && saved.faqSection.faqs.length > 0 ? saved.faqSection.faqs : defaultFaqList
-        });
-      }
-    });
-  };
-
-  useEffect(() => {
-    loadData();
-    window.addEventListener('homeSettingsUpdated', loadData);
-    return () => window.removeEventListener('homeSettingsUpdated', loadData);
-  }, []);
 
   const categories = [
     { id: 'all', label: 'All Questions' },
@@ -96,12 +68,9 @@ const FaqSection = () => {
     { id: 'consultation', label: 'Appointments' }
   ];
 
-  const currentFaqList = data.faqs && data.faqs.length > 0 ? data.faqs : defaultFaqList;
-  const headerInfo = data.header || defaultFaqHeader;
-
   const filteredFaqs = activeCategory === 'all' 
-    ? currentFaqList 
-    : currentFaqList.filter(item => item.category === activeCategory);
+    ? faqData 
+    : faqData.filter(item => item.category === activeCategory);
 
   const toggleFaq = (id) => {
     setOpenFaq(prev => (prev === id ? null : id));
@@ -114,11 +83,12 @@ const FaqSection = () => {
         {/* Header */}
         <div className="faq-header">
           <h2 className="faq-title">
-            {headerInfo.title} <span>{headerInfo.titleHighlight}</span>
+            Frequently Asked <span>Questions</span>
           </h2>
 
           <p className="faq-subtitle">
-            {headerInfo.subtitle}
+            Everything you need to know about our specialized clinical treatments, 
+            safety standards, and consultation process.
           </p>
         </div>
 

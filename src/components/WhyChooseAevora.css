@@ -3,7 +3,7 @@
    =================================================== */
 
 .why-choose-section {
-  padding: 1.5rem 1.5rem 2.2rem;
+  padding: 1.5rem 1.5rem 4.5rem;
   background: linear-gradient(180deg, #ffffff 0%, #f6faf7 100%);
   position: relative;
   overflow: hidden;
@@ -137,7 +137,6 @@
 
 /* Trust Stats Bar */
 .trust-stats-bar {
-  display: none !important;
   background: linear-gradient(135deg, var(--aevora-emerald) 0%, var(--aevora-emerald-dark) 100%);
   border-radius: 20px;
   padding: 2.2rem 2.5rem;

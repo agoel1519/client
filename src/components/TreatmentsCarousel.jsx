@@ -6,72 +6,54 @@ import {
   ArrowRight, 
   Sparkles 
 } from 'lucide-react';
-import { getDbSetting } from '../api/mongoApi';
 import './TreatmentsCarousel.css';
 
-const defaultTreatmentCategories = [
+const treatmentCategories = [
   {
     id: 1,
-    category: 'FACE & SKIN',
-    title: 'HydraFacials & Laser Toning',
-    description: 'Precision clinical facials and laser toning for Korean glass-skin radiance.',
+    category: 'FACE/SKIN',
+    title: 'Lift. Define. Soften.',
+    description: 'Non-surgical work that never looks overdone',
     image: '/treatments/treatment-skin.jpg',
-    link: '/treatments/hydrafacials-medifacials'
+    link: '/treatments/chemical-peels'
   },
   {
     id: 2,
-    category: 'BODY & LONGEVITY',
-    title: 'Muscle Contouring & Weight Loss',
-    description: 'Non-invasive body shaping, muscle sculpting, and medical weight management.',
+    category: 'BODY',
+    title: 'Contour. Tighten. Align.',
+    description: 'Precise, structured changes, never excessive',
     image: '/treatments/treatment-body.jpg',
-    link: '/treatments/muscle-contouring'
+    link: '/treatments/emsculpt-neo'
   },
   {
     id: 3,
-    category: 'HAIR & INTIMATE WELLNESS',
-    title: 'Hair Regrowth & Intimacy Vitality',
-    description: 'Follicular regeneration, intimacy rejuvenation, and sexual wellness care.',
+    category: 'HAIR',
+    title: 'Regrow. Strengthen. Stabilise.',
+    description: 'Medical and procedural solutions designed for continuity',
     image: '/treatments/treatment-hair.jpg',
-    link: '/treatments/hair-regrowth-regeneration'
+    link: '/treatments/fue'
   },
   {
     id: 4,
-    category: 'ADVANCED SURGERY',
-    title: 'Robotic & Laser Surgical Care',
-    description: 'Next-gen robotic surgery, laser proctology, hernia, and bariatric precision.',
-    image: '/treatments/treatment-body.jpg',
-    link: '/treatments/robotic-surgery'
+    category: 'IV THERAPY',
+    title: 'Restore. Replenish. Revive.',
+    description: 'Targeted IV infusions to restore hydration, energy and essential nutrients.',
+    image: '/treatments/treatment-iv.jpg',
+    link: '/treatments/nad-plus-iv-drip'
   },
   {
     id: 5,
-    category: 'LONGEVITY INFUSIONS',
-    title: 'Intravenous Longevity Drips',
-    description: 'Cellular NAD+ hydration and prophylactic complete body health packages.',
-    image: '/treatments/treatment-iv.jpg',
-    link: '/treatments/intravenous-longevity-drips'
+    category: 'AESTHETIC GYNAECOLOGY',
+    title: 'Empower. Restore. Rejuvenate.',
+    description: 'Specialized intimate wellness with clinical privacy and gentle non-invasive care.',
+    image: '/treatments/treatment-body.jpg',
+    link: '/treatments/emsella'
   }
 ];
 
 const TreatmentsCarousel = () => {
-  const [categories, setCategories] = useState(defaultTreatmentCategories);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4);
-
-  const loadData = () => {
-    getDbSetting('home_page').then((saved) => {
-      if (saved && saved.treatmentsCarousel && saved.treatmentsCarousel.length > 0) {
-        setCategories(saved.treatmentsCarousel);
-      }
-    });
-  };
-
-  useEffect(() => {
-    loadData();
-    window.addEventListener('homeSettingsUpdated', loadData);
-    return () => window.removeEventListener('homeSettingsUpdated', loadData);
-  }, []);
-
-  const treatmentCategories = categories && categories.length > 0 ? categories : defaultTreatmentCategories;
 
   useEffect(() => {
     const handleResize = () => {

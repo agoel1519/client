@@ -335,7 +335,7 @@
   color: var(--admin-text-muted);
 }
 
-.user-profile-dropdown .dropdown-menu {
+.dropdown-menu {
   position: absolute;
   top: 100%;
   right: 0;
@@ -351,7 +351,7 @@
 .user-profile-dropdown:hover .dropdown-menu {
   display: block;
 }
-.user-profile-dropdown .dropdown-menu button {
+.dropdown-menu button {
   width: 100%;
   display: flex;
   align-items: center;
@@ -366,7 +366,7 @@
   font-weight: 500;
   font-size: 0.875rem;
 }
-.user-profile-dropdown .dropdown-menu button:hover {
+.dropdown-menu button:hover {
   background: #fef2f2;
 }
 
