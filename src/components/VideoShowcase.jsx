@@ -20,12 +20,18 @@ const VideoShowcase = () => {
   const [showModal, setShowModal] = useState(false);
   const [content, setContent] = useState(defaultVideo);
 
-  useEffect(() => {
+  const loadContent = () => {
     getDbSetting('home_page').then((saved) => {
       if (saved && saved.videoShowcase) {
         setContent(saved.videoShowcase);
       }
     });
+  };
+
+  useEffect(() => {
+    loadContent();
+    window.addEventListener('homeSettingsUpdated', loadContent);
+    return () => window.removeEventListener('homeSettingsUpdated', loadContent);
   }, []);
 
   const handlePlayVideo = () => {
@@ -52,17 +58,7 @@ const VideoShowcase = () => {
               decoding="async"
             />
 
-            {/* Centered Glowing Play Button */}
-            <button 
-              className="play-btn-pulse" 
-              onClick={handlePlayVideo}
-              aria-label="Play Video"
-            >
-              <div className="pulse-ring"></div>
-              <div className="play-btn-circle">
-                <Play size={32} className="play-icon" />
-              </div>
-            </button>
+
           </div>
         </div>
       </div>

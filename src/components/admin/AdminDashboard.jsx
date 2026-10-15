@@ -9,6 +9,7 @@ import {
   LayoutTemplate,
   MonitorPlay,
   ArrowRight,
+  Sparkles,
   Megaphone
 } from 'lucide-react';
 import { getDbPages, getDbMedia } from '../../api/mongoApi';
@@ -117,32 +118,81 @@ const AdminDashboard = () => {
               </div>
               <div className="card-body">
                 <div className="action-grid">
-                  <Link to="/admin/pages/create" className="action-btn">
-                    <div className="action-icon"><Plus size={20} /></div>
-                    <div className="action-text">
-                      <strong>Create New Page</strong>
-                      <span>Build a page from scratch</span>
-                    </div>
-                  </Link>
-                  <Link to="/admin/visual-editor" className="action-btn">
+                  <Link to="/admin/home-settings" className="action-btn">
                     <div className="action-icon"><MonitorPlay size={20} /></div>
                     <div className="action-text">
-                      <strong>Visual Editor</strong>
-                      <span>Edit homepage sections</span>
+                      <strong>Home Page CMS</strong>
+                      <span>Edit all 11 homepage sections</span>
                     </div>
                   </Link>
-                  <Link to="/admin/media" className="action-btn">
-                    <div className="action-icon"><ImageIcon size={20} /></div>
+                  <Link to="/admin/pages" className="action-btn">
+                    <div className="action-icon"><FileText size={20} /></div>
                     <div className="action-text">
-                      <strong>Upload Media</strong>
-                      <span>Add images or videos</span>
+                      <strong>Treatments &amp; Pages</strong>
+                      <span>Manage and create treatment pages</span>
+                    </div>
+                  </Link>
+                  <Link to="/admin/about-settings" className="action-btn">
+                    <div className="action-icon"><Sparkles size={20} /></div>
+                    <div className="action-text">
+                      <strong>About Us CMS</strong>
+                      <span>Philosophy, team, gallery &amp; hero</span>
+                    </div>
+                  </Link>
+                  <Link to="/admin/experts-settings" className="action-btn">
+                    <div className="action-icon"><CheckCircle2 size={20} /></div>
+                    <div className="action-text">
+                      <strong>Specialist Experts</strong>
+                      <span>Edit doctor credentials &amp; profiles</span>
+                    </div>
+                  </Link>
+                  <Link to="/admin/press-settings" className="action-btn">
+                    <div className="action-icon"><LayoutTemplate size={20} /></div>
+                    <div className="action-text">
+                      <strong>Press &amp; Media</strong>
+                      <span>Vogue, Elle &amp; Grazia spotlights</span>
+                    </div>
+                  </Link>
+                  <Link to="/admin/blog-settings" className="action-btn">
+                    <div className="action-icon"><FileText size={20} /></div>
+                    <div className="action-text">
+                      <strong>Blog &amp; Journal</strong>
+                      <span>Publish and manage articles</span>
                     </div>
                   </Link>
                   <Link to="/admin/header-settings" className="action-btn">
                     <div className="action-icon"><LayoutTemplate size={20} /></div>
                     <div className="action-text">
-                      <strong>Header & Footer</strong>
-                      <span>Manage global navigation</span>
+                      <strong>Header Navigation</strong>
+                      <span>Edit logo, menu items &amp; buttons</span>
+                    </div>
+                  </Link>
+                  <Link to="/admin/footer-settings" className="action-btn">
+                    <div className="action-icon"><LayoutTemplate size={20} /></div>
+                    <div className="action-text">
+                      <strong>Footer Settings</strong>
+                      <span>Links, columns, copyright &amp; socials</span>
+                    </div>
+                  </Link>
+                  <Link to="/admin/theme" className="action-btn">
+                    <div className="action-icon"><Plus size={20} /></div>
+                    <div className="action-text">
+                      <strong>Theme &amp; Typography</strong>
+                      <span>Customize palette &amp; Google fonts</span>
+                    </div>
+                  </Link>
+                  <Link to="/admin/settings" className="action-btn">
+                    <div className="action-icon"><Clock size={20} /></div>
+                    <div className="action-text">
+                      <strong>Clinic &amp; Contact</strong>
+                      <span>Address, hours, phone &amp; maps</span>
+                    </div>
+                  </Link>
+                  <Link to="/admin/media" className="action-btn">
+                    <div className="action-icon"><ImageIcon size={20} /></div>
+                    <div className="action-text">
+                      <strong>Media Library</strong>
+                      <span>Browse and upload images</span>
                     </div>
                   </Link>
                   <Link to="/admin/popup-settings" className="action-btn">

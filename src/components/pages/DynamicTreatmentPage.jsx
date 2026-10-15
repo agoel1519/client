@@ -19,12 +19,15 @@ import {
   Mail,
   Clock
 } from 'lucide-react';
-import { getDbPageBySlug } from '../../api/mongoApi';
+import { getDbPageBySlug, getDbTreatmentBySlug } from '../../api/mongoApi';
+import { getTreatmentData, getAllTreatments, allServicesList } from '../../data/treatmentsData';
 
 const DynamicTreatmentPage = ({ pageData: propPageData }) => {
   const { slug } = useParams();
-  const currentSlug = slug || 'chemical-peels';
+  const currentSlug = slug || 'laser-hair-reduction';
   
+  const allTreatments = (typeof getAllTreatments === 'function' ? getAllTreatments() : null) || allServicesList || [];
+
   const [pageData, setPageData] = useState(propPageData || null);
   const [loading, setLoading] = useState(!propPageData);
   
@@ -79,17 +82,35 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
     }
 
     setLoading(true);
-    getDbPageBySlug(currentSlug).then(data => {
-      if (data) {
-        setPageData(data);
-        if (data.title) setFormData(prev => ({ ...prev, treatment: data.title }));
+    Promise.allSettled([
+      getDbPageBySlug(currentSlug),
+      getDbTreatmentBySlug(currentSlug)
+    ]).then(([pageRes, treatRes]) => {
+      const localCustom = localStorage.getItem(`aevora_treatment_${currentSlug}`);
+      let parsedCustom = null;
+      if (localCustom) {
+        try { parsedCustom = JSON.parse(localCustom); } catch (e) {}
+      }
+
+      const dbData = (pageRes.status === 'fulfilled' && pageRes.value) || 
+                     (treatRes.status === 'fulfilled' && treatRes.value);
+
+      // Priority: 1. Immediate Admin Edits (localStorage) -> 2. Remote MongoDB/Backend -> 3. Procedural Catalog
+      const activeData = (parsedCustom && parsedCustom.title) ? parsedCustom : (dbData || getTreatmentData(currentSlug));
+      if (activeData) {
+        setPageData(activeData);
+        if (activeData.title) setFormData(prev => ({ ...prev, treatment: activeData.title }));
+      }
+      setLoading(false);
+    }).catch(() => {
+      const fallbackData = getTreatmentData(currentSlug);
+      if (fallbackData) {
+        setPageData(fallbackData);
+        if (fallbackData.title) setFormData(prev => ({ ...prev, treatment: fallbackData.title }));
       }
       setLoading(false);
     });
   }, [currentSlug, propPageData]);
-
-  if (loading) return <div style={{ paddingTop: '120px', textAlign: 'center', height: '100vh' }}>Loading...</div>;
-  if (!pageData) return <div style={{ paddingTop: '120px', textAlign: 'center', height: '100vh' }}><h1>Page Not Found</h1><Link to="/" style={{ color: 'var(--aevora-gold)' }}>Return to Home</Link></div>;
 
   const toggleAccordion = (index) => {
     setActiveAccordion(activeAccordion === index ? null : index);
@@ -112,7 +133,7 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
     setBaSlide((prev) => (prev <= 0 ? maxSlide : prev - 1));
   };
 
-  // Auto-play Before/After Slider
+  // Auto-play Before/After Slider - unconditionally declared before any early returns
   useEffect(() => {
     if (imagesCount <= itemsPerView) return;
     
@@ -121,7 +142,7 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
     }, 3500); // 3.5s auto-scroll
     
     return () => clearInterval(interval);
-  }, [imagesCount, maxSlide]);
+  }, [imagesCount, maxSlide, itemsPerView]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -148,6 +169,18 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
     setFormSubmitted(true);
   };
 
+  if (loading) {
+    return (
+      <div className="dynamic-page-container">
+        <Header />
+        <div style={{ paddingTop: '160px', paddingBottom: '160px', textAlign: 'center', minHeight: '60vh', color: 'var(--aevora-body-text)' }}>
+          <p style={{ fontSize: '1.2rem', letterSpacing: '1px' }}>Loading treatment details...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   // If pageData is not found
   if (!pageData) {
     return (
@@ -171,11 +204,6 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
       </div>
     );
   }
-
-  const allTreatments = getAllTreatments();
-  const relatedTreatments = allTreatments
-    .filter(t => t.slug !== slug && t.category === pageData.category)
-    .slice(0, 4);
 
   return (
     <div className="dynamic-page-container">
@@ -437,7 +465,7 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
                   <div className="dt-app-detail-text">
                     <h4 className="dt-app-detail-label">VISIT OUR CLINIC</h4>
                     <p className="dt-app-detail-val">
-                      {pageData.clinicInfo?.address || '1st Floor, Forum Building, Raghuvanshi Mills Compound Senapati Bapat Marg, Gandhi Nagar, Upper Worli, Worli, Lower Parel, Mumbai, Maharashtra 400018.'}
+                      {pageData.clinicInfo?.address || 'SCO 205 FF, Sector 5, Panchkula – 134114'}
                     </p>
                   </div>
                 </div>
@@ -449,7 +477,7 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
                   <div className="dt-app-detail-text">
                     <h4 className="dt-app-detail-label">CALL DIRECTLY</h4>
                     <p className="dt-app-detail-val">
-                      {pageData.clinicInfo?.phones?.join(' | ') || '+91 72400 13002 | +91 72400 12002'}
+                      {pageData.clinicInfo?.phones?.join(' | ') || '+91 97797 66933'}
                     </p>
                   </div>
                 </div>
@@ -461,7 +489,7 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
                   <div className="dt-app-detail-text">
                     <h4 className="dt-app-detail-label">EMAIL US</h4>
                     <p className="dt-app-detail-val">
-                      {pageData.clinicInfo?.email || 'hello@skuccii.com'}
+                      {pageData.clinicInfo?.email || 'concierge@aevoraclinics.com'}
                     </p>
                   </div>
                 </div>
@@ -564,7 +592,7 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
 
       {/* FLOATING WHATSAPP BUTTON (BOTTOM-LEFT IN SCREENSHOTS) */}
       <a 
-        href="https://wa.me/917240013002" 
+        href="https://wa.me/919779766933" 
         target="_blank" 
         rel="noopener noreferrer" 
         className="dt-floating-whatsapp-btn" 
@@ -577,7 +605,7 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
 
       {/* FLOATING CALL BUTTON (BOTTOM-RIGHT IN SCREENSHOTS) */}
       <a 
-        href="tel:+917240013002" 
+        href="tel:+919779766933" 
         className="dt-floating-call-btn" 
         aria-label="Call Us"
       >

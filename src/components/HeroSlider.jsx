@@ -113,10 +113,7 @@ const HeroSlider = () => {
   const fileInputRef = useRef(null);
   const [uploadingSlide, setUploadingSlide] = useState(null);
 
-  useEffect(() => {
-    const admin = localStorage.getItem('aevora_admin_auth') === 'true';
-    setIsAdmin(admin);
-
+  const loadSlides = () => {
     getDbSetting('home_page').then((parsed) => {
       if (parsed) {
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -126,6 +123,15 @@ const HeroSlider = () => {
         }
       }
     });
+  };
+
+  useEffect(() => {
+    const admin = localStorage.getItem('aevora_admin_auth') === 'true';
+    setIsAdmin(admin);
+
+    loadSlides();
+    window.addEventListener('homeSettingsUpdated', loadSlides);
+    return () => window.removeEventListener('homeSettingsUpdated', loadSlides);
   }, []);
 
   const nextSlide = useCallback(() => {
@@ -318,19 +324,7 @@ const HeroSlider = () => {
               <div className="slide-content-container">
                 <div className="slide-text-box">
 
-                  {/* Badge */}
-                  <div className="slide-badge animate-fade">
-                    {editMode && isActive ? (
-                      <InlineEditable
-                        as="span"
-                        value={slide.badge}
-                        onChange={(v) => updateSlideField(index, 'badge', v)}
-                        placeholder="Badge text..."
-                      />
-                    ) : (
-                      <span>{slide.badge}</span>
-                    )}
-                  </div>
+
 
                   {/* Headline */}
                   <h1 className="slide-title animate-title">

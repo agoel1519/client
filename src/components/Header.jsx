@@ -11,93 +11,15 @@ import {
   ShieldCheck,
   ChevronRight
 } from 'lucide-react';
-import { slugify } from '../data/treatmentsData';
+import { slugify, allServicesList } from '../data/treatmentsData';
 import { getDbSetting } from '../api/mongoApi';
 import './Header.css';
 
-const treatmentsData = {
-  faceSkinCol1: [
-    'SCAR',
-    'CHEMICAL PEELS',
-    'DERMA MELAN PEEL',
-    'PLASMA PEN',
-    'PIGMENT LASER',
-    'COSMELAN PEEL',
-    'MEDI-FACIAL',
-    'PEEL + WHITENING',
-    'SKIN BOOSTER',
-    'HIFU FACIAL',
-    'TATTOO REMOVAL',
-    'KELOID TREATMENT',
-    'THREADS',
-    'BOTOX',
-    'WART REMOVAL'
-  ],
-  faceSkinCol2: [
-    'SKIN POLISHING',
-    'MILIA EXTRACTION',
-    'FILLER',
-    'MOLE REMOVAL',
-    'PEELS (ALL)',
-    'EXION MNRF (BTL)',
-    'BIOREPEEL',
-    'YELLOW PEEL',
-    'EXION FACE (BTL)',
-    'EMFACE (BTL)',
-    'MICROBLADING',
-    'DERMA PEN',
-    'LASER / FOTONA',
-    'MICRO DERMABRASION',
-    'MANDELIC PEEL',
-    'MOLLUSCUM REMOVAL',
-    'ULTHERAPY PRIME'
-  ],
-  body: [
-    'EMSCULPT NEO',
-    'EMERALD LASER',
-    'BALLANCER PRO',
-    'EXION - RF',
-    'BODY CONTOURING',
-    'INCH LOSS',
-    'COOLSCULPTING'
-  ],
-  ivTherapy: [
-    'NAD+ IV DRIP',
-    'LIMITLESS',
-    'SIGNATURE',
-    'FITNESS',
-    'INSTAGLO',
-    'HAIR HEALTH',
-    'REWIND',
-    'HANGOVER',
-    'SHIELD',
-    'SUPER WOMAN'
-  ],
-  hair: [
-    'HAIR CONSULTATION',
-    'HAIR REGROWTH',
-    'IV THERAPY FOR HAIRFALL',
-    'DERMAROLLER',
-    'HAIR GROWTH LASERS',
-    'SCALP MICRO PIGMENTATION',
-    'DERMAPEN',
-    'EXOSOMES & BIOSTEMCELLS',
-    'FUE',
-    'HIGH-DENSITY FUE',
-    'EYEBROW TRANSPLANT',
-    'MEGA HAIR TRANSPLANT',
-    'BEARD TRANSPLANT',
-    'HAIR FUE - NO ROOT TOUCH'
-  ],
-  aestheticGynaecology: [
-    'VULVO-VAGINAL',
-    'EMSELLA',
-    'ORGASM SHOT',
-    'VAGINISMUS',
-    'VULVAR AUGMENTATION',
-    'LABIAPLASTY'
-  ]
-};
+export const defaultMegaMenuItems = allServicesList.map((t, idx) => ({
+  id: `t-${idx + 1}`,
+  label: t.name,
+  url: `/treatments/${t.slug}`
+}));
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -113,28 +35,22 @@ const Header = () => {
   });
 
   const [headerSettings, setHeaderSettings] = useState({
-    locationText: "Premium Aesthetics & Wellness Clinic",
+    locationText: "SCO 205 FF, Sector 5, Panchkula – 134114",
     timingsText: "Mon - Sat: 10:00 AM - 8:00 PM",
-    phoneText: "+91 98765 43210",
-    badgeText: "Certified Specialists",
+    phoneText: "+91 97797 66933",
+    badgeText: "Aevora Clinics",
     ctaText: "Book Appointment",
-    ctaUrl: "#book",
+    ctaUrl: "tel:+919779766933",
     backgroundColor: "#ffffff",
     textColor: "#0f172a",
     navItems: [
       { id: '1', label: 'HOME', url: '/', type: 'link' },
       { id: '2', label: 'ABOUT', url: '/about', type: 'dropdown', dropdownItems: [
-        { label: 'PHILOSOPHY', url: '/about#philosophy' },
-        { label: 'FOUNDING TEAM', url: '/about#founding-team' },
-        { label: 'EXPERIENCE', url: '/about#experience' },
-        { label: 'GALLERY', url: '/about#gallery' }
+        { id: 'a-2', label: 'FOUNDING TEAM', url: '/about#founding-team' }
       ]},
-      { id: '3', label: 'TREATMENTS', url: '/#treatments', type: 'mega-menu' },
+      { id: '3', label: 'TREATMENTS', url: '/#treatments', type: 'mega-menu', megaMenuItems: defaultMegaMenuItems },
       { id: '4', label: 'EXPERTS', url: '/experts', type: 'link' },
-      { id: '5', label: 'MEDIA', url: '#media', type: 'dropdown', dropdownItems: [
-        { label: 'PRESS', url: '/press' },
-        { label: 'BLOGS', url: '/blog' }
-      ]},
+      { id: '5', label: 'MEDIA', url: '#media', type: 'link' },
       { id: '6', label: 'A-LISTER', url: '#a-lister', type: 'link' },
       { id: '7', label: 'CONTACT', url: '/contact', type: 'link' }
     ],
@@ -145,7 +61,34 @@ const Header = () => {
   const loadHeaderSettings = () => {
     getDbSetting('header_settings').then(saved => {
       if (saved) {
-        setHeaderSettings(prev => ({ ...prev, ...saved }));
+        setHeaderSettings(prev => {
+          const navItems = (saved.navItems || prev.navItems).map(item => {
+            if (item.type === 'mega-menu') {
+              return {
+                ...item,
+                megaMenuItems: (item.megaMenuItems && item.megaMenuItems.length > 0)
+                  ? item.megaMenuItems
+                  : defaultMegaMenuItems
+              };
+            }
+            if (item.label === 'MEDIA' || item.id === '5') {
+              return {
+                ...item,
+                type: 'link',
+                url: item.url || '#media'
+              };
+            }
+            return item;
+          });
+          return {
+            ...prev,
+            ...saved,
+            navItems,
+            locationText: (saved.locationText && !saved.locationText.includes('Premium Aesthetics')) ? saved.locationText : "SCO 205 FF, Sector 5, Panchkula – 134114",
+            phoneText: (saved.phoneText && !saved.phoneText.includes('98765 43210')) ? saved.phoneText : "+91 97797 66933",
+            badgeText: (saved.badgeText && !saved.badgeText.includes('Certified Specialists')) ? saved.badgeText : "Aevora Clinics"
+          };
+        });
       }
     });
   };
@@ -222,6 +165,22 @@ const Header = () => {
     });
   };
 
+  const getCtaLink = () => {
+    if (headerSettings.ctaUrl && headerSettings.ctaUrl !== '#book' && headerSettings.ctaUrl !== '') {
+      if (headerSettings.ctaUrl.startsWith('tel:') || headerSettings.ctaUrl.startsWith('http') || headerSettings.ctaUrl.startsWith('/')) {
+        return headerSettings.ctaUrl;
+      }
+      const digits = headerSettings.ctaUrl.replace(/\D/g, '');
+      if (digits.length >= 10) {
+        return `tel:${digits.length === 10 ? `+91${digits}` : `+${digits}`}`;
+      }
+      return headerSettings.ctaUrl;
+    }
+    const rawPhone = headerSettings.phoneText || '+91 97797 66933';
+    const digits = rawPhone.replace(/\D/g, '');
+    return `tel:${digits.length === 10 ? `+91${digits}` : `+${digits}`}`;
+  };
+
   return (
     <>
       <header className={`aevora-header ${isScrolled ? 'scrolled' : ''}`} style={{ backgroundColor: headerSettings.backgroundColor }}>
@@ -291,63 +250,55 @@ const Header = () => {
                             onMouseLeave={handleDropdownLeave}
                           >
                             <div className="mega-menu-container">
-                              {/* Column 1 & 2: FACE / SKIN */}
-                              <div className="mega-column mega-col-face">
-                                <h4 className="mega-category-title">FACE / SKIN</h4>
-                                <div className="face-subgrid">
-                                  <ul className="mega-list">
-                                    {treatmentsData.faceSkinCol1.map((t, idx) => (
-                                      <li key={idx}><Link to={`/treatments/${slugify(t)}`} className="mega-link" onClick={() => setActiveDropdown(null)}>{t}</Link></li>
-                                    ))}
-                                  </ul>
-                                  <ul className="mega-list">
-                                    {treatmentsData.faceSkinCol2.map((t, idx) => (
-                                      <li key={idx}><Link to={`/treatments/${slugify(t)}`} className="mega-link" onClick={() => setActiveDropdown(null)}>{t}</Link></li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              </div>
+                              {(() => {
+                                const megaList = (item.megaMenuItems && item.megaMenuItems.length > 0)
+                                  ? item.megaMenuItems
+                                  : defaultMegaMenuItems;
+                                const colSize = Math.max(1, Math.ceil(megaList.length / 3));
+                                const col1 = megaList.slice(0, colSize);
+                                const col2 = megaList.slice(colSize, colSize * 2);
+                                const col3 = megaList.slice(colSize * 2);
 
-                              {/* Column 3: BODY + IV THERAPY + LASER HAIR REMOVAL */}
-                              <div className="mega-column mega-col-body">
-                                <h4 className="mega-category-title">BODY</h4>
-                                <ul className="mega-list" style={{ marginBottom: '1.2rem' }}>
-                                  {treatmentsData.body.map((t, idx) => (
-                                    <li key={idx}><Link to={`/treatments/${slugify(t)}`} className="mega-link" onClick={() => setActiveDropdown(null)}>{t}</Link></li>
-                                  ))}
-                                </ul>
+                                return (
+                                  <>
+                                    <div className="mega-column">
+                                      <ul className="mega-list">
+                                        {col1.map((t, idx) => (
+                                          <li key={t.id || idx}>
+                                            <Link to={t.url} className="mega-link" onClick={() => setActiveDropdown(null)}>
+                                              {t.label}
+                                            </Link>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
 
-                                <h4 className="mega-category-title">IV THERAPY</h4>
-                                <ul className="mega-list" style={{ marginBottom: '1.2rem' }}>
-                                  {treatmentsData.ivTherapy.map((t, idx) => (
-                                    <li key={idx}><Link to={`/treatments/${slugify(t)}`} className="mega-link" onClick={() => setActiveDropdown(null)}>{t}</Link></li>
-                                  ))}
-                                </ul>
+                                    <div className="mega-column">
+                                      <ul className="mega-list">
+                                        {col2.map((t, idx) => (
+                                          <li key={t.id || idx}>
+                                            <Link to={t.url} className="mega-link" onClick={() => setActiveDropdown(null)}>
+                                              {t.label}
+                                            </Link>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
 
-                                <h4 className="mega-category-title">
-                                  <Link to="/treatments/laser-hair-removal" className="mega-category-link" onClick={() => setActiveDropdown(null)}>LASER HAIR REMOVAL</Link>
-                                </h4>
-                              </div>
-
-                              {/* Column 4: HAIR */}
-                              <div className="mega-column mega-col-hair">
-                                <h4 className="mega-category-title">HAIR</h4>
-                                <ul className="mega-list">
-                                  {treatmentsData.hair.map((t, idx) => (
-                                    <li key={idx}><Link to={`/treatments/${slugify(t)}`} className="mega-link" onClick={() => setActiveDropdown(null)}>{t}</Link></li>
-                                  ))}
-                                </ul>
-                              </div>
-
-                              {/* Column 5: AESTHETIC GYNAECOLOGY */}
-                              <div className="mega-column mega-col-gynae">
-                                <h4 className="mega-category-title">AESTHETIC GYNAECOLOGY</h4>
-                                <ul className="mega-list">
-                                  {treatmentsData.aestheticGynaecology.map((t, idx) => (
-                                    <li key={idx}><Link to={`/treatments/${slugify(t)}`} className="mega-link" onClick={() => setActiveDropdown(null)}>{t}</Link></li>
-                                  ))}
-                                </ul>
-                              </div>
+                                    <div className="mega-column">
+                                      <ul className="mega-list">
+                                        {col3.map((t, idx) => (
+                                          <li key={t.id || idx}>
+                                            <Link to={t.url} className="mega-link" onClick={() => setActiveDropdown(null)}>
+                                              {t.label}
+                                            </Link>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  </>
+                                );
+                              })()}
                             </div>
                           </div>
                         )}
@@ -368,14 +319,14 @@ const Header = () => {
                         </a>
                         {activeDropdown === item.id && (
                           <div 
-                            className="dropdown-menu"
+                            className="dropdown-menu header-dropdown-menu"
                             onMouseEnter={() => handleDropdownEnter(item.id)}
                             onMouseLeave={handleDropdownLeave}
                           >
                             {item.dropdownItems?.map((dropItem, idx) => (
                               dropItem.url.startsWith('/') ? 
-                                <Link key={idx} to={dropItem.url} className="dropdown-item">{dropItem.label}</Link> :
-                                <a key={idx} href={dropItem.url} className="dropdown-item">{dropItem.label}</a>
+                                <Link key={idx} to={dropItem.url} className="dropdown-item" onClick={() => setActiveDropdown(null)}>{dropItem.label}</Link> :
+                                <a key={idx} href={dropItem.url} className="dropdown-item" onClick={() => setActiveDropdown(null)}>{dropItem.label}</a>
                             ))}
                           </div>
                         )}
@@ -398,7 +349,7 @@ const Header = () => {
 
             {/* Right Action Button & Mobile Toggle */}
             <div className="nav-actions">
-              <a href={headerSettings.ctaUrl} className="btn-book desktop-btn-book">
+              <a href={getCtaLink()} className="btn-book desktop-btn-book">
                 <Calendar size={15} />
                 <span>{headerSettings.ctaText}</span>
               </a>
@@ -460,10 +411,7 @@ const Header = () => {
               </div>
               {mobileAccordions.about && (
                 <div className="mobile-submenu">
-                  <a href="/about#philosophy" onClick={closeMobileMenu}>Philosophy</a>
                   <a href="/about#founding-team" onClick={closeMobileMenu}>Founding Team</a>
-                  <a href="/about#experience" onClick={closeMobileMenu}>Experience</a>
-                  <a href="/about#gallery" onClick={closeMobileMenu}>Gallery</a>
                 </div>
               )}
             </li>
@@ -479,31 +427,18 @@ const Header = () => {
               </div>
               {mobileAccordions.treatments && (
                 <div className="mobile-submenu mobile-treatments-submenu">
-                  <div className="mobile-category-block">
-                    <h5>FACE / SKIN</h5>
-                    <div className="mobile-tag-grid">
-                      {['Chemical Peels', 'Botox', 'Filler', 'Laser Fotona', 'Ultherapy Prime', 'Skin Booster', 'HIFU Facial', 'Derma Pen', 'Scar', 'Threads'].map((t, i) => (
-                        <Link key={i} to={`/treatments/${slugify(t)}`} onClick={closeMobileMenu} className="mobile-treatment-tag">{t}</Link>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mobile-category-block">
-                    <h5>BODY & IV THERAPY</h5>
-                    <div className="mobile-tag-grid">
-                      {['Emsculpt Neo', 'Emerald Laser', 'Coolsculpting', 'Body Contouring', 'NAD+ IV Drip', 'Limitless', 'Instaglo', 'Laser Hair Removal'].map((t, i) => (
-                        <Link key={i} to={`/treatments/${slugify(t)}`} onClick={closeMobileMenu} className="mobile-treatment-tag">{t}</Link>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mobile-category-block">
-                    <h5>HAIR & GYNAECOLOGY</h5>
-                    <div className="mobile-tag-grid">
-                      {['Hair Regrowth', 'FUE', 'High-Density FUE', 'Dermapen', 'Scalp Micro Pigmentation', 'Emsella', 'Vulvo-Vaginal', 'Labiaplasty'].map((t, i) => (
-                        <Link key={i} to={`/treatments/${slugify(t)}`} onClick={closeMobileMenu} className="mobile-treatment-tag">{t}</Link>
-                      ))}
-                    </div>
+                  <div className="mobile-tag-grid">
+                    {(() => {
+                      const treatmentsItem = headerSettings.navItems?.find(n => n.type === 'mega-menu');
+                      const mList = (treatmentsItem?.megaMenuItems && treatmentsItem.megaMenuItems.length > 0)
+                        ? treatmentsItem.megaMenuItems
+                        : defaultMegaMenuItems;
+                      return mList.map((t, i) => (
+                        <Link key={t.id || i} to={t.url} onClick={closeMobileMenu} className="mobile-treatment-tag">
+                          {t.label}
+                        </Link>
+                      ));
+                    })()}
                   </div>
                 </div>
               )}
@@ -518,21 +453,11 @@ const Header = () => {
               </Link>
             </li>
 
-            {/* MEDIA ACCORDION */}
+            {/* MEDIA */}
             <li className="mobile-menu-item">
-              <div 
-                className="mobile-accordion-header"
-                onClick={() => toggleMobileAccordion('media')}
-              >
-                <span className="mobile-link-text">MEDIA</span>
-                <ChevronDown size={18} className={`mobile-chevron ${mobileAccordions.media ? 'open' : ''}`} />
-              </div>
-              {mobileAccordions.media && (
-                <div className="mobile-submenu">
-                  <Link to="/press" onClick={closeMobileMenu}>Press & Publications</Link>
-                  <Link to="/blog" onClick={closeMobileMenu}>Blogs & Articles</Link>
-                </div>
-              )}
+              <a href="#media" className="mobile-link" onClick={closeMobileMenu}>
+                MEDIA
+              </a>
             </li>
 
             {/* A-LISTER */}
@@ -556,7 +481,7 @@ const Header = () => {
             <Phone size={16} />
             <span>Call: {headerSettings.phoneText}</span>
           </a>
-          <a href={headerSettings.ctaUrl} className="mobile-action-book-btn" onClick={closeMobileMenu}>
+          <a href={getCtaLink()} className="mobile-action-book-btn" onClick={closeMobileMenu}>
             <Calendar size={16} />
             <span>{headerSettings.ctaText}</span>
           </a>

@@ -17,41 +17,42 @@ const Footer = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [clinicSettings, setClinicSettings] = useState({
-    address: "SCO 14-15, Sector 5, Panchkula, Haryana 134109",
-    phone: "0172 258 0000",
+    address: "SCO 205 FF, Sector 5, Panchkula – 134114",
+    phone: "+91 97797 66933",
     email: "concierge@aevoraclinics.com",
-    hours: "Mon – Sat: 10:00 AM – 8:00 PM | Sun: By Appointment"
+    hours: "Mon – Sat: 10:00 AM – 8:00 PM | Sun: By Appointment",
+    website: "www.Aevoraclinics.com"
   });
 
   const [footerSettings, setFooterSettings] = useState({
     tagline: "A bespoke aesthetic and longevity sanctuary founded on clinical precision, US FDA-cleared science, and undetectable elegance.",
-    founderName: "Dr. Meghna Mour",
-    founderTitle: "Chief Aesthetic Dermatologist",
+    founderName: "Dr Misha Goel & Dr Anupam Goel",
+    founderTitle: "Clinical Aesthetics & Minimal Access Surgery",
     instagramUrl: "https://instagram.com",
     facebookUrl: "https://facebook.com",
     linkedinUrl: "https://linkedin.com",
     youtubeUrl: "https://youtube.com",
     copyrightText: "AEVORA by Kian Clinics. All rights reserved.",
     columns: [
-      { id: '1', title: 'CLINICAL TREATMENTS', links: [
-        { label: 'Chemical Peels & Resurfacing', url: '/treatments/chemical-peels' },
-        { label: 'Laser Pigment & Melasma Toning', url: '/treatments/pigment-laser' },
-        { label: 'EXION™ MNRF Non-Surgical Contouring', url: '/treatments/exion-mnrf' },
-        { label: 'Hair Regrowth & Bio-Restoration', url: '/treatments/hair-regrowth' },
-        { label: 'NAD+ Cellular Longevity Infusions', url: '/treatments/nad-plus-iv-drip' },
-        { label: 'Ultherapy Prime & Jawline Lift', url: '/treatments/ultherapy-prime' },
-        { label: 'Medi-Facials & HydraGlow', url: '/treatments/medi-facial' },
-        { label: 'BTL Emsella® Aesthetic Gynaecology', url: '/treatments/emsella' }
+      { id: '1', title: 'CLINICAL SERVICES', links: [
+        { label: 'Hydrafacials & Medical Facials', url: '/treatments/hydrafacials-medifacials' },
+        { label: 'Laser Facial Toning & Glass Skin', url: '/treatments/laser-facial-toning' },
+        { label: 'Laser Hair Reduction', url: '/treatments/laser-hair-reduction' },
+        { label: 'Muscle Contouring & Sculpting', url: '/treatments/muscle-contouring' },
+        { label: 'Intravenous Longevity Drips', url: '/treatments/intravenous-longevity-drips' },
+        { label: 'Hair Regrowth & Regeneration', url: '/treatments/hair-regrowth-regeneration' },
+        { label: 'Intimacy & Sexual Wellness', url: '/treatments/intimacy-rejuvenation' },
+        { label: 'Advanced Robotic Surgery', url: '/treatments/robotic-surgery' }
       ] },
       { id: '2', title: 'THE SANCTUARY', links: [
         { label: 'About Aevora & Philosophy', url: '#about' },
-        { label: 'Our Specialist Doctors', url: '#team' },
-        { label: 'The VIP Clinic Experience', url: '#experience' },
-        { label: 'Celebrity & VIP Spotlight', url: '#celebrities' },
+        { label: 'Our Specialist Doctors', url: '#doctors' },
+        { label: 'The VIP Clinic Experience', url: '#about' },
+        { label: 'Celebrity & VIP Spotlight', url: '#celebrity' },
         { label: 'Press & Media Features', url: '#media' },
         { label: 'Patient Reviews & Testimonials', url: '#testimonials' },
         { label: 'Frequently Asked Questions', url: '#faq' },
-        { label: 'Book Private Consultation', url: '#appointment' }
+        { label: 'Book Private Consultation', url: '#book' }
       ] }
     ],
     logoUrl: "/aevora-logo-clean.png",
@@ -61,10 +62,24 @@ const Footer = () => {
   const loadSettings = () => {
     import('../api/mongoApi').then(({ getDbSetting }) => {
       getDbSetting('clinic_settings').then(saved => {
-        if (saved) setClinicSettings(saved);
+        if (saved) {
+          setClinicSettings(prev => ({
+            ...prev,
+            ...saved,
+            address: (saved.address && !saved.address.includes('SCO 14-15')) ? saved.address : "SCO 205 FF, Sector 5, Panchkula – 134114",
+            phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : "+91 97797 66933",
+            website: saved.website || "www.Aevoraclinics.com"
+          }));
+        }
       });
       getDbSetting('footer_settings').then(saved => {
-        if (saved) setFooterSettings(saved);
+        if (saved) {
+          setFooterSettings(prev => ({
+            ...prev,
+            ...saved,
+            founderName: (saved.founderName && !saved.founderName.includes('Meghna Mour')) ? saved.founderName : "Dr Misha Goel & Dr Anupam Goel"
+          }));
+        }
       });
     });
   };
@@ -72,7 +87,11 @@ const Footer = () => {
   React.useEffect(() => {
     loadSettings();
     window.addEventListener('footerSettingsUpdated', loadSettings);
-    return () => window.removeEventListener('footerSettingsUpdated', loadSettings);
+    window.addEventListener('clinicSettingsUpdated', loadSettings);
+    return () => {
+      window.removeEventListener('footerSettingsUpdated', loadSettings);
+      window.removeEventListener('clinicSettingsUpdated', loadSettings);
+    };
   }, []);
 
   const handleSubscribe = (e) => {

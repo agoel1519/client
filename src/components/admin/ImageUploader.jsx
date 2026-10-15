@@ -1,9 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, Image as ImageIcon, X, Check, Loader2, Trash2 } from 'lucide-react';
-import { getDbMedia, uploadMedia } from '../../api/mongoApi';
+import { getDbMedia, uploadMedia, saveDbMedia } from '../../api/mongoApi';
+import { uploadToCloudinary } from '../../utils/cloudinary';
 import './ImageUploader.css';
 
-const ImageUploader = ({ currentUrl, onSelect, onRemove, label = 'Image', className = '' }) => {
+const ImageUploader = ({ 
+  currentUrl, 
+  initialImage,
+  value,
+  onSelect, 
+  onImageSelected,
+  onChange,
+  onRemove, 
+  label = 'Image', 
+  className = '' 
+}) => {
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
   const [mediaLibrary, setMediaLibrary] = useState([]);
   const [isLoadingLibrary, setIsLoadingLibrary] = useState(false);
@@ -11,6 +22,19 @@ const ImageUploader = ({ currentUrl, onSelect, onRemove, label = 'Image', classN
   const [uploadError, setUploadError] = useState('');
   
   const fileInputRef = useRef(null);
+  const activeUrl = currentUrl || initialImage || value || '';
+
+  const notifySelected = (url) => {
+    if (typeof onSelect === 'function') {
+      try { onSelect(url); } catch (e) { console.error('Error in onSelect:', e); }
+    }
+    if (typeof onImageSelected === 'function') {
+      try { onImageSelected(url); } catch (e) { console.error('Error in onImageSelected:', e); }
+    }
+    if (typeof onChange === 'function') {
+      try { onChange(url); } catch (e) { console.error('Error in onChange:', e); }
+    }
+  };
 
   const fetchLibrary = async () => {
     setIsLoadingLibrary(true);
@@ -34,7 +58,7 @@ const ImageUploader = ({ currentUrl, onSelect, onRemove, label = 'Image', classN
   };
 
   const handleSelectFromLibrary = (mediaItem) => {
-    onSelect(mediaItem.url);
+    notifySelected(mediaItem.url);
     handleCloseLibrary();
   };
 
@@ -45,19 +69,41 @@ const ImageUploader = ({ currentUrl, onSelect, onRemove, label = 'Image', classN
     setIsUploading(true);
     setUploadError('');
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('altText', file.name);
-
     try {
-      const res = await uploadMedia(formData);
-      if (res.url) {
-        onSelect(res.url);
+      // 1. Direct Cloudinary Upload (fryxycyd)
+      const cldRes = await uploadToCloudinary(file);
+      
+      if (cldRes && cldRes.success && cldRes.url) {
+        notifySelected(cldRes.url);
+
+        // Sync with MongoDB Media Library in background
+        try {
+          await saveDbMedia({
+            filename: file.name,
+            url: cldRes.url,
+            mimeType: file.type || 'image/jpeg',
+            size: file.size,
+            altText: file.name
+          });
+        } catch (dbErr) {
+          console.warn('Media library save notice:', dbErr.message);
+        }
       } else {
-        setUploadError(res.error || 'Upload failed');
+        // Fallback: If direct Cloudinary fails, try via backend server upload
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('altText', file.name);
+
+        const res = await uploadMedia(formData);
+        if (res && res.url) {
+          notifySelected(res.url);
+        } else {
+          throw new Error(cldRes?.error || res?.error || 'Upload failed');
+        }
       }
     } catch (err) {
-      setUploadError(err.message || 'Network error during upload');
+      console.error('Upload error:', err);
+      setUploadError(err.message || 'Error uploading image to Cloudinary');
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) {
@@ -77,9 +123,9 @@ const ImageUploader = ({ currentUrl, onSelect, onRemove, label = 'Image', classN
       {label && <label className="uploader-label">{label}</label>}
       
       <div className="uploader-preview-area">
-        {currentUrl ? (
+        {activeUrl ? (
           <div className="preview-image-wrapper">
-            <img src={currentUrl} alt="Preview" className="preview-image" />
+            <img src={activeUrl} alt="Preview" className="preview-image" />
             <div className="preview-overlay">
               <button type="button" className="action-btn replace-btn" onClick={triggerFileInput}>
                 <Upload size={14} /> Replace
@@ -154,11 +200,11 @@ const ImageUploader = ({ currentUrl, onSelect, onRemove, label = 'Image', classN
                   {mediaLibrary.map(item => (
                     <div 
                       key={item._id} 
-                      className={`media-grid-item ${currentUrl === item.url ? 'selected' : ''}`}
+                      className={`media-grid-item ${activeUrl === item.url ? 'selected' : ''}`}
                       onClick={() => handleSelectFromLibrary(item)}
                     >
                       <img src={item.url} alt={item.altText || item.filename} />
-                      {currentUrl === item.url && (
+                      {activeUrl === item.url && (
                         <div className="selected-indicator">
                           <Check size={16} />
                         </div>

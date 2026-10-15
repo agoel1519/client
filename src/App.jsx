@@ -53,6 +53,7 @@ function App() {
           <Route path="press-settings" element={<AdminPressSettings />} />
           <Route path="blog-settings" element={<AdminBlogSettings />} />
           <Route path="home-settings" element={<AdminHomeSettings />} />
+          <Route path="visual-editor" element={<AdminHomeSettings />} />
           <Route path="header-settings" element={<AdminHeaderSettings />} />
           <Route path="footer-settings" element={<AdminFooterSettings />} />
           <Route path="theme" element={<AdminThemeSettings />} />
