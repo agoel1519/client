@@ -27,6 +27,7 @@ import {
 import ImageUploader from './ImageUploader';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 import { slugify, getTreatmentData, saveTreatmentPage, deleteTreatmentPage } from '../../data/treatmentsData';
+import { API_BASE } from '../../config/api';
 
 const emptyPageTemplate = {
   title: '',
@@ -134,8 +135,8 @@ const AdminPageBuilder = () => {
 
       // Also fetch any remote updates from MongoDB/localStore
       Promise.allSettled([
-        fetch(`http://localhost:5001/api/treatments/${slug}`).then(r => r.ok ? r.json() : null),
-        fetch(`http://localhost:5001/api/pages/${slug}`).then(r => r.ok ? r.json() : null)
+        fetch(`${API_BASE}/treatments/${slug}`).then(r => r.ok ? r.json() : null),
+        fetch(`${API_BASE}/pages/${slug}`).then(r => r.ok ? r.json() : null)
       ]).then(([treatRes, pageRes]) => {
         const remote = (treatRes.status === 'fulfilled' && treatRes.value?.data) ||
                        (pageRes.status === 'fulfilled' && pageRes.value);

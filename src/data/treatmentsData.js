@@ -2,6 +2,7 @@
  * Aevora Clinical Services Catalog
  * Single unified listing of all 27 specialized medical and aesthetic services
  */
+import { API_BASE } from '../config/api';
 
 export const slugify = (text) => {
   if (!text) return '';
@@ -441,7 +442,7 @@ export const saveTreatmentPage = (slug, pageData) => {
     localStorage.setItem('aevora_custom_pages_list', JSON.stringify(registry));
 
     // Background sync to MongoDB backend
-    fetch('http://localhost:5001/api/treatments', {
+    fetch(`${API_BASE}/treatments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ slug: cleanSlug, ...pageData })
@@ -464,7 +465,7 @@ export const deleteTreatmentPage = (slug) => {
     const filtered = registry.filter(item => item.slug !== cleanSlug);
     localStorage.setItem('aevora_custom_pages_list', JSON.stringify(filtered));
 
-    fetch(`http://localhost:5001/api/treatments/${cleanSlug}`, {
+    fetch(`${API_BASE}/treatments/${cleanSlug}`, {
       method: 'DELETE'
     }).catch(err => console.log('Backend sync offline:', err.message));
 

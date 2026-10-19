@@ -2,8 +2,7 @@
  * Aevora MongoDB Atlas API Service
  * Connects the React client to Express + MongoDB Atlas backend
  */
-
-const API_BASE = 'http://localhost:5001/api';
+import { API_BASE } from '../config/api';
 
 export const checkMongoHealth = async () => {
   try {

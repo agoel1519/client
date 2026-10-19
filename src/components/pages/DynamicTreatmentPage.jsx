@@ -19,7 +19,7 @@ import {
   Mail,
   Clock
 } from 'lucide-react';
-import { getDbPageBySlug, getDbTreatmentBySlug } from '../../api/mongoApi';
+import { getDbPageBySlug, getDbTreatmentBySlug, submitAppointmentBooking } from '../../api/mongoApi';
 import { getTreatmentData, getAllTreatments, allServicesList } from '../../data/treatmentsData';
 
 const DynamicTreatmentPage = ({ pageData: propPageData }) => {
@@ -152,16 +152,12 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch('http://localhost:5001/api/appointments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          email: formData.email,
-          treatment: formData.treatment || pageData?.title || currentSlug,
-          notes: formData.message
-        })
+      await submitAppointmentBooking({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        treatment: formData.treatment || pageData?.title || currentSlug,
+        notes: formData.message
       });
     } catch (err) {
       console.warn('Booking recorded with offline fallback notice:', err);
