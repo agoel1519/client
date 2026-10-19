@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   ShieldCheck
 } from 'lucide-react';
+import { getDbSetting } from '../api/mongoApi';
 import './Footer.css';
 
 const Footer = () => {
@@ -59,28 +60,27 @@ const Footer = () => {
   });
 
   const loadSettings = () => {
-    import('../api/mongoApi').then(({ getDbSetting }) => {
-      getDbSetting('clinic_settings').then(saved => {
-        if (saved) {
-          setClinicSettings(prev => ({
-            ...prev,
-            ...saved,
-            address: (saved.address && !saved.address.includes('SCO 14-15')) ? saved.address : "SCO 205 FF, Sector 5, Panchkula – 134114",
-            phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : "+91 97797 66933",
-            website: saved.website || "www.Aevoraclinics.com"
-          }));
-        }
-      });
-      getDbSetting('footer_settings').then(saved => {
-        if (saved) {
-          setFooterSettings(prev => ({
-            ...prev,
-            ...saved,
-            founderName: (saved.founderName && !saved.founderName.includes('Meghna Mour')) ? saved.founderName : "Dr Misha Goel & Dr Anupam Goel"
-          }));
-        }
-      });
-    });
+    getDbSetting('clinic_settings').then(saved => {
+      if (saved) {
+        setClinicSettings(prev => ({
+          ...prev,
+          ...saved,
+          address: (saved.address && !saved.address.includes('SCO 14-15')) ? saved.address : "SCO 205 FF, Sector 5, Panchkula – 134114",
+          phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : "+91 97797 66933",
+          website: saved.website || "www.Aevoraclinics.com"
+        }));
+      }
+    }).catch(err => console.warn('Footer clinic settings notice:', err));
+
+    getDbSetting('footer_settings').then(saved => {
+      if (saved) {
+        setFooterSettings(prev => ({
+          ...prev,
+          ...saved,
+          founderName: (saved.founderName && !saved.founderName.includes('Meghna Mour')) ? saved.founderName : "Dr Misha Goel & Dr Anupam Goel"
+        }));
+      }
+    }).catch(err => console.warn('Footer settings notice:', err));
   };
 
   React.useEffect(() => {
