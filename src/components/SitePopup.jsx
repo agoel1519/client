@@ -7,7 +7,20 @@ import './SitePopup.css';
 
 const SitePopup = () => {
   const location = useLocation();
-  const [settings, setSettings] = useState(defaultPopupSettings);
+  const [settings, setSettings] = useState(() => {
+    try {
+      const cached = localStorage.getItem('aevora_setting_site_popup_settings');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        return {
+          ...defaultPopupSettings,
+          ...parsed,
+          imageUrl: parsed.imageUrl || (Array.isArray(parsed.images) && parsed.images[0]?.url) || defaultPopupSettings.imageUrl
+        };
+      }
+    } catch (e) {}
+    return defaultPopupSettings;
+  });
   const [isVisible, setIsVisible] = useState(false);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const timerRef = useRef(null);
@@ -17,11 +30,15 @@ const SitePopup = () => {
     try {
       const saved = await getDbSetting('site_popup_settings');
       if (saved && typeof saved === 'object') {
-        setSettings(prev => ({
-          ...prev,
+        const merged = {
+          ...defaultPopupSettings,
           ...saved,
-          imageUrl: saved.imageUrl || (Array.isArray(saved.images) && saved.images[0]?.url) || prev.imageUrl
-        }));
+          imageUrl: saved.imageUrl || (Array.isArray(saved.images) && saved.images[0]?.url) || defaultPopupSettings.imageUrl
+        };
+        setSettings(merged);
+        try {
+          localStorage.setItem('aevora_setting_site_popup_settings', JSON.stringify(merged));
+        } catch (e) {}
       }
     } catch (err) {
       console.warn('Could not load popup settings:', err);
@@ -33,6 +50,7 @@ const SitePopup = () => {
 
     // Listen for real-time updates from Admin
     const handleSettingsUpdated = (e) => {
+      sessionStorage.removeItem('aevora_popup_session_shown');
       if (e.detail) {
         setSettings(prev => ({ ...prev, ...e.detail }));
       } else {
@@ -60,8 +78,8 @@ const SitePopup = () => {
 
   // Evaluate whether popup should trigger on the current route
   useEffect(() => {
-    // Admin routes should never trigger the public popup automatically
-    if (location.pathname.startsWith('/admin')) {
+    // Admin and Login routes should never trigger the public popup automatically
+    if (location.pathname.startsWith('/admin') || location.pathname === '/login') {
       setIsVisible(false);
       return;
     }
@@ -71,21 +89,24 @@ const SitePopup = () => {
       return;
     }
 
-    // Only show once per session
-    const shownInSession = sessionStorage.getItem('aevora_popup_session_shown');
-    if (shownInSession === 'true') {
-      return;
+    // Only respect session restriction if explicitly set to 'session'
+    if (settings.displayFrequency === 'session') {
+      const shownInSession = sessionStorage.getItem('aevora_popup_session_shown');
+      if (shownInSession === 'true') {
+        return;
+      }
     }
 
-    // Trigger after brief 1.5s delay
+    // Trigger after configured delay (default 1s)
+    const delayMs = Math.max(500, (Number(settings.displayDelay) || 1) * 1000);
     timerRef.current = setTimeout(() => {
       setIsVisible(true);
-    }, 1500);
+    }, delayMs);
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [location.pathname, settings.enabled]);
+  }, [location.pathname, settings.enabled, settings.displayFrequency, settings.displayDelay]);
 
   // Close popup
   const handleClose = () => {

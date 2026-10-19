@@ -15,14 +15,18 @@ const AdminLogin = ({ onLogin }) => {
 
     // Simulate network authentication
     setTimeout(() => {
-      if ((email === 'admin@aevora.com' || email === 'admin') && password === 'aevoraadmin123') {
+      const cleanEmail = (email || '').trim().toLowerCase();
+      if (
+        (cleanEmail === 'admin@aevora.com' || cleanEmail === 'admin@aevoraclinics.com' || cleanEmail === 'admin') && 
+        password === 'aevoraadmin123'
+      ) {
         localStorage.setItem('aevora_admin_auth', 'true');
-        onLogin(true);
+        if (onLogin) onLogin(true);
       } else {
         setError('Invalid credentials. Please try again.');
       }
       setIsLoading(false);
-    }, 1000);
+    }, 600);
   };
 
   return (

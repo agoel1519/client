@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Home from './components/pages/Home';
 import AdminLayout from './components/admin/AdminLayout';
+import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminPagesList from './components/admin/AdminPagesList';
 import AdminPageBuilder from './components/admin/AdminPageBuilder';
@@ -25,6 +26,11 @@ import Press from './components/pages/Press';
 import Blog from './components/pages/Blog';
 import BlogPost from './components/pages/BlogPost';
 
+function AdminLoginRoute() {
+  const navigate = useNavigate();
+  return <AdminLogin onLogin={() => navigate('/admin')} />;
+}
+
 function App() {
   return (
     <Router>
@@ -40,6 +46,10 @@ function App() {
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/treatments" element={<DynamicTreatmentPage />} />
         <Route path="/treatments/:slug" element={<DynamicTreatmentPage />} />
+        
+        {/* Auth Routes */}
+        <Route path="/login" element={<AdminLoginRoute />} />
+        <Route path="/admin/login" element={<AdminLoginRoute />} />
         
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLayout />}>

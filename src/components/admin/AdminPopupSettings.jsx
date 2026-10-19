@@ -7,7 +7,8 @@ import {
   Sparkles, 
   Image as ImageIcon,
   Phone,
-  MessageSquare
+  MessageSquare,
+  ExternalLink
 } from 'lucide-react';
 import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 import { defaultPopupSettings } from '../../data/defaultPopupSettings';
@@ -55,6 +56,11 @@ const AdminPopupSettings = () => {
     setShowSuccess(false);
 
     try {
+      sessionStorage.removeItem('aevora_popup_session_shown');
+      try {
+        localStorage.setItem('aevora_setting_site_popup_settings', JSON.stringify(settings));
+      } catch (e) {}
+
       await saveDbSetting('site_popup_settings', settings);
 
       // Dispatch global event for live preview in the app
@@ -102,12 +108,23 @@ const AdminPopupSettings = () => {
         </div>
 
         <div className="header-actions">
+          <a 
+            href="/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="btn-preview-trigger"
+            onClick={() => sessionStorage.removeItem('aevora_popup_session_shown')}
+            style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+          >
+            <ExternalLink size={17} /> View Frontend Live
+          </a>
+
           <button 
             type="button" 
             className="btn-preview-trigger"
             onClick={triggerLivePreview}
           >
-            <Eye size={17} /> Test Popup Preview
+            <Eye size={17} /> Test Modal Preview
           </button>
 
           <button 
@@ -159,6 +176,25 @@ const AdminPopupSettings = () => {
                 <strong>{settings.enabled ? 'Popup is Active' : 'Popup is Disabled'}</strong>
                 <span>{settings.enabled ? 'Visitors will see the popup when visiting the website.' : 'Popup is currently hidden from visitors.'}</span>
               </div>
+            </div>
+
+            <div className="status-frequency-setting" style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #e2e8f0' }}>
+              <label style={{ fontWeight: 600, display: 'block', marginBottom: '8px', color: '#1e293b' }}>
+                Display Frequency (Popup kab kab dikhana hai)
+              </label>
+              <select 
+                name="displayFrequency" 
+                value={settings.displayFrequency || 'always'}
+                onChange={handleChange}
+                className="form-input"
+                style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #cbd5e1', background: '#f8fafc', fontSize: '14px', fontWeight: 500 }}
+              >
+                <option value="always">Har visit / reload par dikhayein (Always Show - Recommended for Offers)</option>
+                <option value="session">Browser session mein sirf ek baar dikhayein (Once per Session)</option>
+              </select>
+              <span className="input-hint" style={{ fontSize: '13px', color: '#64748b', marginTop: '6px', display: 'block' }}>
+                'Always Show' rakhne par visitors ko har baar promotion dikhega aur testing mein turant popup aayega.
+              </span>
             </div>
           </div>
 
