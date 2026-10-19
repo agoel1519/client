@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Palette, Save, CheckCircle2, AlertTriangle, RotateCcw, Sparkles, Type, Eye } from 'lucide-react';
+import { Palette, Save, CheckCircle2, AlertTriangle, RotateCcw, Type, Eye } from 'lucide-react';
 import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 import { defaultTheme, applyThemeToDom } from '../../utils/themeHelper';
 import './AdminDashboard.css';
@@ -247,7 +247,7 @@ const AdminThemeSettings = () => {
       {/* Preset Palettes */}
       <div className="premium-card mb-4" style={{ padding: '24px', marginBottom: '24px' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Sparkles size={18} className="text-primary" /> Curated Luxury Presets
+          <Palette size={18} className="text-primary" /> Curated Luxury Presets
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
           {presets.map((p, i) => (
@@ -644,7 +644,7 @@ const AdminThemeSettings = () => {
               }}
             >
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', alignSelf: 'flex-start', padding: '4px 12px', borderRadius: '20px', background: `${theme.gold}25`, color: theme.gold, fontSize: '0.75rem', fontWeight: 700, letterSpacing: '1px', fontFamily: theme.fontOutfit || theme.fontMain }}>
-                <Sparkles size={12} /> CLINICAL SANCTUARY
+                CLINICAL SANCTUARY
               </div>
 
               <h2 style={{ 

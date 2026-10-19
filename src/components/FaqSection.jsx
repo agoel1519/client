@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   Plus, 
   Minus, 
-  Sparkles, 
   HelpCircle, 
   MessageCircle, 
   PhoneCall, 

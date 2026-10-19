@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, CheckCircle2, AlertTriangle, Plus, Trash2, Edit3, X, Eye, FileText, Sparkles } from 'lucide-react';
+import { Save, CheckCircle2, AlertTriangle, Plus, Trash2, Edit3, X, Eye, FileText } from 'lucide-react';
 import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 import ImageUploader from './ImageUploader';
 import './AdminDashboard.css';
@@ -326,7 +326,7 @@ const AdminBlogSettings = () => {
       {/* Hero Banner Section Settings */}
       <div className="premium-card mb-4" style={{ padding: '24px', marginBottom: '24px' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Sparkles size={18} className="text-primary" />
+          <FileText size={18} className="text-primary" />
           Blog Header &amp; Hero Settings
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>

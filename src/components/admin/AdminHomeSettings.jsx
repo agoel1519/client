@@ -5,7 +5,7 @@ import {
   Plus, 
   Trash2, 
   Image as ImageIcon,
-  Sparkles,
+  Camera,
   Award,
   Video,
   HelpCircle,
@@ -399,7 +399,7 @@ const AdminHomeSettings = () => {
   const tabs = [
     { id: 'sectionsManager', label: 'Section Order & Visibility', icon: LayoutGrid },
     { id: 'hero', label: 'Hero Slides', icon: Layers },
-    { id: 'celebrity', label: 'Celebrity Spotlight', icon: Sparkles },
+    { id: 'celebrity', label: 'Celebrity Spotlight', icon: Camera },
     { id: 'video', label: 'Video Showcase', icon: Video },
     { id: 'whyChoose', label: 'Why Choose Us', icon: Sliders },
     { id: 'aboutClinic', label: 'About Clinic Intro', icon: Award },

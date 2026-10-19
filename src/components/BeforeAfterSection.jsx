@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Sparkles, 
   ArrowRight, 
   CheckCircle2, 
   SlidersHorizontal,
@@ -135,7 +134,6 @@ const BeforeAfterSection = () => {
         {/* Section Header */}
         <div className="ba-header">
           <div className="ba-subtitle-badge">
-            <Sparkles size={14} className="badge-sparkle-icon" />
             <span>CLINICALLY PROVEN OUTCOMES</span>
           </div>
           <h2 className="ba-title">

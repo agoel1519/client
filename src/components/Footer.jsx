@@ -6,7 +6,6 @@ import {
   Mail, 
   Clock, 
   ArrowRight, 
-  Sparkles, 
   Send, 
   CheckCircle2,
   ShieldCheck

@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   ChevronLeft, 
   ChevronRight, 
-  ArrowRight, 
-  Sparkles 
+  ArrowRight 
 } from 'lucide-react';
 import { getDbSetting } from '../api/mongoApi';
 import './TreatmentsCarousel.css';

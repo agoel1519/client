@@ -11,7 +11,6 @@ import {
   MessageCircle, 
   Phone, 
   CheckCircle2, 
-  Sparkles, 
   ShieldCheck, 
   Calendar,
   ArrowRight,

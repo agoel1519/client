@@ -4,7 +4,6 @@ import {
   Sliders, 
   ShieldCheck, 
   Cpu, 
-  Sparkles, 
   ArrowRight, 
   CheckCircle2,
   Award,
@@ -40,7 +39,7 @@ const features = [
   },
   {
     id: 4,
-    icon: Sparkles,
+    icon: Award,
     title: 'Natural Outcomes',
     tagline: 'Refinement without obvious change',
     description: 'Our philosophy centers on undetectable elegance. We enhance and restore your natural contours, delivering refreshed youthfulness without visible artificial alteration.',
@@ -101,7 +100,7 @@ const WhyChooseAevora = () => {
         {/* 4 Pillars Grid */}
         <div className="pillars-grid">
           {currentPillars.map((item, index) => {
-            const IconComponent = item.icon || Sparkles;
+            const IconComponent = item.icon || Award;
             return (
               <div key={item.id} className="pillar-card">
                 <div className="card-top-row">

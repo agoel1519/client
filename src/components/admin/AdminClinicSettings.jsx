@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, CheckCircle2, AlertTriangle, MapPin, Phone, Mail, Clock, Map, Sparkles } from 'lucide-react';
+import { Save, CheckCircle2, AlertTriangle, MapPin, Phone, Mail, Clock, Map } from 'lucide-react';
 import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 import './AdminClinicSettings.css';
 

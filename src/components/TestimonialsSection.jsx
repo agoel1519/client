@@ -5,7 +5,6 @@ import {
   ChevronLeft, 
   ChevronRight, 
   CheckCircle2, 
-  Sparkles,
   MessageSquareHeart
 } from 'lucide-react';
 import { getDbSetting } from '../api/mongoApi';
@@ -148,7 +147,6 @@ const TestimonialsSection = () => {
         {/* Top Header & Google Trust Badge */}
         <div className="testimonials-header">
           <div className="testimonials-badge">
-            <Sparkles size={14} className="badge-gold-icon" />
             <span>{headerInfo.badge || 'AUTHENTIC PATIENT EXPERIENCES'}</span>
           </div>
 

@@ -9,7 +9,7 @@ import {
   LayoutTemplate,
   MonitorPlay,
   ArrowRight,
-  Sparkles,
+  Info,
   Megaphone
 } from 'lucide-react';
 import { getDbPages, getDbMedia } from '../../api/mongoApi';
@@ -133,7 +133,7 @@ const AdminDashboard = () => {
                     </div>
                   </Link>
                   <Link to="/admin/about-settings" className="action-btn">
-                    <div className="action-icon"><Sparkles size={20} /></div>
+                    <div className="action-icon"><Info size={20} /></div>
                     <div className="action-text">
                       <strong>About Us CMS</strong>
                       <span>Philosophy, team, gallery &amp; hero</span>

@@ -4,7 +4,6 @@ import {
   CheckCircle2, 
   Eye, 
   MessageCircle, 
-  Sparkles, 
   Image as ImageIcon,
   Phone,
   MessageSquare,
@@ -101,7 +100,7 @@ const AdminPopupSettings = () => {
       <div className="admin-popup-header">
         <div className="header-left">
           <div className="header-badge">
-            <Sparkles size={14} /> SIMPLE PROMO POPUP
+            SIMPLE PROMO POPUP
           </div>
           <h1>Promotional Popup Manager</h1>
           <p>Admin image upload karein aur uske niche WhatsApp Now ka button automatically show hoga.</p>
@@ -216,7 +215,6 @@ const AdminPopupSettings = () => {
               />
               
               <div className="tip-box">
-                <Sparkles size={15} />
                 <span>Recommended size: 600x600px (Square) ya 600x800px (Portrait) for crystal-clear mobile display.</span>
               </div>
             </div>
