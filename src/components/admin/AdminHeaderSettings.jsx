@@ -27,8 +27,8 @@ const defaultNav = [
   ]},
   { id: '3', label: 'TREATMENTS', url: '/#treatments', type: 'mega-menu', megaMenuItems: defaultMegaMenuItems },
   { id: '4', label: 'EXPERTS', url: '/experts', type: 'link' },
-  { id: '5', label: 'MEDIA', url: '#media', type: 'link' },
-  { id: '6', label: 'A-LISTER', url: '#a-lister', type: 'link' },
+  { id: '5', label: 'BLOG', url: '/blog', type: 'link' },
+  { id: '6', label: 'GALLERY', url: '/gallery', type: 'link' },
   { id: '7', label: 'CONTACT', url: '/contact', type: 'link' }
 ];
 

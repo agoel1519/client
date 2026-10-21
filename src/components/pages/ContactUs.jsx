@@ -5,6 +5,35 @@ import Header from '../Header';
 import Footer from '../Footer';
 import { MapPin, Phone, Mail } from 'lucide-react';
 
+export const DEFAULT_AEVORA_MAP_EMBED = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27451.450192191256!2d76.84114488101572!3d30.678139625046214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f93cadd2281e5%3A0x154181fc7bda7840!2sAevora%20by%20Kian%20Clinics!5e0!3m2!1sen!2sin!4v1792574171994!5m2!1sen!2sin";
+
+export const getCleanMapUrl = (raw) => {
+  if (!raw || typeof raw !== 'string') return DEFAULT_AEVORA_MAP_EMBED;
+  const trimmed = raw.trim();
+  if (!trimmed) return DEFAULT_AEVORA_MAP_EMBED;
+
+  // 1. If it's a full <iframe> snippet, extract src="..."
+  const iframeMatch = trimmed.match(/src\s*=\s*["']([^"']+)["']/i);
+  if (iframeMatch && iframeMatch[1]) {
+    return iframeMatch[1];
+  }
+
+  // 2. Remove accidental quotes
+  const unquoted = trimmed.replace(/^["']|["']$/g, '');
+
+  // 3. Valid embed URL
+  if (unquoted.includes('google.com/maps/embed')) {
+    return unquoted;
+  }
+
+  // 4. Shortlink or direct link fallback
+  if (unquoted.includes('maps.app.goo.gl') || unquoted.includes('google.com/maps')) {
+    return DEFAULT_AEVORA_MAP_EMBED;
+  }
+
+  return unquoted || DEFAULT_AEVORA_MAP_EMBED;
+};
+
 const defaultSettings = {
   heroTitle: "CONTACT US",
   heroSubtitle: "We'd love to hear from you",
@@ -16,7 +45,7 @@ const defaultSettings = {
   hours: "Mon – Sat: 10:00 AM – 8:00 PM | Sun: By Appointment",
   email: "concierge@aevoraclinics.com",
   responseTime: "We respond within 24 hours",
-  mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.722513470659!2d76.84852927647248!3d30.697334788975395!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f937248b1111b%3A0x6b801a61dd0d027e!2sSector%205%2C%20Panchkula%2C%20Haryana!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+  mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27451.450192191256!2d76.84114488101572!3d30.678139625046214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f93cadd2281e5%3A0x154181fc7bda7840!2sAevora%20by%20Kian%20Clinics!5e0!3m2!1sen!2sin!4v1792574171994!5m2!1sen!2sin"
 };
 
 const ContactUs = () => {
@@ -186,13 +215,13 @@ const ContactUs = () => {
             <div className="contact-map-col">
               <div className="contact-map-wrapper">
                 <iframe 
-                  src={settings.mapUrl} 
+                  src={getCleanMapUrl(settings.mapUrl)} 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 
                   allowFullScreen="" 
                   loading="lazy" 
-                  referrerPolicy="no-referrer-when-downgrade"
+                  referrerPolicy="strict-origin-when-cross-origin"
                   title="Clinic Location"
                 ></iframe>
               </div>

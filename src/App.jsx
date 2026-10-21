@@ -11,6 +11,7 @@ import AdminAboutSettings from './components/admin/AdminAboutSettings';
 import AdminExpertsSettings from './components/admin/AdminExpertsSettings';
 import AdminPressSettings from './components/admin/AdminPressSettings';
 import AdminBlogSettings from './components/admin/AdminBlogSettings';
+import AdminGallerySettings from './components/admin/AdminGallerySettings';
 import AdminHomeSettings from './components/admin/AdminHomeSettings';
 import AdminHeaderSettings from './components/admin/AdminHeaderSettings';
 import AdminFooterSettings from './components/admin/AdminFooterSettings';
@@ -25,6 +26,7 @@ import Experts from './components/pages/Experts';
 import Press from './components/pages/Press';
 import Blog from './components/pages/Blog';
 import BlogPost from './components/pages/BlogPost';
+import Gallery from './components/pages/Gallery';
 
 function AdminLoginRoute() {
   const navigate = useNavigate();
@@ -44,6 +46,7 @@ function App() {
         <Route path="/press" element={<Press />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="/treatments" element={<DynamicTreatmentPage />} />
         <Route path="/treatments/:slug" element={<DynamicTreatmentPage />} />
         
@@ -62,6 +65,7 @@ function App() {
           <Route path="experts-settings" element={<AdminExpertsSettings />} />
           <Route path="press-settings" element={<AdminPressSettings />} />
           <Route path="blog-settings" element={<AdminBlogSettings />} />
+          <Route path="gallery-settings" element={<AdminGallerySettings />} />
           <Route path="home-settings" element={<AdminHomeSettings />} />
           <Route path="visual-editor" element={<AdminHomeSettings />} />
           <Route path="header-settings" element={<AdminHeaderSettings />} />

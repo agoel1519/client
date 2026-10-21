@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Save, CheckCircle2, AlertTriangle, MapPin, Phone, Mail, Clock, Map } from 'lucide-react';
 import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
+import { getCleanMapUrl, DEFAULT_AEVORA_MAP_EMBED } from '../pages/ContactUs';
 import './AdminClinicSettings.css';
 
 const defaultSettings = {
@@ -16,7 +17,7 @@ const defaultSettings = {
   email: "concierge@aevoraclinics.com",
   website: "www.Aevoraclinics.com",
   responseTime: "We respond within 24 hours",
-  mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.722513470659!2d76.84852927647248!3d30.697334788975395!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f937248b1111b%3A0x6b801a61dd0d027e!2sSector%205%2C%20Panchkula%2C%20Haryana!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
+  mapUrl: DEFAULT_AEVORA_MAP_EMBED,
   expandingCities: "Chandigarh, Mohali, Delhi NCR"
 };
 
@@ -61,15 +62,25 @@ const AdminClinicSettings = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSettings(prev => ({ ...prev, [name]: value }));
+    if (name === 'mapUrl') {
+      const clean = getCleanMapUrl(value);
+      setSettings(prev => ({ ...prev, [name]: clean }));
+    } else {
+      setSettings(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSave = async () => {
     setIsSaving(true);
+    const settingsToSave = {
+      ...settings,
+      mapUrl: getCleanMapUrl(settings.mapUrl)
+    };
     try {
-      const res = await saveDbSetting('clinic_settings', settings);
-      localStorage.setItem('aevora_clinic_settings', JSON.stringify(settings));
+      const res = await saveDbSetting('clinic_settings', settingsToSave);
+      localStorage.setItem('aevora_clinic_settings', JSON.stringify(settingsToSave));
       window.dispatchEvent(new Event('clinicSettingsUpdated'));
+      setSettings(settingsToSave);
 
       if (res && res.offline) {
         showToast("Saved locally in cache! (Backend will sync on port 5001)");
@@ -247,16 +258,43 @@ const AdminClinicSettings = () => {
             </div>
           </div>
 
-          <div className="form-group">
-            <label>Google Maps Embed URL</label>
+          <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>Google Maps Embed URL or &lt;iframe&gt; code</span>
+              <span style={{ fontSize: '12px', color: '#059669', fontWeight: 600 }}>
+                ✓ Auto-extracts &lt;iframe&gt; or URL
+              </span>
+            </label>
             <textarea 
               name="mapUrl"
               value={settings.mapUrl}
               onChange={handleChange}
               rows="3"
-              placeholder="https://www.google.com/maps/embed?pb=..."
+              placeholder="Paste full <iframe src=...></iframe> or https://www.google.com/maps/embed?..."
             />
-            <span className="form-help">Paste the URL directly from the `src` attribute of Google Maps embed iframe.</span>
+            <span className="form-help">
+              Aap directly Google Maps ka pura &lt;iframe&gt; embed code ya embed link yaha paste kar sakte hain. System automatically clean embed link extract kar leta hai.
+            </span>
+
+            {/* Live Map Preview */}
+            {settings.mapUrl && (
+              <div style={{ marginTop: '14px', borderRadius: '10px', overflow: 'hidden', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                <div style={{ padding: '9px 14px', fontSize: '13px', fontWeight: 600, color: '#0f172a', background: '#f8fafc', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <MapPin size={16} color="#059669" />
+                  <span>Live Map Preview — Aevora by Kian Clinics</span>
+                </div>
+                <iframe 
+                  src={getCleanMapUrl(settings.mapUrl)} 
+                  width="100%" 
+                  height="260" 
+                  style={{ border: 0, display: 'block' }} 
+                  allowFullScreen="" 
+                  loading="lazy" 
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title="Admin Clinic Map Preview"
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

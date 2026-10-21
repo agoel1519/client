@@ -285,7 +285,7 @@ const getCategoryImage = () => {
  */
 export const getTreatmentData = (rawSlug) => {
   if (!rawSlug) return null;
-  
+
   const cleanSlug = slugify(rawSlug);
   const resolvedSlug = slugAliases[cleanSlug] || cleanSlug;
 
@@ -431,7 +431,7 @@ export const saveTreatmentPage = (slug, pageData) => {
   const cleanSlug = slugify(slug);
   try {
     localStorage.setItem(`aevora_treatment_${cleanSlug}`, JSON.stringify(pageData));
-    
+
     const registry = getCustomPagesRegistry();
     const existingIdx = registry.findIndex(item => item.slug === cleanSlug);
     if (existingIdx >= 0) {
@@ -460,7 +460,7 @@ export const deleteTreatmentPage = (slug) => {
   const cleanSlug = slugify(slug);
   try {
     localStorage.removeItem(`aevora_treatment_${cleanSlug}`);
-    
+
     const registry = getCustomPagesRegistry();
     const filtered = registry.filter(item => item.slug !== cleanSlug);
     localStorage.setItem('aevora_custom_pages_list', JSON.stringify(filtered));
@@ -480,7 +480,7 @@ export const deleteTreatmentPage = (slug) => {
 export const getAllTreatments = () => {
   const result = [];
   const addedSlugs = new Set();
-  
+
   // Standard 27 services
   allServicesList.forEach(item => {
     addedSlugs.add(item.slug);
@@ -493,7 +493,7 @@ export const getAllTreatments = () => {
       isCustomized
     });
   });
-  
+
   // Custom pages created in admin
   const customPages = getCustomPagesRegistry();
   customPages.forEach(cp => {
@@ -509,6 +509,6 @@ export const getAllTreatments = () => {
       });
     }
   });
-  
+
   return result;
 };

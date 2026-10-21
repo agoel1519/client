@@ -1,0 +1,348 @@
+/* ==========================================================================
+   AEVORA LUXURY CONSULTATION / CONTACT SECTION
+   Consistent brand aesthetic across all pages (Emerald & Gold)
+   ========================================================================== */
+
+.aevora-consultation-section {
+  width: 100%;
+  background: linear-gradient(180deg, #fbfdfc 0%, #f4f8f5 100%);
+  padding: 80px 24px 90px;
+  position: relative;
+  border-top: 1px solid rgba(13, 56, 44, 0.08);
+  box-sizing: border-box;
+}
+
+.aevora-consultation-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.aevora-consultation-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 56px;
+  align-items: flex-start;
+}
+
+/* Left Column: Clinic Contact Details */
+.aevora-consultation-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.aevora-consultation-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans, "Inter", -apple-system, sans-serif);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #c59d5f;
+  margin-bottom: 12px;
+}
+
+.aevora-consultation-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background-color: #c59d5f;
+}
+
+.aevora-consultation-heading {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", Georgia, serif);
+  color: #0d382c;
+  font-size: clamp(2rem, 3.2vw, 2.7rem);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0.5px;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+}
+
+.aevora-consultation-subtext {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  color: #4b5952;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  margin: 0 0 36px 0;
+  max-width: 480px;
+}
+
+.aevora-contact-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.aevora-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  transition: transform 0.2s ease;
+}
+
+.aevora-contact-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(197, 157, 95, 0.35);
+  box-shadow: 0 4px 12px rgba(13, 56, 44, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c59d5f;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: all 0.3s ease;
+}
+
+.aevora-contact-item:hover .aevora-contact-icon-box {
+  background: #0d382c;
+  color: #ffffff;
+  border-color: #0d382c;
+  transform: scale(1.05);
+}
+
+.aevora-contact-item-text {
+  flex: 1;
+}
+
+.aevora-contact-item-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #0d382c;
+  text-transform: uppercase;
+  margin: 0 0 4px 0;
+}
+
+.aevora-contact-item-val {
+  font-size: 0.95rem;
+  color: #3e4c45;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.aevora-contact-link {
+  color: #3e4c45;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.aevora-contact-link:hover {
+  color: #0d382c;
+  text-decoration: underline;
+}
+
+/* Right Column: Luxury Form Card */
+.aevora-consultation-form-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 42px 38px;
+  box-shadow: 0 16px 48px rgba(13, 56, 44, 0.07);
+  border: 1px solid rgba(13, 56, 44, 0.09);
+  position: relative;
+  overflow: hidden;
+}
+
+.aevora-consultation-form-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0d382c 0%, #c59d5f 50%, #0d382c 100%);
+}
+
+.aevora-booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.aevora-form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.aevora-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.aevora-input-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #0d382c;
+  text-transform: uppercase;
+}
+
+.aevora-form-input,
+.aevora-form-select,
+.aevora-form-textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1.5px solid #dbe4de;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #1b2520;
+  background-color: #fafcfb;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+.aevora-form-input:focus,
+.aevora-form-select:focus,
+.aevora-form-textarea:focus {
+  border-color: #0d382c;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(13, 56, 44, 0.1);
+}
+
+.aevora-form-select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+.aevora-form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.aevora-form-submit-btn {
+  background: #0d382c;
+  color: #ffffff;
+  border: 1px solid #0d382c;
+  padding: 16px 28px;
+  border-radius: 50px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 6px;
+  box-shadow: 0 6px 20px rgba(13, 56, 44, 0.2);
+}
+
+.aevora-form-submit-btn:hover:not(:disabled) {
+  background: #08241c;
+  border-color: #08241c;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(13, 56, 44, 0.3);
+}
+
+.aevora-form-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.aevora-form-footer-note {
+  font-size: 0.78rem;
+  color: #6c7c73;
+  text-align: center;
+  margin: 4px 0 0 0;
+}
+
+/* Success Card */
+.aevora-booking-success-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  min-height: 340px;
+}
+
+.aevora-success-icon-wrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #eef7f2;
+  color: #0d382c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border: 2px solid #c59d5f;
+}
+
+.aevora-success-title {
+  font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
+  font-size: 1.6rem;
+  color: #0d382c;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.aevora-success-desc {
+  font-size: 0.98rem;
+  color: #4b5952;
+  line-height: 1.65;
+  max-width: 440px;
+  margin: 0 0 24px 0;
+}
+
+.aevora-reset-btn {
+  background: transparent;
+  color: #0d382c;
+  border: 1.5px solid #0d382c;
+  padding: 11px 24px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.aevora-reset-btn:hover {
+  background: #0d382c;
+  color: #ffffff;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 960px) {
+  .aevora-consultation-section {
+    padding: 60px 20px 70px;
+  }
+  .aevora-consultation-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .aevora-consultation-info {
+    text-align: left;
+  }
+  .aevora-consultation-subtext {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .aevora-consultation-form-card {
+    padding: 28px 20px;
+    border-radius: 16px;
+  }
+  .aevora-form-row-2 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

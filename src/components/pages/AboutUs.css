@@ -56,57 +56,88 @@
   line-height: 1.25;
 }
 
-/* INTRO QUOTE */
+/* INTRO PHILOSOPHY MANIFESTO (ABOVE FOUNDING TEAM) */
 .about-intro-section {
-  padding: 80px 20px;
+  padding: 70px 24px 20px 24px;
   background: #ffffff;
 }
 
-.about-intro-box {
-  max-width: 900px;
+.about-intro-container {
+  max-width: 1100px;
   margin: 0 auto;
-  background-color: #f7f9fa;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 60px 40px;
+}
+
+.about-intro-box {
+  background: var(--aevora-sage-bg, #f4f8f5); /* Aevora signature sage/soft luxury card background */
+  border-radius: 32px;
+  padding: 56px 64px 50px 64px;
   text-align: center;
   position: relative;
+  box-shadow: 0 16px 40px rgba(13, 56, 44, 0.05);
+  border: 1px solid rgba(13, 56, 44, 0.1);
 }
 
 .about-quote-mark {
-  font-family: var(--font-serif, Georgia, serif);
+  font-family: Georgia, 'Playfair Display', serif;
   font-size: 5rem;
-  color: rgba(197, 157, 95, 0.2);
+  color: var(--aevora-gold, #c59d5f);
+  opacity: 0.35;
   position: absolute;
-  top: 20px;
-  left: 30px;
+  top: 30px;
+  left: 42px;
   line-height: 1;
+  pointer-events: none;
+  user-select: none;
 }
 
 .about-intro-heading {
-  font-family: var(--font-serif, serif);
-  font-size: 2rem;
-  color: #0d382c;
-  margin: 0 0 20px 0;
+  font-family: var(--font-serif, 'Playfair Display', Georgia, serif);
+  font-size: 2.35rem;
+  font-weight: 400;
   font-style: italic;
+  color: var(--aevora-emerald, #0d382c); /* Brand Emerald */
+  margin: 0 auto 28px auto;
+  max-width: 860px;
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+}
+
+.about-intro-content {
+  max-width: 860px;
+  margin: 0 auto;
 }
 
 .about-intro-text {
   font-size: 1.05rem;
-  line-height: 1.8;
-  color: #4b5563;
-  margin-bottom: 30px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+  line-height: 1.85;
+  color: var(--aevora-body-text, #4b5e55); /* Brand Body text */
+  margin: 0 auto 18px auto;
+  font-family: var(--font-main, 'Plus Jakarta Sans', sans-serif);
+  font-weight: 400;
+}
+
+.about-intro-text:last-of-type {
+  margin-bottom: 24px;
+}
+
+.about-intro-divider {
+  width: 240px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--aevora-gold, #c59d5f), transparent);
+  opacity: 0.7;
+  margin: 32px auto 26px auto;
 }
 
 .about-intro-footer {
-  font-size: 0.85rem;
-  letter-spacing: 2px;
-  color: #c59d5f;
+  font-size: 0.92rem;
+  letter-spacing: 2.5px;
+  color: var(--aevora-gold, #c59d5f); /* Brand Gold */
   text-transform: uppercase;
   font-weight: 700;
+  line-height: 1.6;
+  max-width: 780px;
+  margin: 0 auto;
+  font-family: var(--font-main, 'Plus Jakarta Sans', sans-serif);
 }
 
 /* FOUNDING TEAM */
@@ -308,6 +339,35 @@
 @media (max-width: 768px) {
   .about-hero-title {
     font-size: 1.5rem;
+  }
+  .about-intro-section {
+    padding: 40px 16px 15px 16px;
+  }
+  .about-intro-box {
+    padding: 42px 20px 34px 20px;
+    border-radius: 20px;
+  }
+  .about-quote-mark {
+    top: 16px;
+    left: 18px;
+    font-size: 3.4rem;
+  }
+  .about-intro-heading {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+  .about-intro-text {
+    font-size: 0.98rem;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .about-intro-divider {
+    margin: 24px auto 18px auto;
+    width: 160px;
+  }
+  .about-intro-footer {
+    font-size: 0.82rem;
+    letter-spacing: 1.8px;
   }
   .team-grid {
     grid-template-columns: 1fr;

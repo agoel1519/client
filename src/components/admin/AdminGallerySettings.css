@@ -1,0 +1,140 @@
+/* AdminGallerySettings.css */
+
+.gallery-admin-container {
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.gallery-admin-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 25px;
+  background: #ffffff;
+  padding: 10px 16px 0;
+  border-radius: 12px 12px 0 0;
+}
+
+.gallery-admin-tab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  margin-bottom: -2px;
+}
+
+.gallery-admin-tab-btn:hover {
+  color: #0d382c;
+}
+
+.gallery-admin-tab-btn.active {
+  color: #0d382c;
+  border-bottom-color: #0d382c;
+  font-weight: 700;
+}
+
+.gallery-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.gallery-admin-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.gallery-admin-card:hover {
+  border-color: #0d382c;
+  box-shadow: 0 8px 25px rgba(13, 56, 44, 0.08);
+}
+
+.gallery-admin-thumb-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.gallery-admin-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-admin-card-body {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.gallery-admin-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.gallery-admin-card-index {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #c59d5f;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.gallery-admin-card-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.gallery-admin-btn-icon {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.gallery-admin-btn-icon:hover {
+  background: #0d382c;
+  color: #ffffff;
+  border-color: #0d382c;
+}
+
+.gallery-admin-btn-icon.delete:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+.gallery-admin-form-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+  padding: 28px;
+  max-width: 800px;
+  margin: 0 auto;
+}

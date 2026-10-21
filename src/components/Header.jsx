@@ -50,8 +50,8 @@ const Header = () => {
       ]},
       { id: '3', label: 'TREATMENTS', url: '/#treatments', type: 'mega-menu', megaMenuItems: defaultMegaMenuItems },
       { id: '4', label: 'EXPERTS', url: '/experts', type: 'link' },
-      { id: '5', label: 'MEDIA', url: '#media', type: 'link' },
-      { id: '6', label: 'A-LISTER', url: '#a-lister', type: 'link' },
+      { id: '5', label: 'BLOG', url: '/blog', type: 'link' },
+      { id: '6', label: 'GALLERY', url: '/gallery', type: 'link' },
       { id: '7', label: 'CONTACT', url: '/contact', type: 'link' }
     ],
     logoUrl: "/aevora-logo-clean.png",
@@ -74,8 +74,17 @@ const Header = () => {
             if (item.label === 'MEDIA' || item.id === '5') {
               return {
                 ...item,
+                label: 'BLOG',
                 type: 'link',
-                url: item.url || '#media'
+                url: '/blog'
+              };
+            }
+            if (item.label === 'A-LISTER' || item.label === 'Gallery' || item.id === '6') {
+              return {
+                ...item,
+                label: 'GALLERY',
+                type: 'link',
+                url: '/gallery'
               };
             }
             return item;
@@ -453,18 +462,18 @@ const Header = () => {
               </Link>
             </li>
 
-            {/* MEDIA */}
+            {/* BLOG */}
             <li className="mobile-menu-item">
-              <a href="#media" className="mobile-link" onClick={closeMobileMenu}>
-                MEDIA
-              </a>
+              <Link to="/blog" className="mobile-link" onClick={closeMobileMenu}>
+                BLOG
+              </Link>
             </li>
 
-            {/* A-LISTER */}
+            {/* GALLERY */}
             <li className="mobile-menu-item">
-              <a href="#a-lister" className="mobile-link" onClick={closeMobileMenu}>
-                A-LISTER
-              </a>
+              <Link to="/gallery" className="mobile-link" onClick={closeMobileMenu}>
+                GALLERY
+              </Link>
             </li>
 
             {/* CONTACT */}

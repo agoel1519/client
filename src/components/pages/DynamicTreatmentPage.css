@@ -175,29 +175,31 @@
 }
 
 /* ---------------------------------------------------
-   EMPOWER OVERVIEW ACCORDION (Full-Width / Wide)
+   EMPOWER OVERVIEW ACCORDION (Centered Aesthetic Width)
    --------------------------------------------------- */
 .dt-empower-section {
   width: 100%;
-  max-width: 100%;
-  margin: 50px 0 80px 0;
-  padding: 0;
+  max-width: 880px;
+  margin: 55px auto 85px auto;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .dt-empower-heading {
   font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
   color: #111827; /* Matching luxury plum heading */
-  font-size: 2.1rem;
+  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
   font-weight: 400;
   letter-spacing: 1.2px;
   text-transform: uppercase;
   text-align: center;
   line-height: 1.35;
-  margin-bottom: 45px;
+  margin-bottom: 35px;
 }
 
 .dt-empower-accordion {
   border-top: 1px solid #e5e7eb;
+  width: 100%;
 }
 
 .dt-empower-item {
@@ -310,12 +312,15 @@
    ACCORDIONS & FAQS
    --------------------------------------------------- */
 .dt-accordion-section, .dt-faq-section {
-  margin-bottom: 70px;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto 70px auto;
   background-color: #ffffff;
-  padding: 50px 40px;
+  padding: 45px 35px;
   border-radius: 16px;
   border: 1px solid rgba(13, 56, 44, 0.08);
   box-shadow: 0 8px 24px rgba(13, 56, 44, 0.03);
+  box-sizing: border-box;
 }
 
 .dt-accordion-list {
@@ -1019,18 +1024,21 @@
    --------------------------------------------------- */
 .dt-faq-clean-section {
   width: 100%;
-  margin: 65px 0 50px 0;
+  max-width: 880px;
+  margin: 65px auto 55px auto;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .dt-faq-clean-heading {
   font-family: var(--font-serif, "Cinzel", "Playfair Display", serif);
   color: #111827;
-  font-size: clamp(1.7rem, 2.8vw, 2.2rem);
+  font-size: clamp(1.6rem, 2.5vw, 2.1rem);
   text-align: center;
   text-transform: uppercase;
   font-weight: 500;
   letter-spacing: 1px;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 
 .dt-faq-clean-list {

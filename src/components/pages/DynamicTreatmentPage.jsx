@@ -3,15 +3,16 @@ import { useParams, Link } from 'react-router-dom';
 import './DynamicTreatmentPage.css';
 import Header from '../Header';
 import Footer from '../Footer';
-import { 
-  ChevronDown, 
-  ChevronUp, 
-  ChevronLeft, 
-  ChevronRight, 
-  MessageCircle, 
-  Phone, 
-  CheckCircle2, 
-  ShieldCheck, 
+import ConsultationSection from '../ConsultationSection';
+import {
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft,
+  ChevronRight,
+  MessageCircle,
+  Phone,
+  CheckCircle2,
+  ShieldCheck,
   Calendar,
   ArrowRight,
   MapPin,
@@ -24,12 +25,12 @@ import { getTreatmentData, getAllTreatments, allServicesList } from '../../data/
 const DynamicTreatmentPage = ({ pageData: propPageData }) => {
   const { slug } = useParams();
   const currentSlug = slug || 'laser-hair-reduction';
-  
+
   const allTreatments = (typeof getAllTreatments === 'function' ? getAllTreatments() : null) || allServicesList || [];
 
   const [pageData, setPageData] = useState(propPageData || null);
   const [loading, setLoading] = useState(!propPageData);
-  
+
   const [activeAccordion, setActiveAccordion] = useState(0);
   const [activeFaq, setActiveFaq] = useState(0);
   const [baSlide, setBaSlide] = useState(0);
@@ -53,7 +54,7 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
         const views = window.innerWidth <= 600 ? 1 : window.innerWidth <= 900 ? 2 : 3;
         setItemsPerView(views);
         setBaSlideWidth(width / views);
-        
+
         // Reset slide if it's out of bounds after resize
         setBaSlide(prev => {
           const max = Math.max(0, (pageData?.beforeAfter?.images?.length || 0) - views);
@@ -72,7 +73,7 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
     setActiveFaq(0);
     setBaSlide(0);
     setFormSubmitted(false);
-    
+
     if (propPageData) {
       setPageData(propPageData);
       setLoading(false);
@@ -88,11 +89,11 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
       const localCustom = localStorage.getItem(`aevora_treatment_${currentSlug}`);
       let parsedCustom = null;
       if (localCustom) {
-        try { parsedCustom = JSON.parse(localCustom); } catch (e) {}
+        try { parsedCustom = JSON.parse(localCustom); } catch (e) { }
       }
 
-      const dbData = (pageRes.status === 'fulfilled' && pageRes.value) || 
-                     (treatRes.status === 'fulfilled' && treatRes.value);
+      const dbData = (pageRes.status === 'fulfilled' && pageRes.value) ||
+        (treatRes.status === 'fulfilled' && treatRes.value);
 
       // Priority: 1. Immediate Admin Edits (localStorage) -> 2. Remote MongoDB/Backend -> 3. Procedural Catalog
       const activeData = (parsedCustom && parsedCustom.title) ? parsedCustom : (dbData || getTreatmentData(currentSlug));
@@ -135,11 +136,11 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
   // Auto-play Before/After Slider - unconditionally declared before any early returns
   useEffect(() => {
     if (imagesCount <= itemsPerView) return;
-    
+
     const interval = setInterval(() => {
       setBaSlide((prev) => (prev >= maxSlide ? 0 : prev + 1));
     }, 3500); // 3.5s auto-scroll
-    
+
     return () => clearInterval(interval);
   }, [imagesCount, maxSlide, itemsPerView]);
 
@@ -203,13 +204,13 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
   return (
     <div className="dynamic-page-container">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="dt-hero">
         <div className="dt-hero-content">
           <p className="dt-breadcrumb">
-            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>HOME</Link> / 
-            <span style={{ margin: '0 6px' }}>TREATMENTS</span> / 
+            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>HOME</Link> /
+            <span style={{ margin: '0 6px' }}>TREATMENTS</span> /
             <span style={{ color: '#fff', fontWeight: 600 }}> {pageData.title.replace(' IN MUMBAI', '')}</span>
           </p>
           <h1 className="dt-title">{pageData.title}</h1>
@@ -219,7 +220,7 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
       {/* Main Content */}
       <main className="dt-main">
         <div className="dt-container">
-          
+
           {/* Introduction Paragraph (Screenshot 1 top) */}
           <div className="dt-intro-wrapper">
             <p className="dt-intro">{pageData.introText}</p>
@@ -229,13 +230,13 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
           <section className="dt-qa-section">
             <h2 className="dt-question-heading">{pageData.contentSection?.heading}</h2>
             <p className="dt-answer-text">{pageData.contentSection?.text}</p>
-            
+
             {/* Full-Width Image directly below answer */}
             <div className="dt-fullwidth-image-wrapper">
-              <img 
-                src={pageData.contentSection?.image || '/treatments/treatment-skin.jpg'} 
-                alt={pageData.title} 
-                className="dt-fullwidth-image" 
+              <img
+                src={pageData.contentSection?.image || '/treatments/treatment-skin.jpg'}
+                alt={pageData.title}
+                className="dt-fullwidth-image"
               />
             </div>
           </section>
@@ -291,11 +292,11 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
                 {pageData.pathwaySection?.paragraphs?.map((para, pIdx) => (
                   <p key={pIdx} className="dt-pathway-p">{para}</p>
                 )) || (
-                  <>
-                    <p className="dt-pathway-p">{pageData.ctaSection?.text}</p>
-                    <p className="dt-pathway-p">Ready to explore your options and reclaim your confidence? Contact us today to schedule a consultation and discuss the possibilities!</p>
-                  </>
-                )}
+                    <>
+                      <p className="dt-pathway-p">{pageData.ctaSection?.text}</p>
+                      <p className="dt-pathway-p">Ready to explore your options and reclaim your confidence? Contact us today to schedule a consultation and discuss the possibilities!</p>
+                    </>
+                  )}
               </div>
             </section>
           )}
@@ -445,137 +446,8 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
             </section>
           )}
 
-          {/* 5. BOOK AN APPOINTMENT SECTION (SCREENSHOT 5) */}
-          <section className="dt-appointment-section" id="appointment">
-            <div className="dt-app-layout-two-col">
-              
-              {/* Left Column: Clinic Contact Information */}
-              <div className="dt-app-info-col">
-                <h2 className="dt-app-heading">BOOK AN APPOINTMENT</h2>
-
-                <div className="dt-app-detail-item">
-                  <div className="dt-app-detail-icon">
-                    <MapPin size={20} />
-                  </div>
-                  <div className="dt-app-detail-text">
-                    <h4 className="dt-app-detail-label">VISIT OUR CLINIC</h4>
-                    <p className="dt-app-detail-val">
-                      {pageData.clinicInfo?.address || 'SCO 205 FF, Sector 5, Panchkula – 134114'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="dt-app-detail-item">
-                  <div className="dt-app-detail-icon">
-                    <Phone size={20} />
-                  </div>
-                  <div className="dt-app-detail-text">
-                    <h4 className="dt-app-detail-label">CALL DIRECTLY</h4>
-                    <p className="dt-app-detail-val">
-                      {pageData.clinicInfo?.phones?.join(' | ') || '+91 97797 66933'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="dt-app-detail-item">
-                  <div className="dt-app-detail-icon">
-                    <Mail size={20} />
-                  </div>
-                  <div className="dt-app-detail-text">
-                    <h4 className="dt-app-detail-label">EMAIL US</h4>
-                    <p className="dt-app-detail-val">
-                      {pageData.clinicInfo?.email || 'concierge@aevoraclinics.com'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="dt-app-detail-item">
-                  <div className="dt-app-detail-icon">
-                    <Clock size={20} />
-                  </div>
-                  <div className="dt-app-detail-text">
-                    <h4 className="dt-app-detail-label">CLINIC HOURS</h4>
-                    <p className="dt-app-detail-val">
-                      {pageData.clinicInfo?.hours || 'Monday – Sunday: 10:00 AM – 7:00 PM'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column: Appointment Form Card */}
-              <div className="dt-app-form-card">
-                {formSubmitted ? (
-                  <div className="dt-success-box">
-                    <CheckCircle2 size={46} style={{ color: '#724c80', marginBottom: '16px' }} />
-                    <h3 style={{ color: '#724c80' }}>Appointment Request Received</h3>
-                    <p style={{ color: '#4a5568', lineHeight: '1.6', marginTop: '10px' }}>
-                      Thank you, <strong>{formData.name}</strong>. Our medical team will contact you shortly to confirm your booking for <strong>{formData.treatment}</strong>.
-                    </p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="dt-booking-clean-form">
-                    <div className="dt-clean-form-row-2">
-                      <input 
-                        type="text" 
-                        name="name" 
-                        placeholder="Your Name *" 
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required 
-                        className="dt-clean-input"
-                      />
-                      <input 
-                        type="email" 
-                        name="email" 
-                        placeholder="Email *" 
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required 
-                        className="dt-clean-input"
-                      />
-                    </div>
-                    
-                    <input 
-                      type="tel" 
-                      name="phone" 
-                      placeholder="Phone *" 
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required 
-                      className="dt-clean-input"
-                    />
-
-                    <select 
-                      name="treatment" 
-                      value={formData.treatment} 
-                      onChange={handleInputChange}
-                      className="dt-clean-input dt-clean-select"
-                    >
-                      <option value="">Select Treatment (Optional)</option>
-                      <option value={pageData.title}>{pageData.title}</option>
-                      {allTreatments.map((t, idx) => (
-                        <option key={idx} value={t.name}>{t.name} ({t.category})</option>
-                      ))}
-                    </select>
-
-                    <textarea 
-                      name="message" 
-                      placeholder="Message (Optional)" 
-                      rows="4"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      className="dt-clean-input dt-clean-textarea"
-                    ></textarea>
-
-                    <button type="submit" className="dt-clean-submit-btn">
-                      BOOK APPOINTMENT
-                    </button>
-                  </form>
-                )}
-              </div>
-
-            </div>
-          </section>
+          {/* 5. BOOK AN APPOINTMENT SECTION */}
+          <ConsultationSection defaultTreatment={pageData.title} />
 
         </div>
       </main>
@@ -586,27 +458,27 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
       </a>
 
       {/* FLOATING WHATSAPP BUTTON (BOTTOM-LEFT IN SCREENSHOTS) */}
-      <a 
-        href="https://wa.me/919779766933" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="dt-floating-whatsapp-btn" 
+      <a
+        href="https://wa.me/919779766933"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="dt-floating-whatsapp-btn"
         aria-label="WhatsApp Us"
       >
         <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
-          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.539 1.932.825 2.791.825 3.182 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.18-.543-1.638-.676-2.69-2.348-2.771-2.457-.082-.11-1.002-1.332-1.002-2.54 0-1.209.636-1.804.862-2.051.144-.158.378-.23.606-.23.197 0 .341.007.489.014.161.007.377-.061.589.447.218.523.743 1.815.808 1.948.066.132.11.288.022.464-.088.176-.132.287-.263.441-.132.154-.277.344-.396.462-.132.132-.27.275-.116.539.154.264.685 1.13 1.47 1.83 1.012.901 1.866 1.18 2.13 1.312.264.132.418.11.572-.066.154-.176.66-.77 1.012-1.18.264-.308.572-.22.88-.11.308.11 1.956.923 2.292 1.09.336.167.56.248.643.388.082.14.082.808-.062 1.213zM12.04 2C6.497 2 2 6.497 2 12.04c0 1.924.542 3.722 1.48 5.259L2 22l4.838-1.442A9.98 9.98 0 0012.04 22c5.543 0 10.04-4.497 10.04-10.04C22.08 6.497 17.583 2 12.04 2z"/>
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.539 1.932.825 2.791.825 3.182 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.18-.543-1.638-.676-2.69-2.348-2.771-2.457-.082-.11-1.002-1.332-1.002-2.54 0-1.209.636-1.804.862-2.051.144-.158.378-.23.606-.23.197 0 .341.007.489.014.161.007.377-.061.589.447.218.523.743 1.815.808 1.948.066.132.11.288.022.464-.088.176-.132.287-.263.441-.132.154-.277.344-.396.462-.132.132-.27.275-.116.539.154.264.685 1.13 1.47 1.83 1.012.901 1.866 1.18 2.13 1.312.264.132.418.11.572-.066.154-.176.66-.77 1.012-1.18.264-.308.572-.22.88-.11.308.11 1.956.923 2.292 1.09.336.167.56.248.643.388.082.14.082.808-.062 1.213zM12.04 2C6.497 2 2 6.497 2 12.04c0 1.924.542 3.722 1.48 5.259L2 22l4.838-1.442A9.98 9.98 0 0012.04 22c5.543 0 10.04-4.497 10.04-10.04C22.08 6.497 17.583 2 12.04 2z" />
         </svg>
       </a>
 
       {/* FLOATING CALL BUTTON (BOTTOM-RIGHT IN SCREENSHOTS) */}
-      <a 
-        href="tel:+919779766933" 
-        className="dt-floating-call-btn" 
+      <a
+        href="tel:+919779766933"
+        className="dt-floating-call-btn"
         aria-label="Call Us"
       >
         <Phone size={24} />
       </a>
-      
+
       <Footer />
     </div>
   );

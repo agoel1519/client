@@ -24,7 +24,22 @@ import {
   LayoutGrid,
   Type,
   Palette,
-  Newspaper
+  Newspaper,
+  Copy,
+  ExternalLink,
+  Link2,
+  Sparkles,
+  Tag,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  Play,
+  RotateCcw,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Settings,
+  X
 } from 'lucide-react';
 import ImageUploader from './ImageUploader';
 import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
@@ -34,44 +49,85 @@ import './AdminHomeSettings.css';
 
 const defaultSettings = {
   sectionsConfig: defaultSectionsConfig,
+  heroConfig: {
+    autoplay: true,
+    autoplaySpeed: 6000,
+    sliderHeight: 'standard', // 'standard', 'fullscreen', 'compact', 'banner'
+    showArrows: true,
+    showDots: true,
+    transition: 'fade'
+  },
   heroSlides: [
     {
       id: 1,
-      badge: 'ADVANCED SKIN REJUVENATION & LASER SCIENCE',
+      enabled: true,
+      slideType: 'content',
+      badge: 'BY KIAN CLINICS',
+      showBadge: true,
       title: 'Precision Aesthetics For',
       titleHighlight: 'Timeless Radiance',
       description: 'Experience world-class laser therapies, bespoke medical facials, and dermal restoration customized by certified aesthetic physicians.',
       primaryBtnText: 'Explore Skin Treatments',
       primaryBtnLink: '/#treatments',
+      showPrimaryBtn: true,
       secondaryBtnText: 'Book Consultation',
       secondaryBtnLink: '/#book',
+      showSecondaryBtn: true,
       image: '/banners/banner-skin.jpg',
+      mobileImage: '',
+      bannerLink: '',
+      linkNewTab: false,
+      overlay: 'dark',
+      textAlignment: 'left',
+      showFeatures: true,
       features: ['Ultherapy Prime', 'Fotona 4D Laser', 'Skin Boosters']
     },
     {
       id: 2,
+      enabled: true,
+      slideType: 'content',
       badge: 'CELLULAR LONGEVITY & VITALITY',
+      showBadge: true,
       title: 'Revitalize From Within With',
       titleHighlight: 'Longevity Science',
       description: 'Unlock peak cellular wellness with targeted NAD+ infusions, anti-aging therapies, and holistic clinical vitality protocols in our private lounge.',
       primaryBtnText: 'Discover IV Therapies',
       primaryBtnLink: '/#treatments',
+      showPrimaryBtn: true,
       secondaryBtnText: 'View Programs',
       secondaryBtnLink: '/#programs',
+      showSecondaryBtn: true,
       image: '/banners/banner-wellness.jpg',
+      mobileImage: '',
+      bannerLink: '',
+      linkNewTab: false,
+      overlay: 'dark',
+      textAlignment: 'left',
+      showFeatures: true,
       features: ['NAD+ Rejuvenation', 'Limitless IV Drip', 'Immune Shield']
     },
     {
       id: 3,
+      enabled: true,
+      slideType: 'content',
       badge: 'BODY CONTOURING & HAIR RESTORATION',
+      showBadge: true,
       title: 'Sculpt, Tone & Transform With',
       titleHighlight: 'Clinical Mastery',
       description: 'Pioneering non-invasive body contouring, Emsculpt NEO muscle definition, Emerald laser inch-loss, and high-density hair restoration.',
       primaryBtnText: 'Explore Body & Hair',
       primaryBtnLink: '/#treatments',
+      showPrimaryBtn: true,
       secondaryBtnText: 'Schedule Appointment',
       secondaryBtnLink: '/#book',
+      showSecondaryBtn: true,
       image: '/banners/banner-body.jpg',
+      mobileImage: '',
+      bannerLink: '',
+      linkNewTab: false,
+      overlay: 'dark',
+      textAlignment: 'left',
+      showFeatures: true,
       features: ['Emsculpt NEO', 'Emerald Laser', 'FUE Hair Transplant']
     }
   ],
@@ -291,7 +347,21 @@ const AdminHomeSettings = () => {
     getDbSetting('home_page').then((saved) => {
       if (saved) {
         if (Array.isArray(saved)) {
-          setSettings(prev => ({ ...prev, heroSlides: saved }));
+          setSettings(prev => ({ 
+            ...prev, 
+            heroSlides: saved.map(slide => ({
+              ...slide,
+              enabled: slide.enabled !== false,
+              slideType: slide.slideType || (slide.showContent === false || (!slide.title && !slide.description) ? 'image-only' : 'content'),
+              overlay: slide.overlay || (slide.slideType === 'image-only' ? 'none' : 'dark'),
+              textAlignment: slide.textAlignment || 'left',
+              showBadge: slide.showBadge !== false,
+              showFeatures: slide.showFeatures !== false,
+              showPrimaryBtn: slide.showPrimaryBtn !== false,
+              showSecondaryBtn: slide.showSecondaryBtn !== false,
+              features: Array.isArray(slide.features) ? slide.features : []
+            }))
+          }));
         } else {
           setSettings(prev => ({
             ...prev,
@@ -300,7 +370,19 @@ const AdminHomeSettings = () => {
               if (s.id === 'doctor') return { ...s, enabled: false };
               return s;
             }),
-            heroSlides: saved.heroSlides || prev.heroSlides,
+            heroConfig: { ...defaultSettings.heroConfig, ...(saved.heroConfig || {}) },
+            heroSlides: (saved.heroSlides || prev.heroSlides || defaultSettings.heroSlides).map(slide => ({
+              ...slide,
+              enabled: slide.enabled !== false,
+              slideType: slide.slideType || (slide.showContent === false || (!slide.title && !slide.description) ? 'image-only' : 'content'),
+              overlay: slide.overlay || (slide.slideType === 'image-only' ? 'none' : 'dark'),
+              textAlignment: slide.textAlignment || 'left',
+              showBadge: slide.showBadge !== false,
+              showFeatures: slide.showFeatures !== false,
+              showPrimaryBtn: slide.showPrimaryBtn !== false,
+              showSecondaryBtn: slide.showSecondaryBtn !== false,
+              features: Array.isArray(slide.features) ? slide.features : []
+            })),
             celebritySpotlight: { ...prev.celebritySpotlight, ...(saved.celebritySpotlight || {}) },
             videoShowcase: { ...prev.videoShowcase, ...(saved.videoShowcase || {}) },
             whyChoose: { ...prev.whyChoose, ...(saved.whyChoose || {}) },
@@ -366,6 +448,127 @@ const AdminHomeSettings = () => {
         [field]: value
       }
     }));
+  };
+
+  // ── Hero Slide Handlers ──
+  const updateHeroConfig = (field, value) => {
+    setSettings(prev => ({
+      ...prev,
+      heroConfig: {
+        ...(prev.heroConfig || defaultSettings.heroConfig),
+        [field]: value
+      }
+    }));
+  };
+
+  const updateHeroSlide = (index, field, value) => {
+    setSettings(prev => {
+      const slides = [...(prev.heroSlides || [])];
+      slides[index] = { ...slides[index], [field]: value };
+      return { ...prev, heroSlides: slides };
+    });
+  };
+
+  const toggleHeroSlideActive = (index) => {
+    setSettings(prev => {
+      const slides = [...(prev.heroSlides || [])];
+      slides[index] = { ...slides[index], enabled: slides[index].enabled === false ? true : false };
+      return { ...prev, heroSlides: slides };
+    });
+  };
+
+  const moveHeroSlide = (index, direction) => {
+    const list = [...(settings.heroSlides || [])];
+    const target = index + direction;
+    if (target < 0 || target >= list.length) return;
+    const temp = list[index];
+    list[index] = list[target];
+    list[target] = temp;
+    setSettings(prev => ({ ...prev, heroSlides: list }));
+  };
+
+  const duplicateHeroSlide = (index) => {
+    const list = [...(settings.heroSlides || [])];
+    const original = list[index];
+    const duplicate = {
+      ...original,
+      id: Date.now(),
+      title: original.title ? `${original.title} (Copy)` : ''
+    };
+    list.splice(index + 1, 0, duplicate);
+    setSettings(prev => ({ ...prev, heroSlides: list }));
+  };
+
+  const deleteHeroSlide = (index) => {
+    if ((settings.heroSlides || []).length <= 1) {
+      alert("At least one slide is required in the hero section.");
+      return;
+    }
+    if (window.confirm("Are you sure you want to remove this slide?")) {
+      const list = [...(settings.heroSlides || [])];
+      list.splice(index, 1);
+      setSettings(prev => ({ ...prev, heroSlides: list }));
+    }
+  };
+
+  const addHeroSlide = (type = 'content') => {
+    const isOnlyImage = type === 'image-only';
+    const newSlide = {
+      id: Date.now(),
+      enabled: true,
+      slideType: isOnlyImage ? 'image-only' : 'content',
+      badge: isOnlyImage ? '' : '— BY KIAN CLINICS —',
+      showBadge: !isOnlyImage,
+      title: isOnlyImage ? '' : 'New Medical Aesthetics',
+      titleHighlight: isOnlyImage ? '' : 'For Timeless Radiance',
+      description: isOnlyImage ? '' : 'Experience world-class therapies customized by aesthetic physicians.',
+      primaryBtnText: isOnlyImage ? '' : 'Explore Treatments',
+      primaryBtnLink: '/#treatments',
+      showPrimaryBtn: !isOnlyImage,
+      secondaryBtnText: isOnlyImage ? '' : 'Book Consultation',
+      secondaryBtnLink: '/#book',
+      showSecondaryBtn: !isOnlyImage,
+      image: '/banners/banner-skin.jpg',
+      mobileImage: '',
+      bannerLink: '',
+      linkNewTab: false,
+      overlay: isOnlyImage ? 'none' : 'dark',
+      textAlignment: 'left',
+      showFeatures: !isOnlyImage,
+      features: isOnlyImage ? [] : ['Ultherapy Prime', 'Fotona 4D Laser']
+    };
+    setSettings(prev => ({
+      ...prev,
+      heroSlides: [...(prev.heroSlides || []), newSlide]
+    }));
+  };
+
+  const updateHeroSlideFeature = (slideIdx, featIdx, value) => {
+    setSettings(prev => {
+      const slides = [...(prev.heroSlides || [])];
+      const features = [...(slides[slideIdx].features || [])];
+      features[featIdx] = value;
+      slides[slideIdx] = { ...slides[slideIdx], features };
+      return { ...prev, heroSlides: slides };
+    });
+  };
+
+  const addHeroSlideFeature = (slideIdx) => {
+    setSettings(prev => {
+      const slides = [...(prev.heroSlides || [])];
+      const features = [...(slides[slideIdx].features || []), 'New Treatment'];
+      slides[slideIdx] = { ...slides[slideIdx], features };
+      return { ...prev, heroSlides: slides };
+    });
+  };
+
+  const deleteHeroSlideFeature = (slideIdx, featIdx) => {
+    setSettings(prev => {
+      const slides = [...(prev.heroSlides || [])];
+      const features = [...(slides[slideIdx].features || [])].filter((_, i) => i !== featIdx);
+      slides[slideIdx] = { ...slides[slideIdx], features };
+      return { ...prev, heroSlides: slides };
+    });
   };
 
   const moveSection = (index, direction) => {
@@ -744,173 +947,621 @@ const AdminHomeSettings = () => {
         </div>
       )}
 
-      {/* TAB 1: HERO SLIDES */}
+      {/* TAB 1: HERO SLIDES FULL CMS */}
       {activeTab === 'hero' && (
         <div className="settings-tab-pane">
+          {/* Top Title & Add Buttons */}
           <div className="tab-pane-title-row">
             <div>
-              <h3 className="tab-pane-title">Hero Banner Slider</h3>
-              <p className="tab-pane-desc">Manage the top rotating hero slides, headlines, and call-to-actions.</p>
+              <h3 className="tab-pane-title">Hero Section &amp; Banner Slider CMS</h3>
+              <p className="tab-pane-desc">
+                Fully customize top rotating hero slides. You can create luxury text-over-image slides OR clean image-only promotional banners with custom links.
+              </p>
             </div>
-            <button 
-              className="btn-add-item" 
-              style={{ width: 'auto', margin: 0 }}
-              onClick={() => {
-                const newSlide = {
-                  id: Date.now(),
-                  badge: 'NEW SPECIALTY',
-                  title: 'Precision Treatment For',
-                  titleHighlight: 'Radiant Results',
-                  description: 'Experience bespoke therapies crafted by certified physicians.',
-                  primaryBtnText: 'Explore Treatments',
-                  primaryBtnLink: '/#treatments',
-                  secondaryBtnText: 'Book Consultation',
-                  secondaryBtnLink: '/#book',
-                  image: '/banners/banner-skin.jpg',
-                  features: ['Certified Care', 'US FDA Tech']
-                };
-                setSettings(prev => ({ ...prev, heroSlides: [...prev.heroSlides, newSlide] }));
-              }}
-            >
-              <Plus size={16} /> Add New Slide
-            </button>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <button 
+                className="btn-add-item" 
+                style={{ width: 'auto', margin: 0, padding: '10px 16px', fontSize: '13px' }}
+                onClick={() => addHeroSlide('content')}
+              >
+                <Plus size={15} /> Add Content Slide
+              </button>
+              <button 
+                className="btn-add-item" 
+                style={{ 
+                  width: 'auto', 
+                  margin: 0, 
+                  padding: '10px 16px', 
+                  fontSize: '13px',
+                  background: '#f0fdf4',
+                  borderColor: '#16a34a',
+                  color: '#15803d'
+                }}
+                onClick={() => addHeroSlide('image-only')}
+              >
+                <ImageIcon size={15} /> + Add Only Image Banner
+              </button>
+            </div>
           </div>
 
-          {(settings.heroSlides || []).map((slide, index) => (
-            <div key={slide.id || index} className="item-card-wrapper">
-              <div className="item-card-header">
-                <span className="item-card-index">Slide #{index + 1}</span>
-                <button 
-                  className="btn-delete-item"
-                  onClick={() => {
-                    const updated = [...settings.heroSlides];
-                    updated.splice(index, 1);
-                    setSettings(prev => ({ ...prev, heroSlides: updated }));
-                  }}
+          {/* GLOBAL HERO SETTINGS CARD */}
+          <div className="hero-global-settings-card">
+            <div className="hero-global-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Settings size={18} style={{ color: '#0d382c' }} />
+                <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: '#0f172a' }}>
+                  Global Slider Timing, Height &amp; Navigation
+                </h4>
+              </div>
+              <span style={{ fontSize: '12px', color: '#64748b' }}>
+                Applies to all rotating slides
+              </span>
+            </div>
+
+            <div className="settings-grid-4">
+              {/* Autoplay Toggle */}
+              <div className="settings-form-group">
+                <label>Auto-Rotation</label>
+                <label className="hero-toggle-label">
+                  <input
+                    type="checkbox"
+                    checked={settings.heroConfig?.autoplay !== false}
+                    onChange={(e) => updateHeroConfig('autoplay', e.target.checked)}
+                  />
+                  <span>{settings.heroConfig?.autoplay !== false ? '🟢 Autoplay Enabled' : '⏸️ Autoplay Paused'}</span>
+                </label>
+              </div>
+
+              {/* Autoplay Speed */}
+              <div className="settings-form-group">
+                <label>Slide Duration (Seconds)</label>
+                <select
+                  className="settings-select"
+                  value={settings.heroConfig?.autoplaySpeed || 6000}
+                  onChange={(e) => updateHeroConfig('autoplaySpeed', Number(e.target.value))}
                 >
-                  <Trash2 size={14} /> Remove Slide
-                </button>
+                  <option value={3500}>3.5 Seconds (Fast)</option>
+                  <option value={5000}>5 Seconds (Recommended)</option>
+                  <option value={6000}>6 Seconds (Standard Luxury)</option>
+                  <option value={8000}>8 Seconds (Relaxed)</option>
+                  <option value={10000}>10 Seconds (Long Read)</option>
+                </select>
               </div>
 
-              <div className="settings-grid-2">
-                <div className="settings-form-group">
-                  <label>Title Prefix</label>
-                  <input 
-                    type="text" 
-                    className="settings-input" 
-                    value={slide.title || ''} 
-                    onChange={e => {
-                      const updated = [...settings.heroSlides];
-                      updated[index].title = e.target.value;
-                      setSettings(prev => ({ ...prev, heroSlides: updated }));
-                    }}
-                  />
-                </div>
-                <div className="settings-form-group">
-                  <label>Title Highlight (Gold Accent)</label>
-                  <input 
-                    type="text" 
-                    className="settings-input" 
-                    value={slide.titleHighlight || ''} 
-                    onChange={e => {
-                      const updated = [...settings.heroSlides];
-                      updated[index].titleHighlight = e.target.value;
-                      setSettings(prev => ({ ...prev, heroSlides: updated }));
-                    }}
-                  />
-                </div>
+              {/* Slider Height */}
+              <div className="settings-form-group">
+                <label>Hero Slider Height</label>
+                <select
+                  className="settings-select"
+                  value={settings.heroConfig?.sliderHeight || 'standard'}
+                  onChange={(e) => updateHeroConfig('sliderHeight', e.target.value)}
+                >
+                  <option value="standard">Standard (75vh Luxury, Min 520px)</option>
+                  <option value="fullscreen">Fullscreen (100vh Edge-to-Edge)</option>
+                  <option value="compact">Compact (500px Sleek)</option>
+                  <option value="banner">Banner Ratio (Aspect-Fit for Graphics)</option>
+                </select>
               </div>
 
-              <div className="settings-form-group" style={{ marginBottom: '16px' }}>
-                <label>Background Banner Image</label>
-                <ImageUploader 
-                  currentUrl={slide.image || ''}
-                  initialImage={slide.image || ''} 
-                  onSelect={img => {
-                    const updated = [...settings.heroSlides];
-                    updated[index].image = img;
-                    setSettings(prev => ({ ...prev, heroSlides: updated }));
-                  }}
-                  onImageSelected={img => {
-                    const updated = [...settings.heroSlides];
-                    updated[index].image = img;
-                    setSettings(prev => ({ ...prev, heroSlides: updated }));
-                  }}
-                />
-              </div>
-
-              <div className="settings-form-group" style={{ marginBottom: '16px' }}>
-                <label>Description Paragraph</label>
-                <textarea 
-                  className="settings-textarea" 
-                  value={slide.description || ''} 
-                  onChange={e => {
-                    const updated = [...settings.heroSlides];
-                    updated[index].description = e.target.value;
-                    setSettings(prev => ({ ...prev, heroSlides: updated }));
-                  }}
-                />
-              </div>
-
-              <div className="settings-grid-2">
-                <div className="settings-form-group">
-                  <label>Primary Button Label</label>
-                  <input 
-                    type="text" 
-                    className="settings-input" 
-                    value={slide.primaryBtnText || ''} 
-                    onChange={e => {
-                      const updated = [...settings.heroSlides];
-                      updated[index].primaryBtnText = e.target.value;
-                      setSettings(prev => ({ ...prev, heroSlides: updated }));
-                    }}
-                  />
-                </div>
-                <div className="settings-form-group">
-                  <label>Primary Button Link</label>
-                  <input 
-                    type="text" 
-                    className="settings-input" 
-                    value={slide.primaryBtnLink || ''} 
-                    onChange={e => {
-                      const updated = [...settings.heroSlides];
-                      updated[index].primaryBtnLink = e.target.value;
-                      setSettings(prev => ({ ...prev, heroSlides: updated }));
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="settings-grid-2">
-                <div className="settings-form-group">
-                  <label>Secondary Button Label</label>
-                  <input 
-                    type="text" 
-                    className="settings-input" 
-                    value={slide.secondaryBtnText || ''} 
-                    onChange={e => {
-                      const updated = [...settings.heroSlides];
-                      updated[index].secondaryBtnText = e.target.value;
-                      setSettings(prev => ({ ...prev, heroSlides: updated }));
-                    }}
-                  />
-                </div>
-                <div className="settings-form-group">
-                  <label>Secondary Button Link</label>
-                  <input 
-                    type="text" 
-                    className="settings-input" 
-                    value={slide.secondaryBtnLink || ''} 
-                    onChange={e => {
-                      const updated = [...settings.heroSlides];
-                      updated[index].secondaryBtnLink = e.target.value;
-                      setSettings(prev => ({ ...prev, heroSlides: updated }));
-                    }}
-                  />
+              {/* Navigation Elements */}
+              <div className="settings-form-group">
+                <label>Controls Visibility</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label className="hero-toggle-label" style={{ padding: '6px 10px' }}>
+                    <input
+                      type="checkbox"
+                      checked={settings.heroConfig?.showArrows !== false}
+                      onChange={(e) => updateHeroConfig('showArrows', e.target.checked)}
+                    />
+                    <span>Left / Right Arrows</span>
+                  </label>
+                  <label className="hero-toggle-label" style={{ padding: '6px 10px' }}>
+                    <input
+                      type="checkbox"
+                      checked={settings.heroConfig?.showDots !== false}
+                      onChange={(e) => updateHeroConfig('showDots', e.target.checked)}
+                    />
+                    <span>Bottom Slide Indicators</span>
+                  </label>
                 </div>
               </div>
             </div>
-          ))}
+          </div>
+
+          {/* SLIDES LIST */}
+          <div className="hero-slides-list">
+            {(settings.heroSlides || []).map((slide, index) => {
+              const isOnlyImage = slide.slideType === 'image-only';
+              const isEnabled = slide.enabled !== false;
+
+              return (
+                <div 
+                  key={slide.id || index} 
+                  className={`item-card-wrapper hero-slide-card ${!isEnabled ? 'is-disabled' : ''}`}
+                >
+                  {/* Card Header & Actions */}
+                  <div className="item-card-header">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                      <span className="item-card-index">Slide #{index + 1}</span>
+                      
+                      {/* Mode Badge */}
+                      <span className={`hero-type-badge ${isOnlyImage ? 'badge-image-only' : 'badge-content'}`}>
+                        {isOnlyImage ? '🖼️ Only Image Slide' : '📝 Text Content Slide'}
+                      </span>
+
+                      {/* Enabled Badge */}
+                      <span style={{ 
+                        fontSize: '12px', 
+                        color: isEnabled ? '#15803d' : '#94a3b8', 
+                        background: isEnabled ? '#dcfce7' : '#f1f5f9',
+                        padding: '2px 8px',
+                        borderRadius: '6px',
+                        fontWeight: 600
+                      }}>
+                        {isEnabled ? '🟢 Active' : '⚪ Hidden'}
+                      </span>
+                    </div>
+
+                    {/* Action Buttons: Move Up/Down, Duplicate, Visibility, Delete */}
+                    <div className="hero-card-actions">
+                      <button
+                        type="button"
+                        className="order-btn"
+                        disabled={index === 0}
+                        onClick={() => moveHeroSlide(index, -1)}
+                        title="Move Slide Earlier"
+                      >
+                        <ArrowUp size={15} />
+                      </button>
+
+                      <button
+                        type="button"
+                        className="order-btn"
+                        disabled={index === (settings.heroSlides || []).length - 1}
+                        onClick={() => moveHeroSlide(index, 1)}
+                        title="Move Slide Later"
+                      >
+                        <ArrowDown size={15} />
+                      </button>
+
+                      <button
+                        type="button"
+                        className="order-btn"
+                        onClick={() => duplicateHeroSlide(index)}
+                        title="Duplicate Slide"
+                      >
+                        <Copy size={15} />
+                      </button>
+
+                      <button
+                        type="button"
+                        className={`order-btn ${!isEnabled ? 'is-off' : ''}`}
+                        onClick={() => toggleHeroSlideActive(index)}
+                        title={isEnabled ? "Hide slide from website" : "Show slide on website"}
+                      >
+                        {isEnabled ? <Eye size={15} /> : <EyeOff size={15} />}
+                      </button>
+
+                      <button 
+                        type="button"
+                        className="btn-delete-item"
+                        onClick={() => deleteHeroSlide(index)}
+                        title="Remove Slide"
+                      >
+                        <Trash2 size={14} /> Remove
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* SLIDE TYPE SELECTOR (Content vs Only Image Banner) */}
+                  <div className="hero-mode-selector-wrapper">
+                    <label style={{ fontSize: '13px', fontWeight: 700, color: '#334155', marginBottom: '8px', display: 'block' }}>
+                      Slide Display Mode
+                    </label>
+                    <div className="hero-mode-selector">
+                      <button
+                        type="button"
+                        className={`hero-mode-btn ${!isOnlyImage ? 'active' : ''}`}
+                        onClick={() => {
+                          updateHeroSlide(index, 'slideType', 'content');
+                          if (slide.overlay === 'none') {
+                            updateHeroSlide(index, 'overlay', 'dark');
+                          }
+                        }}
+                      >
+                        <span className="mode-btn-icon">📝</span>
+                        <div style={{ textAlign: 'left' }}>
+                          <span className="mode-btn-title">Text Content + Background</span>
+                          <span className="mode-btn-desc">Shows badge, headline, gold accent, description, tags &amp; CTA buttons</span>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        className={`hero-mode-btn ${isOnlyImage ? 'active' : ''}`}
+                        onClick={() => {
+                          updateHeroSlide(index, 'slideType', 'image-only');
+                          if (!slide.overlay || slide.overlay === 'dark') {
+                            updateHeroSlide(index, 'overlay', 'none');
+                          }
+                        }}
+                      >
+                        <span className="mode-btn-icon">🖼️</span>
+                        <div style={{ textAlign: 'left' }}>
+                          <span className="mode-btn-title">Only Image Slide (Banner / Poster)</span>
+                          <span className="mode-btn-desc">Clean image without text overlay. Perfect for designed banners &amp; posters</span>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* IMAGES & OVERLAY SETTINGS */}
+                  <div className="hero-section-box">
+                    <h5 className="hero-box-title">
+                      <ImageIcon size={15} /> Banner Images &amp; Visual Style
+                    </h5>
+
+                    <div className="settings-grid-2">
+                      {/* Desktop Banner Image */}
+                      <div className="settings-form-group">
+                        <label>
+                          Desktop / Main Banner Image <span style={{ color: '#ef4444' }}>*</span>
+                        </label>
+                        <ImageUploader 
+                          currentUrl={slide.image || ''}
+                          initialImage={slide.image || ''} 
+                          onSelect={img => updateHeroSlide(index, 'image', img)}
+                          onImageSelected={img => updateHeroSlide(index, 'image', img)}
+                        />
+                      </div>
+
+                      {/* Optional Mobile Banner Image */}
+                      <div className="settings-form-group">
+                        <label>
+                          Mobile Banner Image <span style={{ color: '#64748b', fontWeight: 400 }}>(Optional - for mobile screen)</span>
+                        </label>
+                        <ImageUploader 
+                          currentUrl={slide.mobileImage || ''}
+                          initialImage={slide.mobileImage || ''} 
+                          onSelect={img => updateHeroSlide(index, 'mobileImage', img)}
+                          onImageSelected={img => updateHeroSlide(index, 'mobileImage', img)}
+                        />
+                        <span style={{ fontSize: '11.5px', color: '#64748b', marginTop: '4px' }}>
+                          If empty, main desktop image will be used.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="settings-grid-2" style={{ marginTop: '14px' }}>
+                      {/* Overlay Style */}
+                      <div className="settings-form-group">
+                        <label>Image Overlay / Darkening</label>
+                        <select
+                          className="settings-select"
+                          value={slide.overlay || (isOnlyImage ? 'none' : 'dark')}
+                          onChange={e => updateHeroSlide(index, 'overlay', e.target.value)}
+                        >
+                          <option value="none">None / 0% (Crisp 100% Original Image - Best for Banners)</option>
+                          <option value="subtle">Subtle Dark Vignette (25% darkening at edges)</option>
+                          <option value="medium">Medium Dark Gradient (50% darkening)</option>
+                          <option value="dark">Luxury Dark Green Gradient (Recommended for White Text)</option>
+                        </select>
+                      </div>
+
+                      {/* If Image-Only: Click Link */}
+                      {isOnlyImage ? (
+                        <div className="settings-form-group">
+                          <label>Banner Click URL (Optional Link)</label>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <input 
+                              type="text" 
+                              className="settings-input" 
+                              placeholder="e.g. /treatments or https://..." 
+                              value={slide.bannerLink || ''} 
+                              onChange={e => updateHeroSlide(index, 'bannerLink', e.target.value)}
+                              style={{ flex: 1 }}
+                            />
+                            <label className="hero-toggle-label" style={{ whiteSpace: 'nowrap' }}>
+                              <input
+                                type="checkbox"
+                                checked={!!slide.linkNewTab}
+                                onChange={e => updateHeroSlide(index, 'linkNewTab', e.target.checked)}
+                              />
+                              <span>New Tab</span>
+                            </label>
+                          </div>
+                        </div>
+                      ) : (
+                        /* Text Alignment */
+                        <div className="settings-form-group">
+                          <label>Text Content Alignment</label>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <button
+                              type="button"
+                              className={`hero-align-btn ${(slide.textAlignment || 'left') === 'left' ? 'active' : ''}`}
+                              onClick={() => updateHeroSlide(index, 'textAlignment', 'left')}
+                            >
+                              <AlignLeft size={16} /> Left
+                            </button>
+                            <button
+                              type="button"
+                              className={`hero-align-btn ${slide.textAlignment === 'center' ? 'active' : ''}`}
+                              onClick={() => updateHeroSlide(index, 'textAlignment', 'center')}
+                            >
+                              <AlignCenter size={16} /> Center
+                            </button>
+                            <button
+                              type="button"
+                              className={`hero-align-btn ${slide.textAlignment === 'right' ? 'active' : ''}`}
+                              onClick={() => updateHeroSlide(index, 'textAlignment', 'right')}
+                            >
+                              <AlignRight size={16} /> Right
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* TEXT CONTENT EDITOR (Shown only in Content Mode) */}
+                  {!isOnlyImage && (
+                    <div className="hero-section-box">
+                      <h5 className="hero-box-title">
+                        <Type size={15} /> Headline, Eyebrow &amp; Description
+                      </h5>
+
+                      {/* Eyebrow / Badge */}
+                      <div className="settings-form-group" style={{ marginBottom: '16px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <label style={{ margin: 0 }}>Top Eyebrow / Badge Text</label>
+                          <label className="hero-toggle-label" style={{ padding: '2px 8px', fontSize: '12px' }}>
+                            <input
+                              type="checkbox"
+                              checked={slide.showBadge !== false}
+                              onChange={e => updateHeroSlide(index, 'showBadge', e.target.checked)}
+                            />
+                            <span>Show Badge</span>
+                          </label>
+                        </div>
+                        <input 
+                          type="text" 
+                          className="settings-input" 
+                          placeholder="e.g. — BY KIAN CLINICS —" 
+                          value={slide.badge || ''} 
+                          onChange={e => updateHeroSlide(index, 'badge', e.target.value)}
+                        />
+                      </div>
+
+                      {/* Main Headline & Gold Accent */}
+                      <div className="settings-grid-2">
+                        <div className="settings-form-group">
+                          <label>Main Title Prefix</label>
+                          <input 
+                            type="text" 
+                            className="settings-input" 
+                            placeholder="e.g. Precision Aesthetics For"
+                            value={slide.title || ''} 
+                            onChange={e => updateHeroSlide(index, 'title', e.target.value)}
+                          />
+                        </div>
+
+                        <div className="settings-form-group">
+                          <label>
+                            Title Highlight <span style={{ color: '#c59d5f' }}>(Gold Gradient Accent)</span>
+                          </label>
+                          <input 
+                            type="text" 
+                            className="settings-input" 
+                            placeholder="e.g. Timeless Radiance"
+                            value={slide.titleHighlight || ''} 
+                            onChange={e => updateHeroSlide(index, 'titleHighlight', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Description Paragraph */}
+                      <div className="settings-form-group" style={{ marginTop: '16px', marginBottom: '16px' }}>
+                        <label>Description Paragraph</label>
+                        <textarea 
+                          className="settings-textarea" 
+                          placeholder="Enter a compelling description for this specialty..."
+                          value={slide.description || ''} 
+                          onChange={e => updateHeroSlide(index, 'description', e.target.value)}
+                        />
+                      </div>
+
+                      {/* Feature Pills / Tags */}
+                      <div className="settings-form-group" style={{ marginBottom: '16px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                          <label style={{ margin: 0 }}>
+                            Feature Tags / Treatment Pills
+                          </label>
+                          <label className="hero-toggle-label" style={{ padding: '2px 8px', fontSize: '12px' }}>
+                            <input
+                              type="checkbox"
+                              checked={slide.showFeatures !== false}
+                              onChange={e => updateHeroSlide(index, 'showFeatures', e.target.checked)}
+                            />
+                            <span>Show Tags</span>
+                          </label>
+                        </div>
+
+                        <div className="hero-tags-editor">
+                          {(slide.features || []).map((feat, fIdx) => (
+                            <div key={fIdx} className="hero-tag-item">
+                              <Tag size={13} style={{ color: '#c59d5f' }} />
+                              <input
+                                type="text"
+                                className="hero-tag-input"
+                                value={feat}
+                                onChange={e => updateHeroSlideFeature(index, fIdx, e.target.value)}
+                                placeholder="Tag name..."
+                              />
+                              <button
+                                type="button"
+                                className="hero-tag-remove"
+                                onClick={() => deleteHeroSlideFeature(index, fIdx)}
+                                title="Remove tag"
+                              >
+                                <X size={12} />
+                              </button>
+                            </div>
+                          ))}
+                          <button
+                            type="button"
+                            className="btn-add-tag"
+                            onClick={() => addHeroSlideFeature(index)}
+                          >
+                            <Plus size={13} /> Add Tag
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Action CTA Buttons */}
+                      <div className="hero-buttons-section">
+                        <label style={{ fontSize: '13px', fontWeight: 700, color: '#334155', marginBottom: '10px', display: 'block' }}>
+                          Call-to-Action Buttons
+                        </label>
+
+                        {/* Primary Button */}
+                        <div className="hero-button-card">
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                            <span style={{ fontSize: '13px', fontWeight: 700, color: '#0d382c' }}>
+                              Primary Gold Button
+                            </span>
+                            <label className="hero-toggle-label" style={{ padding: '2px 8px', fontSize: '12px' }}>
+                              <input
+                                type="checkbox"
+                                checked={slide.showPrimaryBtn !== false}
+                                onChange={e => updateHeroSlide(index, 'showPrimaryBtn', e.target.checked)}
+                              />
+                              <span>Enabled</span>
+                            </label>
+                          </div>
+
+                          <div className="settings-grid-2">
+                            <div className="settings-form-group">
+                              <label>Button Text</label>
+                              <input 
+                                type="text" 
+                                className="settings-input" 
+                                placeholder="e.g. Explore Skin Treatments"
+                                value={slide.primaryBtnText || ''} 
+                                onChange={e => updateHeroSlide(index, 'primaryBtnText', e.target.value)}
+                              />
+                            </div>
+                            <div className="settings-form-group">
+                              <label>Button Link URL</label>
+                              <input 
+                                type="text" 
+                                className="settings-input" 
+                                placeholder="e.g. /#treatments or /treatments/..."
+                                value={slide.primaryBtnLink || ''} 
+                                onChange={e => updateHeroSlide(index, 'primaryBtnLink', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Secondary Button */}
+                        <div className="hero-button-card" style={{ marginTop: '12px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                            <span style={{ fontSize: '13px', fontWeight: 700, color: '#0d382c' }}>
+                              Secondary Glass Button
+                            </span>
+                            <label className="hero-toggle-label" style={{ padding: '2px 8px', fontSize: '12px' }}>
+                              <input
+                                type="checkbox"
+                                checked={slide.showSecondaryBtn !== false}
+                                onChange={e => updateHeroSlide(index, 'showSecondaryBtn', e.target.checked)}
+                              />
+                              <span>Enabled</span>
+                            </label>
+                          </div>
+
+                          <div className="settings-grid-2">
+                            <div className="settings-form-group">
+                              <label>Button Text</label>
+                              <input 
+                                type="text" 
+                                className="settings-input" 
+                                placeholder="e.g. Book Consultation"
+                                value={slide.secondaryBtnText || ''} 
+                                onChange={e => updateHeroSlide(index, 'secondaryBtnText', e.target.value)}
+                              />
+                            </div>
+                            <div className="settings-form-group">
+                              <label>Button Link URL</label>
+                              <input 
+                                type="text" 
+                                className="settings-input" 
+                                placeholder="e.g. /#book"
+                                value={slide.secondaryBtnLink || ''} 
+                                onChange={e => updateHeroSlide(index, 'secondaryBtnLink', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  )}
+
+                  {/* REALTIME MINI PREVIEW */}
+                  <div className="hero-preview-box">
+                    <span className="hero-preview-title">
+                      <Sparkles size={13} /> Live Slide Preview
+                    </span>
+                    <div 
+                      className="hero-preview-canvas"
+                      style={{
+                        backgroundImage: slide.overlay === 'none' 
+                          ? `url(${slide.image || '/banners/banner-skin.jpg'})`
+                          : slide.overlay === 'subtle'
+                          ? `radial-gradient(circle at 65% 50%, rgba(8, 36, 28, 0.2) 0%, rgba(8, 36, 28, 0.6) 100%), url(${slide.image || '/banners/banner-skin.jpg'})`
+                          : `linear-gradient(90deg, rgba(8, 36, 28, 0.92) 0%, rgba(8, 36, 28, 0.6) 50%, rgba(8, 36, 28, 0.2) 100%), url(${slide.image || '/banners/banner-skin.jpg'})`
+                      }}
+                    >
+                      {isOnlyImage ? (
+                        <div className="hero-preview-banner-badge">
+                          🖼️ Clean Image Banner Mode {slide.bannerLink ? `(Linked to: ${slide.bannerLink})` : '(No Link)'}
+                        </div>
+                      ) : (
+                        <div className={`hero-preview-content align-${slide.textAlignment || 'left'}`}>
+                          {slide.showBadge !== false && slide.badge && (
+                            <div className="hero-preview-badge">{slide.badge}</div>
+                          )}
+                          <div className="hero-preview-headline">
+                            <span>{slide.title || 'Main Title'}</span>{' '}
+                            <span style={{ color: '#c59d5f' }}>{slide.titleHighlight || 'Highlighted Accent'}</span>
+                          </div>
+                          {slide.description && (
+                            <div className="hero-preview-desc">{slide.description}</div>
+                          )}
+                          {slide.showFeatures !== false && slide.features?.length > 0 && (
+                            <div className="hero-preview-tags">
+                              {slide.features.map((f, i) => (
+                                <span key={i} className="hero-preview-tag">{f}</span>
+                              ))}
+                            </div>
+                          )}
+                          <div className="hero-preview-buttons">
+                            {slide.showPrimaryBtn !== false && slide.primaryBtnText && (
+                              <span className="hero-preview-btn primary">{slide.primaryBtnText}</span>
+                            )}
+                            {slide.showSecondaryBtn !== false && slide.secondaryBtnText && (
+                              <span className="hero-preview-btn secondary">{slide.secondaryBtnText}</span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 

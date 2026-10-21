@@ -7,9 +7,9 @@ import './AdminAboutSettings.css';
 const defaultSettings = {
   heroTitle: "ABOUT US",
   heroTagline: "DESIGNED BY MEDICINE\nCRAFTED BY TECHNOLOGY\nPAMPERED BY LUXURY",
-  introHeading: "We are India's Premium Aesthetic Clinic",
-  introText: "Our only focus when crafting or rendering any treatment is YOU. Driven by a deep commitment to clinical excellence and cutting-edge aesthetics, we have achieved the perfect synergy between science and art to elevate your natural beauty.",
-  introFooter: "AEVORA HAS AN INFINITE LOVE FOR THE HUMAN FORM.",
+  introHeading: "We are India’s First Aesthetic Supercliniq",
+  introText: "Our body has always defined our sense of self and personal style. From ancient traditions of holistic health and healing to the technologies of today, we have adorned ourselves with jewels, fine fabrics and cosmetics. And yet, nothing compares to the original fashion statement.\n\nLustrous, voluminous hair, radiant, glowing skin, intimate wellbeing and a toned body, fit inside and out.",
+  introFooter: "SKUCCII SUPERCLINIQ HAS AN INFINITE LOVE FOR THE HUMAN FORM.",
   teamTitle: "FOUNDING TEAM",
   team: [
     { 
@@ -46,16 +46,33 @@ const AdminAboutSettings = () => {
     getDbSetting('about_page').then((saved) => {
       if (saved) {
         const hasLegacy = saved.team && saved.team.some(t => t.name && (t.name.includes('Meghna Mour') || t.name.includes('Karan Rekhi')));
-        if (hasLegacy) {
-          setSettings(prev => ({ ...prev, ...saved, team: defaultSettings.team }));
-        } else {
-          setSettings(prev => ({ ...prev, ...saved }));
-        }
+        const isLegacyIntro = !saved.introHeading || 
+          saved.introHeading.includes("Premium Aesthetic Clinic") ||
+          (saved.introText && saved.introText.includes("Our only focus when crafting"));
+
+        setSettings(prev => ({
+          ...defaultSettings,
+          ...saved,
+          team: hasLegacy ? defaultSettings.team : (saved.team || defaultSettings.team),
+          introHeading: isLegacyIntro ? defaultSettings.introHeading : saved.introHeading,
+          introText: isLegacyIntro ? defaultSettings.introText : saved.introText,
+          introFooter: isLegacyIntro ? defaultSettings.introFooter : (saved.introFooter || defaultSettings.introFooter),
+        }));
       } else {
         const legacy = localStorage.getItem('aevora_about_settings');
         if (legacy) {
           try {
-            setSettings(prev => ({ ...prev, ...JSON.parse(legacy) }));
+            const parsed = JSON.parse(legacy);
+            const isLegacyIntro = !parsed.introHeading || 
+              parsed.introHeading.includes("Premium Aesthetic Clinic") ||
+              (parsed.introText && parsed.introText.includes("Our only focus when crafting"));
+            setSettings(prev => ({
+              ...defaultSettings,
+              ...parsed,
+              introHeading: isLegacyIntro ? defaultSettings.introHeading : parsed.introHeading,
+              introText: isLegacyIntro ? defaultSettings.introText : parsed.introText,
+              introFooter: isLegacyIntro ? defaultSettings.introFooter : (parsed.introFooter || defaultSettings.introFooter),
+            }));
           } catch (e) {}
         }
       }
@@ -139,6 +156,53 @@ const AdminAboutSettings = () => {
           <div className="form-group">
             <label>Page Title</label>
             <input type="text" name="heroTitle" value={settings.heroTitle || 'ABOUT US'} onChange={handleChange} />
+          </div>
+        </div>
+
+        {/* BRAND PHILOSOPHY / MANIFESTO QUOTE CARD */}
+        <div className="settings-card">
+          <div className="settings-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h3 className="settings-card-title" style={{ margin: 0 }}>Brand Philosophy / Manifesto (Quote Card)</h3>
+            <span style={{ fontSize: '0.8rem', background: '#f4f8f5', color: '#0d382c', border: '1px solid rgba(13, 56, 44, 0.2)', padding: '4px 10px', borderRadius: '12px', fontWeight: 600 }}>
+              Positioned Above Founding Team
+            </span>
+          </div>
+
+          <div className="form-group">
+            <label>Heading / Quote Title</label>
+            <input 
+              type="text" 
+              name="introHeading" 
+              value={settings.introHeading || ''} 
+              onChange={handleChange} 
+              placeholder="e.g. We are India’s First Aesthetic Supercliniq"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Body Text / Paragraphs (Press Enter twice for paragraph breaks)</label>
+            <textarea 
+              name="introText" 
+              rows={6}
+              value={settings.introText || ''} 
+              onChange={handleChange} 
+              placeholder="Enter brand philosophy text..."
+              style={{ lineHeight: '1.6', fontFamily: 'inherit', resize: 'vertical' }}
+            />
+            <small style={{ color: '#64748b', display: 'block', marginTop: '6px' }}>
+              Tip: Press Enter twice to create multiple separate paragraphs in the card.
+            </small>
+          </div>
+
+          <div className="form-group">
+            <label>Bottom Tagline / Highlight</label>
+            <input 
+              type="text" 
+              name="introFooter" 
+              value={settings.introFooter || ''} 
+              onChange={handleChange} 
+              placeholder="e.g. SKUCCII SUPERCLINIQ HAS AN INFINITE LOVE FOR THE HUMAN FORM."
+            />
           </div>
         </div>
 

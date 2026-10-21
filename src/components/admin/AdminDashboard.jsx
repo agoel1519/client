@@ -10,7 +10,8 @@ import {
   MonitorPlay,
   ArrowRight,
   Info,
-  Megaphone
+  Megaphone,
+  Images
 } from 'lucide-react';
 import { getDbPages, getDbMedia } from '../../api/mongoApi';
 import './AdminDashboard.css';
@@ -158,6 +159,13 @@ const AdminDashboard = () => {
                     <div className="action-text">
                       <strong>Blog &amp; Journal</strong>
                       <span>Publish and manage articles</span>
+                    </div>
+                  </Link>
+                  <Link to="/admin/gallery-settings" className="action-btn">
+                    <div className="action-icon"><Images size={20} /></div>
+                    <div className="action-text">
+                      <strong>Photo Gallery CMS</strong>
+                      <span>Manage clinic photos, categories &amp; lightbox</span>
                     </div>
                   </Link>
                   <Link to="/admin/header-settings" className="action-btn">

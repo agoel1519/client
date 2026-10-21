@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 import Header from '../Header';
 import Footer from '../Footer';
-import { MapPin, Phone, Mail, Clock, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import ConsultationSection from '../ConsultationSection';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './Press.css';
 
 const Press = () => {
@@ -134,77 +135,7 @@ const Press = () => {
       </section>
 
       {/* BOOK APPOINTMENT SECTION */}
-      <section className="dt-appointment-section" id="appointment">
-        <div className="dt-app-layout-two-col">
-          
-          {/* Left Column: Clinic Contact Information */}
-          <div className="dt-app-info-col">
-            <h2 className="dt-app-heading">BOOK AN APPOINTMENT</h2>
-
-            <div className="dt-app-detail-item">
-              <div className="dt-app-detail-icon"><MapPin size={20} /></div>
-              <div className="dt-app-detail-text">
-                <h4 className="dt-app-detail-label">VISIT OUR CLINIC</h4>
-                <p className="dt-app-detail-val">{clinicInfo.address}</p>
-              </div>
-            </div>
-
-            <div className="dt-app-detail-item">
-              <div className="dt-app-detail-icon"><Phone size={20} /></div>
-              <div className="dt-app-detail-text">
-                <h4 className="dt-app-detail-label">CALL DIRECTLY</h4>
-                <p className="dt-app-detail-val">{clinicInfo.phone.replace(/\n/g, ' | ')}</p>
-              </div>
-            </div>
-
-            <div className="dt-app-detail-item">
-              <div className="dt-app-detail-icon"><Mail size={20} /></div>
-              <div className="dt-app-detail-text">
-                <h4 className="dt-app-detail-label">EMAIL US</h4>
-                <p className="dt-app-detail-val">{clinicInfo.email}</p>
-              </div>
-            </div>
-
-            <div className="dt-app-detail-item">
-              <div className="dt-app-detail-icon"><Clock size={20} /></div>
-              <div className="dt-app-detail-text">
-                <h4 className="dt-app-detail-label">CLINIC HOURS</h4>
-                <p className="dt-app-detail-val">Monday – Sunday: 10:00 AM – 7:00 PM</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Appointment Form Card */}
-          <div className="dt-app-form-card">
-            {formSubmitted ? (
-              <div className="dt-success-box">
-                <CheckCircle2 size={46} style={{ color: '#0d382c', marginBottom: '16px' }} />
-                <h3 style={{ color: '#0d382c' }}>Appointment Request Received</h3>
-                <p style={{ color: '#4a5568', lineHeight: '1.6', marginTop: '10px' }}>
-                  Thank you, <strong>{formData.name}</strong>. Our medical team will contact you shortly.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="dt-booking-clean-form">
-                <div className="dt-clean-form-row-2">
-                  <input type="text" name="name" placeholder="Your Name *" value={formData.name} onChange={handleChange} required className="dt-clean-input" />
-                  <input type="email" name="email" placeholder="Email *" value={formData.email} onChange={handleChange} required className="dt-clean-input" />
-                </div>
-                <input type="tel" name="phone" placeholder="Phone Number *" value={formData.phone} onChange={handleChange} required className="dt-clean-input" />
-                <select name="treatment" value={formData.treatment} onChange={handleChange} className="dt-clean-input dt-clean-select">
-                  <option value="">Select Service / Treatment</option>
-                  <option value="skin">Skin Treatments</option>
-                  <option value="hair">Hair Transplant / Restoration</option>
-                  <option value="body">Body Contouring</option>
-                  <option value="consultation">General Consultation</option>
-                </select>
-                <textarea name="message" placeholder="Any specific concerns or preferred time?" rows="3" value={formData.message} onChange={handleChange} className="dt-clean-input dt-clean-textarea" />
-                <button type="submit" className="dt-clean-submit-btn">Let's Begin</button>
-              </form>
-            )}
-          </div>
-        </div>
-      </section>
+      <ConsultationSection />
 
       <Footer />
     </div>

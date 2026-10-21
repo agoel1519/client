@@ -3,31 +3,10 @@ import { getDbSetting } from '../../api/mongoApi';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../Header';
 import Footer from '../Footer';
-import { ChevronLeft } from 'lucide-react';
+import ConsultationSection from '../ConsultationSection';
+import { ChevronLeft, Clock, User, Tag } from 'lucide-react';
+import { initialBlogPosts } from '../admin/AdminBlogSettings';
 import './Blog.css';
-
-const defaultBlogList = [
-  {
-    id: "1",
-    slug: "the-future-of-skincare",
-    title: "The Future of Advanced Skincare & Cellular Longevity",
-    image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1200&q=80",
-    excerpt: "Discover the latest breakthrough technologies and treatments that are revolutionizing aesthetic dermatology and cellular renewal.",
-    content: "Skincare has evolved dramatically over the last decade. With the introduction of advanced laser therapies, stem cell treatments, and personalized cellular medicine, achieving flawless, ageless skin is more scientifically possible than ever before.\n\nAt Aevora, we pride ourselves on staying at the forefront of these medical advancements. From US FDA-cleared EXION MNRF to non-invasive Ultherapy Prime lifts and bespoke bio-infusions, our clinical philosophy pairs rigorous dermatological evidence with subtle artistic contouring.\n\nKey Takeaways:\n1. Cellular regenerative treatments stimulate endogenous collagen without downtime.\n2. Preventative aesthetics preserve facial tissue architecture.\n3. Personalized protocols designed by medical doctors yield undetectable, natural results.",
-    date: "October 10, 2026",
-    author: "Dr. Meghna Mour"
-  },
-  {
-    id: "2",
-    slug: "demystifying-nad-plus-infusions",
-    title: "Demystifying NAD+ Cellular Longevity Infusions",
-    image: "https://images.unsplash.com/photo-1512290900672-1f879ff96a12?auto=format&fit=crop&w=1200&q=80",
-    excerpt: "How coenzyme therapy works at the mitochondrial level to rejuvenate energy, cognition, and dermatological vitality.",
-    content: "Nicotinamide Adenine Dinucleotide (NAD+) is an essential coenzyme found in every single living cell. It powers mitochondrial respiration, fuels DNA repair enzymes such as PARPs and Sirtuins, and regulates systemic circadian vitality.\n\nAs we age, natural NAD+ levels decline by up to 50% between youth and middle age. Intravenous NAD+ replenishment at Aevora restores cellular energy balance directly, bypassing digestive degradation.\n\nClinical Benefits:\n- Enhanced mental clarity and neuro-protection\n- Acceleration of cellular repair mechanisms\n- Amplified athletic recovery and chronic fatigue alleviation",
-    date: "October 02, 2026",
-    author: "Longevity Clinical Team"
-  }
-];
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -36,18 +15,21 @@ const BlogPost = () => {
 
   const fetchPost = () => {
     getDbSetting('blog_settings').then((saved) => {
-      let blogs = defaultBlogList;
+      let blogs = initialBlogPosts;
       if (saved) {
-        if (Array.isArray(saved)) {
+        if (Array.isArray(saved) && saved.length > 0) {
           blogs = saved;
-        } else if (saved.posts && Array.isArray(saved.posts)) {
+        } else if (saved.posts && Array.isArray(saved.posts) && saved.posts.length > 0) {
           blogs = saved.posts;
         }
       } else {
         const legacy = localStorage.getItem('aevora_blogs');
         if (legacy) {
           try {
-            blogs = JSON.parse(legacy);
+            const parsed = JSON.parse(legacy);
+            if (parsed && Array.isArray(parsed) && parsed.length > 0) {
+              blogs = parsed;
+            }
           } catch (e) {}
         }
       }
@@ -60,9 +42,10 @@ const BlogPost = () => {
         setNotFound(true);
       }
     }).catch(() => {
-      const found = defaultBlogList.find(b => b.slug === slug);
+      const found = initialBlogPosts.find(b => b.slug === slug);
       if (found) {
         setBlog(found);
+        setNotFound(false);
       } else {
         setNotFound(true);
       }
@@ -98,25 +81,55 @@ const BlogPost = () => {
     <div className="blog-page-container">
       <Header />
 
-      <section className="blog-post-hero" style={{ backgroundImage: `url(${blog.image})` }}>
+      <section className="blog-post-hero" style={{ backgroundImage: `url(${blog.image || '/celebrities/celeb-3.jpg'})` }}>
         <div className="blog-post-hero-overlay"></div>
         <div className="blog-post-hero-content">
           <Link to="/blog" className="blog-back-link">
             <ChevronLeft size={16} /> Back to Journal
           </Link>
-          <div className="blog-post-date">{blog.date} {blog.author && `• By ${blog.author}`}</div>
+          <div className="blog-post-date">
+            <span>{blog.category || 'Clinical Aesthetics'}</span>
+            <span> • </span>
+            <span>{blog.date}</span>
+            {blog.readTime && <span> • {blog.readTime}</span>}
+          </div>
           <h1 className="blog-post-title">{blog.title}</h1>
+          {blog.author && (
+            <div style={{ marginTop: '12px', fontSize: '0.95rem', color: '#c59d5f', fontWeight: 600 }}>
+              Written by {blog.author} {blog.authorRole ? `(${blog.authorRole})` : ''}
+            </div>
+          )}
         </div>
       </section>
 
       <section className="blog-post-body-section">
         <div className="blog-post-content-container">
+          {blog.excerpt && (
+            <div style={{ fontSize: '1.2rem', fontStyle: 'italic', color: '#475569', borderLeft: '4px solid #c59d5f', paddingLeft: '20px', marginBottom: '35px', lineHeight: 1.6 }}>
+              {blog.excerpt}
+            </div>
+          )}
+
           <div 
             className="blog-post-body"
-            dangerouslySetInnerHTML={{ __html: blog.content.replace(/\n/g, '<br />') }}
+            dangerouslySetInnerHTML={{ __html: (blog.content || '').replace(/\n/g, '<br />') }}
           />
+
+          {blog.tags && (
+            <div style={{ marginTop: '45px', paddingTop: '20px', borderTop: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <Tag size={16} color="#c59d5f" />
+              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#64748b' }}>Tags:</span>
+              {blog.tags.split(',').map((tag, idx) => (
+                <span key={idx} style={{ background: '#f1f5f9', color: '#334155', padding: '4px 12px', borderRadius: '15px', fontSize: '0.8rem' }}>
+                  {tag.trim()}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </section>
+
+      <ConsultationSection />
 
       <Footer />
     </div>

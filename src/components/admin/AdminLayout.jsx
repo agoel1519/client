@@ -15,7 +15,9 @@ import {
   MonitorPlay,
   Search,
   Bell,
-  Megaphone
+  Megaphone,
+  BookOpen,
+  Images
 } from 'lucide-react';
 import './AdminLayout.css';
 import AdminLogin from './AdminLogin';
@@ -100,11 +102,24 @@ const AdminLayout = () => {
                   <NavLink to="/admin/blog-settings" className={({ isActive }) => `submenu-item ${isActive ? 'active' : ''}`}>
                     Blog & Journal
                   </NavLink>
+                  <NavLink to="/admin/gallery-settings" className={({ isActive }) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    Gallery
+                  </NavLink>
                   <NavLink to="/admin/settings" className={({ isActive }) => `submenu-item ${isActive ? 'active' : ''}`}>
                     Contact & Clinic
                   </NavLink>
                 </div>
               )}
+              <NavLink to="/admin/blog-settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <BookOpen size={20} />
+                {sidebarOpen && <span>Blog / Journal CMS</span>}
+              </NavLink>
+
+              <NavLink to="/admin/gallery-settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <Images size={20} />
+                {sidebarOpen && <span>Gallery CMS</span>}
+              </NavLink>
+
               <NavLink to="/admin/media" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
                 <ImageIcon size={20} />
                 {sidebarOpen && <span>Media Library</span>}
