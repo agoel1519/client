@@ -4,10 +4,10 @@ import { getDbSetting, submitAppointmentBooking } from '../api/mongoApi';
 import './ConsultationSection.css';
 
 const defaultClinicInfo = {
-  clinicName: "Aevora Clinics",
+  clinicName: "Aevora By Kian Clinics",
   address: "SCO 205 FF, Sector 5, Panchkula – 134114",
   phone: "+91 97797 66933",
-  email: "concierge@aevoraclinics.com",
+  email: "contact@aevoraclinics.com",
   hours: "Monday – Sunday: 10:00 AM – 7:00 PM"
 };
 
@@ -39,10 +39,10 @@ const ConsultationSection = ({
       if (saved) {
         setClinic(prev => ({
           ...prev,
-          clinicName: saved.clinicName || prev.clinicName,
+          clinicName: (saved.clinicName && !saved.clinicName.toLowerCase().includes('sanctuary')) ? saved.clinicName : "Aevora By Kian Clinics",
           address: (saved.address && !saved.address.includes('SCO 14-15')) ? saved.address : prev.address,
           phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : prev.phone,
-          email: saved.email || prev.email,
+          email: (saved.email && !saved.email.includes('concierge@')) ? saved.email : "contact@aevoraclinics.com",
           hours: saved.hours || prev.hours
         }));
       } else {

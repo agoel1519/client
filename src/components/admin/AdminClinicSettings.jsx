@@ -9,12 +9,12 @@ const defaultSettings = {
   heroSubtitle: "We'd love to hear from you",
   formEyebrow: "GET IN TOUCH",
   formHeading: "Book Your Consultation",
-  clinicName: "Aevora Clinics",
+  clinicName: "Aevora By Kian Clinics",
   address: "SCO 205 FF, Sector 5, Panchkula – 134114",
   phone: "+91 97797 66933",
   whatsapp: "+91 97797 66933",
   hours: "Mon – Sat: 10:00 AM – 8:00 PM | Sun: By Appointment",
-  email: "concierge@aevoraclinics.com",
+  email: "contact@aevoraclinics.com",
   website: "www.Aevoraclinics.com",
   responseTime: "We respond within 24 hours",
   mapUrl: DEFAULT_AEVORA_MAP_EMBED,
@@ -34,10 +34,11 @@ const AdminClinicSettings = () => {
           setSettings(prev => ({
             ...prev,
             ...saved,
-            clinicName: saved.clinicName || "Aevora Clinics",
+            clinicName: (saved.clinicName && !saved.clinicName.toLowerCase().includes('sanctuary')) ? saved.clinicName : "Aevora By Kian Clinics",
             address: (saved.address && !saved.address.includes('SCO 14-15')) ? saved.address : "SCO 205 FF, Sector 5, Panchkula – 134114",
             phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : "+91 97797 66933",
-            whatsapp: (saved.whatsapp && !saved.whatsapp.includes('98765 43210')) ? saved.whatsapp : "+91 97797 66933"
+            whatsapp: (saved.whatsapp && !saved.whatsapp.includes('98765 43210')) ? saved.whatsapp : "+91 97797 66933",
+            email: (saved.email && !saved.email.includes('concierge@')) ? saved.email : "contact@aevoraclinics.com"
           }));
         } else {
           const legacy = localStorage.getItem('aevora_clinic_settings');
@@ -165,14 +166,14 @@ const AdminClinicSettings = () => {
         </div>
 
         <div className="settings-card">
-          <h3 className="settings-card-title">Sanctuary Location &amp; Hours</h3>
+          <h3 className="settings-card-title">Clinic Location &amp; Hours</h3>
           
           <div className="form-group">
-            <label>Flagship Sanctuary Label</label>
+            <label>Clinic Label</label>
             <input 
               type="text"
               name="clinicName"
-              value={settings.clinicName || "Panchkula Flagship Sanctuary"}
+              value={settings.clinicName || "Aevora By Kian Clinics"}
               onChange={handleChange}
             />
           </div>
@@ -230,7 +231,7 @@ const AdminClinicSettings = () => {
                 name="email"
                 value={settings.email}
                 onChange={handleChange}
-                placeholder="concierge@aevoraclinics.com"
+                placeholder="contact@aevoraclinics.com"
               />
             </div>
           </div>

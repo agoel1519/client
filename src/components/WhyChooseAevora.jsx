@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getDbSetting, saveDbSetting } from '../api/mongoApi';
+import { getDbSetting } from '../api/mongoApi';
 import { 
   Sliders, 
   ShieldCheck, 
@@ -8,14 +8,81 @@ import {
   CheckCircle2,
   Award,
   Users,
-  Activity
+  Activity,
+  Sparkles,
+  HeartPulse,
+  Stethoscope,
+  Target,
+  Zap,
+  Microscope,
+  Star,
+  Feather,
+  Gem,
+  Clock,
+  Compass,
+  Crown,
+  Smile,
+  Sun,
+  Flame,
+  Layers,
+  Eye
 } from 'lucide-react';
 import './WhyChooseAevora.css';
+
+const ICON_MAP = {
+  Sliders,
+  ShieldCheck,
+  Cpu,
+  Award,
+  Sparkles,
+  HeartPulse,
+  Stethoscope,
+  Users,
+  CheckCircle2,
+  Activity,
+  Target,
+  Zap,
+  Microscope,
+  Star,
+  Feather,
+  Gem,
+  Clock,
+  Compass,
+  Crown,
+  Smile,
+  Sun,
+  Flame,
+  Layers,
+  Eye
+};
+
+const defaultPillarIconNames = ['Sliders', 'ShieldCheck', 'Cpu', 'Award'];
+
+const renderPillarIcon = (iconValue, index) => {
+  if (!iconValue) {
+    const fallbackName = defaultPillarIconNames[index % defaultPillarIconNames.length];
+    const FallbackIcon = ICON_MAP[fallbackName] || Award;
+    return <FallbackIcon size={26} className="pillar-icon" />;
+  }
+
+  // If iconValue is an image URL / SVG path
+  if (typeof iconValue === 'string') {
+    if (iconValue.startsWith('http') || iconValue.startsWith('/') || iconValue.startsWith('data:')) {
+      return <img src={iconValue} alt="Pillar icon" className="pillar-icon-img" />;
+    }
+    const Comp = ICON_MAP[iconValue] || ICON_MAP[defaultPillarIconNames[index % defaultPillarIconNames.length]] || Award;
+    return <Comp size={26} className="pillar-icon" />;
+  }
+
+  // If passed directly as a React component
+  const Comp = iconValue;
+  return <Comp size={26} className="pillar-icon" />;
+};
 
 const features = [
   {
     id: 1,
-    icon: Sliders,
+    icon: 'Sliders',
     title: 'Tailored Approach',
     tagline: 'Every treatment is designed around you',
     description: 'We reject one-size-fits-all solutions. Each protocol begins with comprehensive facial and body mapping to craft a bespoke treatment plan unique to your anatomy and goals.',
@@ -23,7 +90,7 @@ const features = [
   },
   {
     id: 2,
-    icon: ShieldCheck,
+    icon: 'ShieldCheck',
     title: 'Clinical Expertise',
     tagline: 'Led by experienced specialists',
     description: 'Our team comprises board-certified aesthetic physicians, master dermatologists, and trichologists dedicated to the highest standards of safety, ethics, and medical mastery.',
@@ -31,7 +98,7 @@ const features = [
   },
   {
     id: 3,
-    icon: Cpu,
+    icon: 'Cpu',
     title: 'Advanced Technology',
     tagline: 'Globally recognised systems',
     description: 'Powered by world-leading US-FDA approved aesthetic workstations, including Ultherapy Prime, Fotona 4D, Emsculpt NEO, and medical-grade cellular diagnostics.',
@@ -39,7 +106,7 @@ const features = [
   },
   {
     id: 4,
-    icon: Award,
+    icon: 'Award',
     title: 'Natural Outcomes',
     tagline: 'Refinement without obvious change',
     description: 'Our philosophy centers on undetectable elegance. We enhance and restore your natural contours, delivering refreshed youthfulness without visible artificial alteration.',
@@ -70,7 +137,10 @@ const WhyChooseAevora = () => {
           ...prev, 
           ...saved.whyChoose, 
           stats: saved.whyChoose.stats || prev.stats,
-          pillars: saved.whyChoose.pillars || prev.pillars 
+          pillars: (saved.whyChoose.pillars || prev.pillars).map((p, idx) => ({
+            ...p,
+            icon: p.icon || defaultPillarIconNames[idx % defaultPillarIconNames.length]
+          }))
         }));
       }
     });
@@ -100,12 +170,11 @@ const WhyChooseAevora = () => {
         {/* 4 Pillars Grid */}
         <div className="pillars-grid">
           {currentPillars.map((item, index) => {
-            const IconComponent = item.icon || Award;
             return (
-              <div key={item.id} className="pillar-card">
+              <div key={item.id || index} className="pillar-card">
                 <div className="card-top-row">
                   <div className="pillar-icon-box">
-                    <IconComponent size={26} className="pillar-icon" />
+                    {renderPillarIcon(item.icon, index)}
                   </div>
                   <span className="pillar-number">0{index + 1}</span>
                 </div>

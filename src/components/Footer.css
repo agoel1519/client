@@ -118,8 +118,18 @@
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1.5fr;
-  gap: 3rem;
+  grid-template-columns: 1.35fr 1.05fr 1.05fr 1.45fr;
+  gap: 2.5rem;
+}
+
+.footer-grid.cols-3 {
+  grid-template-columns: 1.3fr 1.1fr 1.4fr;
+  gap: 3.5rem;
+}
+
+.footer-grid.cols-4 {
+  grid-template-columns: 1.35fr 1.05fr 1.05fr 1.45fr;
+  gap: 2.5rem;
 }
 
 .footer-col {
@@ -230,18 +240,27 @@
   background: #c59d5f;
 }
 
+.footer-heading.footer-heading-empty {
+  visibility: hidden;
+}
+
+.footer-heading.footer-heading-empty::after {
+  display: none;
+}
+
 .footer-nav-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.55rem;
 }
 
 .footer-nav-list li a {
   color: #a3bfb4;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.35;
   text-decoration: none;
   transition: all 0.25s ease;
   display: inline-block;
@@ -404,6 +423,28 @@
 .contact-row a:hover {
   color: #ffd899;
 }
+/* Footer Mini Map */
+.footer-map-container {
+  margin-top: 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(197, 157, 95, 0.2);
+  transition: opacity 0.3s ease;
+}
+
+.footer-map-container:hover {
+  opacity: 1 !important;
+}
+
+.footer-map-container iframe {
+  display: block;
+  filter: grayscale(0.3) brightness(0.85);
+  transition: filter 0.3s ease;
+}
+
+.footer-map-container:hover iframe {
+  filter: grayscale(0) brightness(1);
+}
 
 /* ---------------------------------------------------
    Bottom Copyright Bar
@@ -482,6 +523,10 @@
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 2.2rem;
+  }
+
+  .footer-heading.footer-heading-empty {
+    display: none;
   }
 
   .footer-privilege-banner {

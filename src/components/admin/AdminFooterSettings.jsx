@@ -2,24 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Save, AlertTriangle, CheckCircle2, GripVertical, Trash2, Plus, Edit2 } from 'lucide-react';
 import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 import ImageUploader from './ImageUploader';
+import { defaultFooterTreatmentColumns } from '../Footer';
 import './AdminDashboard.css';
 
 const AdminFooterSettings = () => {
-  const defaultColumns = [
-    { id: '1', title: 'CLINICAL TREATMENTS', links: [
-      { label: 'Chemical Peels', url: '/treatments/chemical-peels' },
-      { label: 'Laser Pigment', url: '/treatments/pigment-laser' }
-    ]},
-    { id: '2', title: 'THE SANCTUARY', links: [
-      { label: 'About Aevora', url: '#about' },
-      { label: 'Our Doctors', url: '#team' }
-    ]}
-  ];
+  const defaultColumns = defaultFooterTreatmentColumns;
 
   const [settings, setSettings] = useState({
     tagline: "A bespoke aesthetic and longevity sanctuary founded on clinical precision, US FDA-cleared science, and undetectable elegance.",
-    founderName: "Dr. Meghna Mour",
-    founderTitle: "Chief Aesthetic Dermatologist",
+    founderName: "Dr Misha Goel & Dr Anupam Goel",
+    founderTitle: "Clinical Aesthetics & Minimal Access Surgery",
     instagramUrl: "https://instagram.com",
     facebookUrl: "https://facebook.com",
     linkedinUrl: "https://linkedin.com",
@@ -46,7 +38,18 @@ const AdminFooterSettings = () => {
       try {
         const saved = await getDbSetting('footer_settings');
         if (saved) {
-          setSettings(prev => ({ ...prev, ...saved, columns: saved.columns || prev.columns }));
+          const rawCols = saved.columns || defaultColumns;
+          const hasSanctuary = rawCols.some(col => 
+            col.title?.trim().toUpperCase() === 'THE SANCTUARY' || (col.id === '2' && col.links?.some(l => l.url === '#about'))
+          );
+          const columnsToUse = hasSanctuary 
+            ? defaultColumns 
+            : rawCols.map(c => c.title?.trim().toUpperCase() === 'SURGICAL & WELLNESS' ? { ...c, title: '' } : c);
+          setSettings(prev => ({ 
+            ...prev, 
+            ...saved, 
+            columns: columnsToUse 
+          }));
         }
       } catch (err) {
         console.error("Failed to load footer settings", err);

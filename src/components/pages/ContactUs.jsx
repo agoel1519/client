@@ -39,11 +39,11 @@ const defaultSettings = {
   heroSubtitle: "We'd love to hear from you",
   formEyebrow: "GET IN TOUCH",
   formHeading: "Book Your Consultation",
-  clinicName: "Aevora Clinics",
+  clinicName: "Aevora By Kian Clinics",
   address: "SCO 205 FF, Sector 5, Panchkula – 134114",
   phone: "+91 97797 66933",
   hours: "Mon – Sat: 10:00 AM – 8:00 PM | Sun: By Appointment",
-  email: "concierge@aevoraclinics.com",
+  email: "contact@aevoraclinics.com",
   responseTime: "We respond within 24 hours",
   mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27451.450192191256!2d76.84114488101572!3d30.678139625046214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f93cadd2281e5%3A0x154181fc7bda7840!2sAevora%20by%20Kian%20Clinics!5e0!3m2!1sen!2sin!4v1792574171994!5m2!1sen!2sin"
 };
@@ -57,9 +57,10 @@ const ContactUs = () => {
         setSettings(prev => ({
           ...prev,
           ...saved,
-          clinicName: saved.clinicName || "Aevora Clinics",
+          clinicName: (saved.clinicName && !saved.clinicName.toLowerCase().includes('sanctuary')) ? saved.clinicName : "Aevora By Kian Clinics",
           address: (saved.address && !saved.address.includes('SCO 14-15')) ? saved.address : "SCO 205 FF, Sector 5, Panchkula – 134114",
-          phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : "+91 97797 66933"
+          phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : "+91 97797 66933",
+          email: (saved.email && !saved.email.includes('concierge@')) ? saved.email : "contact@aevoraclinics.com"
         }));
       } else {
         const legacy = localStorage.getItem('aevora_clinic_settings');

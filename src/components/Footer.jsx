@@ -13,48 +13,71 @@ import {
 import { getDbSetting } from '../api/mongoApi';
 import './Footer.css';
 
+export const defaultFooterTreatmentColumns = [
+  {
+    id: '1',
+    title: 'CLINICAL SERVICES',
+    links: [
+      { label: 'Laser Hair Reduction', url: '/treatments/laser-hair-reduction' },
+      { label: 'Hydrafacials & Medical Facials', url: '/treatments/hydrafacials-medifacials' },
+      { label: 'Laser Facial Toning & Glass Skin', url: '/treatments/laser-facial-toning' },
+      { label: 'De-Tan / De-Pigmentation', url: '/treatments/de-tan-de-pigmentation' },
+      { label: 'Tattoo Removal', url: '/treatments/tattoo-removal' },
+      { label: 'Scar or Mole Removal', url: '/treatments/scar-or-mole-removal' },
+      { label: 'Glass-Skin Clear Body & Axilla', url: '/treatments/glass-skin-clear-body' },
+      { label: 'Intimacy Rejuvenation', url: '/treatments/intimacy-rejuvenation' },
+      { label: 'Skin Tightening, Lifting & Anti-Ageing', url: '/treatments/skin-tightening-lifting-anti-ageing' },
+      { label: 'Hair Regrowth & Regeneration', url: '/treatments/hair-regrowth-regeneration' },
+      { label: 'Skin Boosters, Botox & Fillers', url: '/treatments/skin-boosters-fillers-botox-threads' },
+      { label: 'Lip Fillers & Boosters', url: '/treatments/lip-fillers-or-boosters' },
+      { label: 'Face Lift & Jawline Sculpting', url: '/treatments/face-lift-jawline-sculpting-double-chin' },
+      { label: 'Muscle Contouring & Sculpting', url: '/treatments/muscle-contouring' }
+    ]
+  },
+  {
+    id: '2',
+    title: '',
+    links: [
+      { label: 'Weight Loss Programs', url: '/treatments/weight-loss-programs' },
+      { label: 'Bridal Packages', url: '/treatments/bridal-packages' },
+      { label: 'Mommy Makeover & Post-Partum', url: '/treatments/mommy-makeover-post-partum-recovery' },
+      { label: 'Intravenous Longevity Drips', url: '/treatments/intravenous-longevity-drips' },
+      { label: 'Complete Body Health Packages', url: '/treatments/complete-body-analysis-prophylactic-health-packages' },
+      { label: 'Sexual Wellness & Circumcision', url: '/treatments/sexual-wellness' },
+      { label: 'Laser Surgery for Pilonidal Sinus', url: '/treatments/laser-surgery-pilonidal-sinus' },
+      { label: 'Gastro-Intestinal Treatments', url: '/treatments/gastro-intestinal-problems' },
+      { label: 'Liver, Gallbladder, GERD & Appendix', url: '/treatments/liver-gallbladder-gerd-pancreas' },
+      { label: 'Hernia & Abdominal Wall Repair', url: '/treatments/hernia-abdominal-wall-reconstruction' },
+      { label: 'Bariatric & Diabetes Surgery', url: '/treatments/bariatric-weight-loss-diabetes-surgery' },
+      { label: 'Laser Proctology (Piles, Fissure)', url: '/treatments/laser-proctology-piles-fissure-fistula' },
+      { label: 'Advanced Robotic Surgery', url: '/treatments/robotic-surgery' }
+    ]
+  }
+];
+
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [clinicSettings, setClinicSettings] = useState({
+    clinicName: "Aevora By Kian Clinics",
     address: "SCO 205 FF, Sector 5, Panchkula – 134114",
     phone: "+91 97797 66933",
-    email: "concierge@aevoraclinics.com",
+    email: "contact@aevoraclinics.com",
     hours: "Mon – Sat: 10:00 AM – 8:00 PM | Sun: By Appointment",
-    website: "www.Aevoraclinics.com"
+    website: "www.Aevoraclinics.com",
+    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27451.450192191256!2d76.84114488101572!3d30.678139625046214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f93cadd2281e5%3A0x154181fc7bda7840!2sAevora%20by%20Kian%20Clinics!5e0!3m2!1sen!2sin!4v1792574395440!5m2!1sen!2sin"
   });
 
   const [footerSettings, setFooterSettings] = useState({
     tagline: "A bespoke aesthetic and longevity sanctuary founded on clinical precision, US FDA-cleared science, and undetectable elegance.",
-    founderName: "Dr Misha Goel & Dr Anupam Goel",
-    founderTitle: "Clinical Aesthetics & Minimal Access Surgery",
+    founderName: "Dr. Meghna Mour",
+    founderTitle: "Chief Aesthetic Dermatologist",
     instagramUrl: "https://instagram.com",
     facebookUrl: "https://facebook.com",
     linkedinUrl: "https://linkedin.com",
     youtubeUrl: "https://youtube.com",
     copyrightText: "AEVORA by Kian Clinics. All rights reserved.",
-    columns: [
-      { id: '1', title: 'CLINICAL SERVICES', links: [
-        { label: 'Hydrafacials & Medical Facials', url: '/treatments/hydrafacials-medifacials' },
-        { label: 'Laser Facial Toning & Glass Skin', url: '/treatments/laser-facial-toning' },
-        { label: 'Laser Hair Reduction', url: '/treatments/laser-hair-reduction' },
-        { label: 'Muscle Contouring & Sculpting', url: '/treatments/muscle-contouring' },
-        { label: 'Intravenous Longevity Drips', url: '/treatments/intravenous-longevity-drips' },
-        { label: 'Hair Regrowth & Regeneration', url: '/treatments/hair-regrowth-regeneration' },
-        { label: 'Intimacy & Sexual Wellness', url: '/treatments/intimacy-rejuvenation' },
-        { label: 'Advanced Robotic Surgery', url: '/treatments/robotic-surgery' }
-      ] },
-      { id: '2', title: 'THE SANCTUARY', links: [
-        { label: 'About Aevora & Philosophy', url: '#about' },
-        { label: 'Our Specialist Doctors', url: '#doctors' },
-        { label: 'The VIP Clinic Experience', url: '#about' },
-        { label: 'Celebrity & VIP Spotlight', url: '#celebrity' },
-        { label: 'Press & Media Features', url: '#media' },
-        { label: 'Patient Reviews & Testimonials', url: '#testimonials' },
-        { label: 'Frequently Asked Questions', url: '#faq' },
-        { label: 'Book Private Consultation', url: '#book' }
-      ] }
-    ],
+    columns: defaultFooterTreatmentColumns,
     logoUrl: "/aevora-logo-clean.png",
     logoWidth: "150"
   });
@@ -65,8 +88,10 @@ const Footer = () => {
         setClinicSettings(prev => ({
           ...prev,
           ...saved,
+          clinicName: (saved.clinicName && !saved.clinicName.toLowerCase().includes('sanctuary')) ? saved.clinicName : "Aevora By Kian Clinics",
           address: (saved.address && !saved.address.includes('SCO 14-15')) ? saved.address : "SCO 205 FF, Sector 5, Panchkula – 134114",
           phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : "+91 97797 66933",
+          email: (saved.email && !saved.email.includes('concierge@')) ? saved.email : "contact@aevoraclinics.com",
           website: saved.website || "www.Aevoraclinics.com"
         }));
       }
@@ -74,10 +99,25 @@ const Footer = () => {
 
     getDbSetting('footer_settings').then(saved => {
       if (saved) {
+        let columnsToUse = defaultFooterTreatmentColumns;
+
+        if (Array.isArray(saved.columns) && saved.columns.length > 0) {
+          const hasSanctuary = saved.columns.some(col => 
+            col.title?.trim().toUpperCase() === 'THE SANCTUARY' || (col.id === '2' && col.links?.some(l => l.url === '#about'))
+          );
+          if (hasSanctuary) {
+            columnsToUse = defaultFooterTreatmentColumns;
+          } else {
+            columnsToUse = saved.columns.map(c => 
+              c.title?.trim().toUpperCase() === 'SURGICAL & WELLNESS' ? { ...c, title: '' } : c
+            );
+          }
+        }
+
         setFooterSettings(prev => ({
           ...prev,
           ...saved,
-          founderName: (saved.founderName && !saved.founderName.includes('Meghna Mour')) ? saved.founderName : "Dr Misha Goel & Dr Anupam Goel"
+          columns: columnsToUse
         }));
       }
     }).catch(err => console.warn('Footer settings notice:', err));
@@ -146,7 +186,7 @@ const Footer = () => {
 
       {/* Main Footer Content */}
       <div className="footer-main-container">
-        <div className="footer-grid">
+        <div className={`footer-grid cols-${(footerSettings.columns?.length || 0) + 2}`}>
           
           {/* Column 1: Brand & Bio */}
           <div className="footer-col footer-brand-col">
@@ -201,7 +241,11 @@ const Footer = () => {
           {/* Dynamic Columns */}
           {footerSettings.columns?.map(col => (
             <div className="footer-col" key={col.id}>
-              <h4 className="footer-heading">{col.title}</h4>
+              {col.title ? (
+                <h4 className="footer-heading">{col.title}</h4>
+              ) : (
+                <h4 className="footer-heading footer-heading-empty" aria-hidden="true">&nbsp;</h4>
+              )}
               <ul className="footer-nav-list">
                 {col.links?.map((link, i) => (
                   <li key={i}>
@@ -215,45 +259,22 @@ const Footer = () => {
             </div>
           ))}
 
-          {/* Column 4: Contact & Locations (With Coming Soon) */}
+          {/* Column 4: Contact & Location */}
           <div className="footer-col footer-contact-col">
-            <h4 className="footer-heading">CLINIC LOCATIONS</h4>
+            <h4 className="footer-heading">CLINIC LOCATION</h4>
             
-            {/* Active Flagship Clinic */}
+            {/* Active Clinic */}
             <div className="footer-location-item active-clinic">
-              <div className="loc-badge-row">
-                <span className="loc-flagship-tag">FLAGSHIP CLINIC</span>
-              </div>
               <div className="loc-info-row">
                 <MapPin size={18} className="loc-icon" />
                 <div>
-                  <strong>Panchkula Sanctuary</strong>
+                  <strong>{clinicSettings.clinicName || "Aevora By Kian Clinics"}</strong>
                   <p>
                     {clinicSettings.address.split('\n').map((line, i) => (
                       <React.Fragment key={i}>{line}<br/></React.Fragment>
                     ))}
                   </p>
-                  <span className="valet-tag">Valet Parking Available</span>
                 </div>
-              </div>
-            </div>
-
-            {/* Coming Soon Locations */}
-            <div className="footer-coming-soon-block">
-              <span className="coming-soon-heading">EXPANDING DESTINATIONS:</span>
-              <div className="coming-soon-cities">
-                <span className="city-pill">
-                  <span className="dot pulse"></span>
-                  Chandigarh <small>(Coming Soon)</small>
-                </span>
-                <span className="city-pill">
-                  <span className="dot pulse"></span>
-                  Mohali <small>(Coming Soon)</small>
-                </span>
-                <span className="city-pill">
-                  <span className="dot pulse"></span>
-                  Delhi NCR <small>(Coming Soon)</small>
-                </span>
               </div>
             </div>
 
@@ -265,12 +286,26 @@ const Footer = () => {
               </div>
               <div className="contact-row">
                 <Mail size={16} className="contact-icon" />
-                <a href={`mailto:${clinicSettings.email}`}>{clinicSettings.email}</a>
+                <a href={`mailto:${clinicSettings.email || 'contact@aevoraclinics.com'}`}>{clinicSettings.email || 'contact@aevoraclinics.com'}</a>
               </div>
               <div className="contact-row">
                 <Clock size={16} className="contact-icon" />
                 <span>{clinicSettings.hours}</span>
               </div>
+            </div>
+
+            {/* Mini Map */}
+            <div className="footer-map-container">
+              <iframe
+                src={clinicSettings.mapUrl}
+                width="100%"
+                height="140"
+                style={{ border: 0, borderRadius: '10px', opacity: 0.85 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Aevora Clinic Location"
+              />
             </div>
 
           </div>

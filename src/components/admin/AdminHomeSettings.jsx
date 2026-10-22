@@ -39,10 +39,53 @@ import {
   ChevronDown,
   ChevronUp,
   Settings,
-  X
+  X,
+  ShieldCheck,
+  Cpu,
+  HeartPulse,
+  Stethoscope,
+  Target,
+  Zap,
+  Microscope,
+  Feather,
+  Gem,
+  Clock,
+  Compass,
+  Crown,
+  Smile,
+  Sun,
+  Flame,
+  Activity
 } from 'lucide-react';
 import ImageUploader from './ImageUploader';
 import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
+
+export const AVAILABLE_PILLAR_ICONS = [
+  { id: 'Sliders', label: 'Sliders (Customized)', icon: Sliders },
+  { id: 'ShieldCheck', label: 'Shield Check (Safety)', icon: ShieldCheck },
+  { id: 'Cpu', label: 'CPU (Advanced Tech)', icon: Cpu },
+  { id: 'Award', label: 'Award (Excellence)', icon: Award },
+  { id: 'Sparkles', label: 'Sparkles (Glow & Radiance)', icon: Sparkles },
+  { id: 'HeartPulse', label: 'Heart Pulse (Vitality)', icon: HeartPulse },
+  { id: 'Stethoscope', label: 'Stethoscope (Medical)', icon: Stethoscope },
+  { id: 'Users', label: 'Users (Specialists)', icon: Users },
+  { id: 'CheckCircle2', label: 'Check Circle (Standard)', icon: CheckCircle2 },
+  { id: 'Activity', label: 'Activity (Longevity)', icon: Activity },
+  { id: 'Target', label: 'Target (Precision)', icon: Target },
+  { id: 'Zap', label: 'Zap (Laser Energy)', icon: Zap },
+  { id: 'Microscope', label: 'Microscope (Science)', icon: Microscope },
+  { id: 'Star', label: 'Star (5-Star Quality)', icon: Star },
+  { id: 'Feather', label: 'Feather (Gentle Care)', icon: Feather },
+  { id: 'Gem', label: 'Gem (Luxury)', icon: Gem },
+  { id: 'Clock', label: 'Clock (Timeless Ageing)', icon: Clock },
+  { id: 'Compass', label: 'Compass (Pathway)', icon: Compass },
+  { id: 'Crown', label: 'Crown (Flagship)', icon: Crown },
+  { id: 'Smile', label: 'Smile (Aesthetics)', icon: Smile },
+  { id: 'Sun', label: 'Sun (Skin Radiance)', icon: Sun },
+  { id: 'Flame', label: 'Flame (Body Contouring)', icon: Flame },
+  { id: 'Layers', label: 'Layers (Skin Layers)', icon: Layers },
+  { id: 'Eye', label: 'Eye (Aesthetic Vision)', icon: Eye }
+];
 import { defaultSectionsConfig } from '../pages/Home';
 import { defaultFeaturedData, defaultMediaLogos } from '../FeaturedMedia';
 import './AdminHomeSettings.css';
@@ -159,10 +202,10 @@ const defaultSettings = {
       { value: '99.4%', label: 'Patient Satisfaction' }
     ],
     pillars: [
-      { id: 1, title: 'Tailored Approach', tagline: 'Every treatment is designed around you', description: 'We reject one-size-fits-all solutions. Each protocol begins with comprehensive facial and body mapping to craft a bespoke treatment plan unique to your anatomy and goals.' },
-      { id: 2, title: 'Clinical Expertise', tagline: 'Led by experienced specialists', description: 'Our team comprises board-certified aesthetic physicians, master dermatologists, and trichologists dedicated to the highest standards of safety, ethics, and medical mastery.' },
-      { id: 3, title: 'Advanced Technology', tagline: 'Globally recognised systems', description: 'Powered by world-leading US-FDA approved aesthetic workstations, including Ultherapy Prime, Fotona 4D, Emsculpt NEO, and medical-grade cellular diagnostics.' },
-      { id: 4, title: 'Natural Outcomes', tagline: 'Refinement without obvious change', description: 'Our philosophy centers on undetectable elegance. We enhance and restore your natural contours, delivering refreshed youthfulness without visible artificial alteration.' }
+      { id: 1, icon: 'Sliders', title: 'Tailored Approach', tagline: 'Every treatment is designed around you', description: 'We reject one-size-fits-all solutions. Each protocol begins with comprehensive facial and body mapping to craft a bespoke treatment plan unique to your anatomy and goals.' },
+      { id: 2, icon: 'ShieldCheck', title: 'Clinical Expertise', tagline: 'Led by experienced specialists', description: 'Our team comprises board-certified aesthetic physicians, master dermatologists, and trichologists dedicated to the highest standards of safety, ethics, and medical mastery.' },
+      { id: 3, icon: 'Cpu', title: 'Advanced Technology', tagline: 'Globally recognised systems', description: 'Powered by world-leading US-FDA approved aesthetic workstations, including Ultherapy Prime, Fotona 4D, Emsculpt NEO, and medical-grade cellular diagnostics.' },
+      { id: 4, icon: 'Award', title: 'Natural Outcomes', tagline: 'Refinement without obvious change', description: 'Our philosophy centers on undetectable elegance. We enhance and restore your natural contours, delivering refreshed youthfulness without visible artificial alteration.' }
     ]
   },
   aboutClinic: {
@@ -385,7 +428,14 @@ const AdminHomeSettings = () => {
             })),
             celebritySpotlight: { ...prev.celebritySpotlight, ...(saved.celebritySpotlight || {}) },
             videoShowcase: { ...prev.videoShowcase, ...(saved.videoShowcase || {}) },
-            whyChoose: { ...prev.whyChoose, ...(saved.whyChoose || {}) },
+            whyChoose: { 
+              ...defaultSettings.whyChoose,
+              ...(saved.whyChoose || {}),
+              pillars: (saved.whyChoose?.pillars || defaultSettings.whyChoose.pillars).map((p, idx) => ({
+                ...p,
+                icon: p.icon || ['Sliders', 'ShieldCheck', 'Cpu', 'Award'][idx % 4]
+              }))
+            },
             aboutClinic: { ...defaultSettings.aboutClinic, ...(saved.aboutClinic || {}) },
             doctorSpotlight: { ...prev.doctorSpotlight, ...(saved.doctorSpotlight || {}) },
             teamSpecialists: { 
@@ -1788,54 +1838,161 @@ const AdminHomeSettings = () => {
             ))}
           </div>
 
-          <h4 style={{ fontSize: '15px', color: '#0f172a', margin: '20px 0 14px 0' }}>4 Core Pillars</h4>
-          {(settings.whyChoose?.pillars || []).map((pillar, pIdx) => (
-            <div key={pillar.id || pIdx} className="item-card-wrapper">
-              <div className="item-card-header">
-                <span className="item-card-index">Pillar 0{pIdx + 1}: {pillar.title}</span>
-              </div>
-              <div className="settings-grid-2">
+          <h4 style={{ fontSize: '15px', color: '#0f172a', margin: '20px 0 14px 0' }}>4 Core Pillars &amp; Icons</h4>
+          {(settings.whyChoose?.pillars || []).map((pillar, pIdx) => {
+            const defaultIcons = ['Sliders', 'ShieldCheck', 'Cpu', 'Award'];
+            const currentIcon = pillar.icon || defaultIcons[pIdx % 4];
+            const isCustomImg = typeof currentIcon === 'string' && (currentIcon.startsWith('http') || currentIcon.startsWith('/') || currentIcon.startsWith('data:'));
+            const matchingIconObj = AVAILABLE_PILLAR_ICONS.find(item => item.id === currentIcon);
+            const ActiveIconComponent = matchingIconObj ? matchingIconObj.icon : Award;
+
+            return (
+              <div key={pillar.id || pIdx} className="item-card-wrapper">
+                <div className="item-card-header">
+                  <span className="item-card-index">Pillar 0{pIdx + 1}: {pillar.title}</span>
+                </div>
+
+                {/* ICON PICKER ROW */}
+                <div className="pillar-icon-editor-row">
+                  <div className="pillar-icon-current-preview">
+                    <div className="pillar-icon-preview-box">
+                      {isCustomImg ? (
+                        <img src={currentIcon} alt="Pillar icon preview" />
+                      ) : (
+                        <ActiveIconComponent size={24} />
+                      )}
+                    </div>
+                    <div>
+                      <div className="pillar-icon-current-title">
+                        Active Icon: <strong>{isCustomImg ? 'Custom Image' : currentIcon}</strong>
+                      </div>
+                      <div className="pillar-icon-current-hint">Click any icon below or enter a custom image/SVG URL</div>
+                    </div>
+                  </div>
+
+                  <div className="pillar-icon-actions">
+                    <select
+                      className="settings-select pillar-icon-select"
+                      value={isCustomImg ? 'custom' : currentIcon}
+                      onChange={e => {
+                        const val = e.target.value;
+                        if (val !== 'custom') {
+                          const updated = [...settings.whyChoose.pillars];
+                          updated[pIdx].icon = val;
+                          updateNested('whyChoose', 'pillars', updated);
+                        }
+                      }}
+                    >
+                      <optgroup label="✨ Aesthetic & Medical Icons">
+                        {AVAILABLE_PILLAR_ICONS.map(opt => (
+                          <option key={opt.id} value={opt.id}>{opt.label}</option>
+                        ))}
+                      </optgroup>
+                      <option value="custom">Custom Image / SVG URL</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* QUICK ICON SELECTION GRID */}
+                <div className="pillar-icons-quick-grid">
+                  {AVAILABLE_PILLAR_ICONS.map(opt => {
+                    const TileIcon = opt.icon;
+                    const isSelected = !isCustomImg && currentIcon === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        title={opt.label}
+                        className={`pillar-icon-tile ${isSelected ? 'active' : ''}`}
+                        onClick={() => {
+                          const updated = [...settings.whyChoose.pillars];
+                          updated[pIdx].icon = opt.id;
+                          updateNested('whyChoose', 'pillars', updated);
+                        }}
+                      >
+                        <TileIcon size={18} />
+                        <span className="pillar-icon-tile-name">{opt.id}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* CUSTOM IMAGE / SVG URL INPUT */}
+                <div className="settings-form-group" style={{ marginBottom: '14px' }}>
+                  <label style={{ fontSize: '12px', color: '#64748b' }}>Or enter custom Icon / SVG image URL (optional):</label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input 
+                      type="text" 
+                      placeholder="https://... or /icons/custom-icon.svg"
+                      className="settings-input" 
+                      style={{ fontSize: '13px', padding: '8px 12px' }}
+                      value={isCustomImg ? currentIcon : ''} 
+                      onChange={e => {
+                        const val = e.target.value.trim();
+                        const updated = [...settings.whyChoose.pillars];
+                        updated[pIdx].icon = val || defaultIcons[pIdx % 4];
+                        updateNested('whyChoose', 'pillars', updated);
+                      }}
+                    />
+                    {isCustomImg && (
+                      <button
+                        type="button"
+                        className="btn-reset-icon"
+                        onClick={() => {
+                          const updated = [...settings.whyChoose.pillars];
+                          updated[pIdx].icon = defaultIcons[pIdx % 4];
+                          updateNested('whyChoose', 'pillars', updated);
+                        }}
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="settings-grid-2">
+                  <div className="settings-form-group">
+                    <label>Title</label>
+                    <input 
+                      type="text" 
+                      className="settings-input" 
+                      value={pillar.title || ''} 
+                      onChange={e => {
+                        const updated = [...settings.whyChoose.pillars];
+                        updated[pIdx].title = e.target.value;
+                        updateNested('whyChoose', 'pillars', updated);
+                      }}
+                    />
+                  </div>
+                  <div className="settings-form-group">
+                    <label>Tagline</label>
+                    <input 
+                      type="text" 
+                      className="settings-input" 
+                      value={pillar.tagline || ''} 
+                      onChange={e => {
+                        const updated = [...settings.whyChoose.pillars];
+                        updated[pIdx].tagline = e.target.value;
+                        updateNested('whyChoose', 'pillars', updated);
+                      }}
+                    />
+                  </div>
+                </div>
                 <div className="settings-form-group">
-                  <label>Title</label>
-                  <input 
-                    type="text" 
-                    className="settings-input" 
-                    value={pillar.title || ''} 
+                  <label>Description</label>
+                  <textarea 
+                    className="settings-textarea" 
+                    value={pillar.description || ''} 
                     onChange={e => {
                       const updated = [...settings.whyChoose.pillars];
-                      updated[pIdx].title = e.target.value;
+                      updated[pIdx].description = e.target.value;
                       updateNested('whyChoose', 'pillars', updated);
                     }}
                   />
                 </div>
-                <div className="settings-form-group">
-                  <label>Tagline</label>
-                  <input 
-                    type="text" 
-                    className="settings-input" 
-                    value={pillar.tagline || ''} 
-                    onChange={e => {
-                      const updated = [...settings.whyChoose.pillars];
-                      updated[pIdx].tagline = e.target.value;
-                      updateNested('whyChoose', 'pillars', updated);
-                    }}
-                  />
-                </div>
               </div>
-              <div className="settings-form-group">
-                <label>Description</label>
-                <textarea 
-                  className="settings-textarea" 
-                  value={pillar.description || ''} 
-                  onChange={e => {
-                    const updated = [...settings.whyChoose.pillars];
-                    updated[pIdx].description = e.target.value;
-                    updateNested('whyChoose', 'pillars', updated);
-                  }}
-                />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
