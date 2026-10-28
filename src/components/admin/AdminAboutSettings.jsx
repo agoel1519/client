@@ -45,33 +45,26 @@ const AdminAboutSettings = () => {
   useEffect(() => {
     getDbSetting('about_page').then((saved) => {
       if (saved) {
-        const hasLegacy = saved.team && saved.team.some(t => t.name && (t.name.includes('Meghna Mour') || t.name.includes('Karan Rekhi')));
-        const isLegacyIntro = !saved.introHeading || 
-          saved.introHeading.includes("Premium Aesthetic Clinic") ||
-          (saved.introText && saved.introText.includes("Our only focus when crafting"));
-
         setSettings(prev => ({
           ...defaultSettings,
           ...saved,
-          team: hasLegacy ? defaultSettings.team : (saved.team || defaultSettings.team),
-          introHeading: isLegacyIntro ? defaultSettings.introHeading : saved.introHeading,
-          introText: isLegacyIntro ? defaultSettings.introText : saved.introText,
-          introFooter: isLegacyIntro ? defaultSettings.introFooter : (saved.introFooter || defaultSettings.introFooter),
+          team: (saved.team && saved.team.length > 0) ? saved.team : defaultSettings.team,
+          introHeading: saved.introHeading || defaultSettings.introHeading,
+          introText: saved.introText || defaultSettings.introText,
+          introFooter: saved.introFooter || defaultSettings.introFooter,
         }));
       } else {
         const legacy = localStorage.getItem('aevora_about_settings');
         if (legacy) {
           try {
             const parsed = JSON.parse(legacy);
-            const isLegacyIntro = !parsed.introHeading || 
-              parsed.introHeading.includes("Premium Aesthetic Clinic") ||
-              (parsed.introText && parsed.introText.includes("Our only focus when crafting"));
             setSettings(prev => ({
               ...defaultSettings,
               ...parsed,
-              introHeading: isLegacyIntro ? defaultSettings.introHeading : parsed.introHeading,
-              introText: isLegacyIntro ? defaultSettings.introText : parsed.introText,
-              introFooter: isLegacyIntro ? defaultSettings.introFooter : (parsed.introFooter || defaultSettings.introFooter),
+              team: (parsed.team && parsed.team.length > 0) ? parsed.team : defaultSettings.team,
+              introHeading: parsed.introHeading || defaultSettings.introHeading,
+              introText: parsed.introText || defaultSettings.introText,
+              introFooter: parsed.introFooter || defaultSettings.introFooter,
             }));
           } catch (e) {}
         }

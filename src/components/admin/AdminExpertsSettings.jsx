@@ -61,10 +61,12 @@ const AdminExpertsSettings = () => {
           groupPhoto: saved.groupPhoto || defaultSettings.groupPhoto,
           sectionTitle: saved.sectionTitle || defaultSettings.sectionTitle,
           sectionIntro: saved.sectionIntro || defaultSettings.sectionIntro,
-          experts: saved.experts.map(e => ({
-            ...e,
-            image: (e.image && !e.image.includes('celeb-3')) ? '/celebrities/celeb-3.jpg' : (e.image || '/celebrities/celeb-3.jpg')
-          }))
+          experts: Array.isArray(saved.experts) && saved.experts.length > 0
+            ? saved.experts.map(e => ({
+                ...e,
+                image: e.image || '/doctors/dr-meghna-mour.jpg'
+              }))
+            : defaultSettings.experts
         });
       } else {
         const legacy = localStorage.getItem('aevora_experts_settings');

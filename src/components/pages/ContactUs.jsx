@@ -54,14 +54,15 @@ const ContactUs = () => {
   const loadSettings = () => {
     getDbSetting('clinic_settings').then((saved) => {
       if (saved) {
-        setSettings(prev => ({
-          ...prev,
-          ...saved,
-          clinicName: (saved.clinicName && !saved.clinicName.toLowerCase().includes('sanctuary')) ? saved.clinicName : "Aevora By Kian Clinics",
-          address: (saved.address && !saved.address.includes('SCO 14-15')) ? saved.address : "SCO 205 FF, Sector 5, Panchkula – 134114",
-          phone: (saved.phone && !saved.phone.includes('0172')) ? saved.phone : "+91 97797 66933",
-          email: (saved.email && !saved.email.includes('concierge@')) ? saved.email : "contact@aevoraclinics.com"
-        }));
+          setSettings(prev => ({
+            ...prev,
+            ...saved,
+            clinicName: saved.clinicName || prev.clinicName || "Aevora By Kian Clinics",
+            address: saved.address || prev.address || "SCO 205 FF, Sector 5, Panchkula – 134114",
+            phone: saved.phone || prev.phone || "+91 97797 66933",
+            whatsapp: saved.whatsapp || prev.whatsapp || "+91 97797 66933",
+            email: saved.email || prev.email || "contact@aevoraclinics.com"
+          }));
       } else {
         const legacy = localStorage.getItem('aevora_clinic_settings');
         if (legacy) {

@@ -15,12 +15,20 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     // Load theme from DB
     const loadTheme = async () => {
-      const dbTheme = await getDbSetting('global_theme');
+      const dbTheme = await getDbSetting('global_theme_settings');
       if (dbTheme) {
         setTheme(prev => ({ ...prev, ...dbTheme }));
       }
     };
     loadTheme();
+
+    const handleThemeUpdate = (e) => {
+      if (e.detail) {
+        setTheme(prev => ({ ...prev, ...e.detail }));
+      }
+    };
+    window.addEventListener('themeSettingsUpdated', handleThemeUpdate);
+    return () => window.removeEventListener('themeSettingsUpdated', handleThemeUpdate);
   }, []);
 
   useEffect(() => {

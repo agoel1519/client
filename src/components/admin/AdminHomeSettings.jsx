@@ -441,9 +441,9 @@ const AdminHomeSettings = () => {
             teamSpecialists: { 
               ...defaultSettings.teamSpecialists, 
               ...(saved.teamSpecialists || {}),
-              specialists: (saved.teamSpecialists?.specialists && saved.teamSpecialists.specialists.some(s => s.name?.includes('Vivek Anand')))
-                ? defaultSettings.teamSpecialists.specialists
-                : (saved.teamSpecialists?.specialists || defaultSettings.teamSpecialists.specialists)
+              specialists: (saved.teamSpecialists?.specialists && saved.teamSpecialists.specialists.length > 0)
+                ? saved.teamSpecialists.specialists
+                : defaultSettings.teamSpecialists.specialists
             },
             treatmentsCarousel: saved.treatmentsCarousel || prev.treatmentsCarousel,
             testimonials: { ...prev.testimonials, ...(saved.testimonials || {}) },

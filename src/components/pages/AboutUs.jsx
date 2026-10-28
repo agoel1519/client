@@ -46,18 +46,13 @@ const AboutUs = () => {
   const loadAbout = () => {
     getDbSetting('about_page').then((saved) => {
       if (saved) {
-        const hasLegacy = saved.team && saved.team.some(t => t.name && (t.name.includes('Meghna Mour') || t.name.includes('Karan Rekhi')));
-        const isLegacyIntro = !saved.introHeading || 
-          saved.introHeading.includes("Premium Aesthetic Clinic") ||
-          (saved.introText && saved.introText.includes("Our only focus when crafting"));
-
         setSettings(prev => ({
           ...defaultAboutSettings,
           ...saved,
-          team: hasLegacy ? defaultAboutSettings.team : (saved.team || defaultAboutSettings.team),
-          introHeading: isLegacyIntro ? defaultAboutSettings.introHeading : saved.introHeading,
-          introText: isLegacyIntro ? defaultAboutSettings.introText : saved.introText,
-          introFooter: isLegacyIntro ? defaultAboutSettings.introFooter : (saved.introFooter || defaultAboutSettings.introFooter),
+          team: (saved.team && saved.team.length > 0) ? saved.team : defaultAboutSettings.team,
+          introHeading: saved.introHeading || defaultAboutSettings.introHeading,
+          introText: saved.introText || defaultAboutSettings.introText,
+          introFooter: saved.introFooter || defaultAboutSettings.introFooter,
         }));
       }
     });

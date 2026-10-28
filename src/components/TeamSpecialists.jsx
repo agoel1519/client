@@ -35,13 +35,10 @@ const TeamSpecialists = () => {
   const loadData = () => {
     getDbSetting('home_page').then((saved) => {
       if (saved && saved.teamSpecialists) {
-        // If saved specialists still contain old template mock doctor "Vivek Anand", sanitize to user's doctors
-        const specs = saved.teamSpecialists.specialists;
-        const hasLegacyMock = specs && specs.some(s => s.name && (s.name.includes('Vivek Anand') || s.name.includes('Ananya Sharma')));
-        if (hasLegacyMock) {
-          setData(prev => ({ ...prev, ...saved.teamSpecialists, specialists: defaultTeamData.specialists }));
-        } else {
+        if (saved.teamSpecialists.specialists && saved.teamSpecialists.specialists.length > 0) {
           setData(prev => ({ ...prev, ...saved.teamSpecialists }));
+        } else {
+          setData(prev => ({ ...prev, ...saved.teamSpecialists, specialists: defaultTeamData.specialists }));
         }
       }
     });

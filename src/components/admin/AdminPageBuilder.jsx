@@ -347,7 +347,7 @@ const AdminPageBuilder = () => {
     .replace(/(?:\s+in\s+mumbai)+/gi, '')
     .trim();
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!pageData.title.trim()) {
       showToast('Please enter a Page Title before saving!', 'error');
       return;
@@ -367,7 +367,7 @@ const AdminPageBuilder = () => {
       breadcrumb: pageData.breadcrumb || `HOME / TREATMENTS / ${pageData.category || 'TREATMENTS'} / ${finalPublishedTitle}`
     };
 
-    const success = saveTreatmentPage(targetSlug, dataToSave);
+    const success = await saveTreatmentPage(targetSlug, dataToSave);
     if (success) {
       showToast(`Page for "${baseCleanTitle}" saved successfully!`);
       setTimeout(() => {

@@ -13,6 +13,7 @@ import {
   MonitorPlay
 } from 'lucide-react';
 import { getAllTreatments, deleteTreatmentPage, saveTreatmentPage, getTreatmentData } from '../../data/treatmentsData';
+import { getDbTreatments } from '../../api/mongoApi';
 import './AdminPagesList.css';
 
 const AdminPagesList = () => {
@@ -23,9 +24,43 @@ const AdminPagesList = () => {
   const [notification, setNotification] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
-  const loadPages = () => {
+  const loadPages = async () => {
     const list = getAllTreatments();
     setPages(list);
+
+    try {
+      const dbTreatments = await getDbTreatments();
+      if (Array.isArray(dbTreatments) && dbTreatments.length > 0) {
+        const merged = [...list];
+        const existingSlugs = new Set(merged.map(p => p.slug));
+
+        dbTreatments.forEach(dt => {
+          const cleanSlug = dt.slug?.toLowerCase().trim();
+          if (!cleanSlug) return;
+
+          const existingIdx = merged.findIndex(p => p.slug === cleanSlug);
+          if (existingIdx >= 0) {
+            merged[existingIdx] = {
+              ...merged[existingIdx],
+              name: dt.title || merged[existingIdx].name,
+              isCustomized: true
+            };
+          } else {
+            merged.push({
+              name: dt.title || cleanSlug.toUpperCase(),
+              slug: cleanSlug,
+              category: dt.category || 'CUSTOM',
+              url: `/treatments/${cleanSlug}`,
+              isCustom: true,
+              isCustomized: true
+            });
+          }
+        });
+        setPages(merged);
+      }
+    } catch (err) {
+      console.warn('Could not fetch treatments from db:', err);
+    }
   };
 
   useEffect(() => {
@@ -37,8 +72,8 @@ const AdminPagesList = () => {
     setTimeout(() => setNotification(null), 3500);
   };
 
-  const handleDelete = (item) => {
-    const success = deleteTreatmentPage(item.slug);
+  const handleDelete = async (item) => {
+    const success = await deleteTreatmentPage(item.slug);
     if (success) {
       showToast(`Page "${item.name}" has been ${item.isCustom ? 'deleted' : 'reset to default'}!`);
       loadPages();
@@ -48,7 +83,7 @@ const AdminPagesList = () => {
     setDeleteConfirm(null);
   };
 
-  const handleDuplicate = (item) => {
+  const handleDuplicate = async (item) => {
     const originalData = getTreatmentData(item.slug);
     if (!originalData) return;
     
@@ -60,7 +95,7 @@ const AdminPagesList = () => {
       slug: newSlug
     };
     
-    saveTreatmentPage(newSlug, newData);
+    await saveTreatmentPage(newSlug, newData);
     showToast(`Duplicated "${item.name}" successfully!`);
     loadPages();
   };

@@ -35,14 +35,15 @@ const AdminDashboard = () => {
           getDbMedia()
         ]);
         
-        const pages = pagesRes.data || [];
+        const pages = Array.isArray(pagesRes) ? pagesRes : (pagesRes?.data || []);
+        const media = Array.isArray(mediaRes) ? mediaRes : (mediaRes?.data || []);
         const published = pages.filter(p => p.status === 'Live').length;
         
         setStats({
           totalPages: pages.length,
           publishedPages: published,
           draftPages: pages.length - published,
-          mediaAssets: mediaRes.data?.length || 0
+          mediaAssets: media.length
         });
 
         // Mock recent activity for now, taking latest 5 pages

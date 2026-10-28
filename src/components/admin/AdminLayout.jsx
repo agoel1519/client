@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -17,8 +17,13 @@ import {
   Bell,
   Megaphone,
   BookOpen,
-  Images
+  Images,
+  Database,
+  RefreshCw,
+  AlertTriangle,
+  CheckCircle2
 } from 'lucide-react';
+import { API_BASE } from '../../config/api';
 import './AdminLayout.css';
 import AdminLogin from './AdminLogin';
 
@@ -29,6 +34,47 @@ const AdminLayout = () => {
   );
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [pagesMenuOpen, setPagesMenuOpen] = useState(false);
+  const [dbState, setDbState] = useState({
+    connected: false,
+    loading: true,
+    host: '',
+    error: null,
+    actionRequired: null
+  });
+  const [dismissBanner, setDismissBanner] = useState(false);
+
+  const fetchDbHealth = async (reconnect = false) => {
+    setDbState(prev => ({ ...prev, loading: true }));
+    try {
+      const url = `${API_BASE}/health${reconnect ? '?reconnect=true' : ''}`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      const json = await res.json();
+      const isConn = json?.database?.connected === true;
+      setDbState({
+        connected: isConn,
+        loading: false,
+        host: json?.database?.host || 'MongoDB Atlas',
+        error: json?.database?.lastError || null,
+        actionRequired: json?.database?.actionRequired || null
+      });
+    } catch (err) {
+      setDbState({
+        connected: false,
+        loading: false,
+        host: 'Backend Offline',
+        error: err.message,
+        actionRequired: 'Backend server is not responding'
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchDbHealth();
+      const interval = setInterval(() => fetchDbHealth(), 20000);
+      return () => clearInterval(interval);
+    }
+  }, [isAuthenticated]);
 
   const handleLogout = () => {
     localStorage.removeItem('aevora_admin_auth');
@@ -180,6 +226,25 @@ const AdminLayout = () => {
           </div>
 
           <div className="topbar-right">
+            {/* MongoDB Cloud Live Connection Indicator */}
+            <div 
+              className={`db-connection-pill ${dbState.connected ? 'is-connected' : 'is-disconnected'}`}
+              title={dbState.connected ? `Connected to ${dbState.host}. Changes saved to MongoDB Atlas permanently.` : `Database offline: ${dbState.error || 'Changes will revert when server sleeps'}`}
+            >
+              <Database size={14} className="pill-db-icon" />
+              <span className="pill-dot"></span>
+              <span className="pill-label">
+                {dbState.loading ? 'Checking DB...' : dbState.connected ? 'MongoDB Atlas Active' : 'DB Offline (Fallback)'}
+              </span>
+              <button 
+                className={`pill-refresh-btn ${dbState.loading ? 'spinning' : ''}`}
+                onClick={() => fetchDbHealth(true)}
+                title="Refresh / Reconnect to MongoDB"
+              >
+                <RefreshCw size={12} />
+              </button>
+            </div>
+
             <Link to="/" target="_blank" className="view-live-btn">
               <ExternalLink size={16} />
               <span>View Live Website</span>
@@ -208,6 +273,30 @@ const AdminLayout = () => {
             </div>
           </div>
         </header>
+
+        {/* Offline Warning Banner if MongoDB is disconnected */}
+        {!dbState.connected && !dbState.loading && !dismissBanner && (
+          <div className="admin-mongo-warning-banner">
+            <div className="warning-content">
+              <AlertTriangle size={18} className="warning-icon" />
+              <div className="warning-text">
+                <strong>Live Database Disconnected (Local Fallback Active):</strong> Edits are currently stored in temporary memory. On Render free tier, content reverts after ~15-20 minutes when the server sleeps.
+                <div className="warning-steps">
+                  <span>To fix permanently: Open <strong>MongoDB Atlas &gt; Network Access &gt; Add IP: <code>0.0.0.0/0</code></strong> (Allow Access from Anywhere).</span>
+                </div>
+              </div>
+            </div>
+            <div className="warning-actions">
+              <button className="btn-reconnect-now" onClick={() => fetchDbHealth(true)}>
+                <RefreshCw size={13} />
+                <span>Retry Now</span>
+              </button>
+              <button className="btn-dismiss-banner" onClick={() => setDismissBanner(true)}>
+                &times;
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Content Area */}
         <div className="workspace-content">

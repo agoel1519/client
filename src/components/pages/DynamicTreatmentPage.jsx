@@ -95,11 +95,17 @@ const DynamicTreatmentPage = ({ pageData: propPageData }) => {
       const dbData = (pageRes.status === 'fulfilled' && pageRes.value) ||
         (treatRes.status === 'fulfilled' && treatRes.value);
 
-      // Priority: 1. Immediate Admin Edits (localStorage) -> 2. Remote MongoDB/Backend -> 3. Procedural Catalog
-      const activeData = (parsedCustom && parsedCustom.title) ? parsedCustom : (dbData || getTreatmentData(currentSlug));
+      // Priority: 1. Live Remote MongoDB/Backend -> 2. Local Storage Cache -> 3. Procedural Catalog
+      const activeData = (dbData && dbData.title) ? dbData : ((parsedCustom && parsedCustom.title) ? parsedCustom : getTreatmentData(currentSlug));
       if (activeData) {
         setPageData(activeData);
         if (activeData.title) setFormData(prev => ({ ...prev, treatment: activeData.title }));
+        // Keep local cache synced if fresh data came from backend
+        if (dbData && dbData.title) {
+          try {
+            localStorage.setItem(`aevora_treatment_${currentSlug}`, JSON.stringify(dbData));
+          } catch (e) {}
+        }
       }
       setLoading(false);
     }).catch(() => {

@@ -427,26 +427,36 @@ export const getCustomPagesRegistry = () => {
 };
 
 // Save a custom page or edited page
-export const saveTreatmentPage = (slug, pageData) => {
+export const saveTreatmentPage = async (slug, pageData) => {
   const cleanSlug = slugify(slug);
   try {
-    localStorage.setItem(`aevora_treatment_${cleanSlug}`, JSON.stringify(pageData));
-
-    const registry = getCustomPagesRegistry();
-    const existingIdx = registry.findIndex(item => item.slug === cleanSlug);
-    if (existingIdx >= 0) {
-      registry[existingIdx] = { name: pageData.title, slug: cleanSlug, category: 'CLINICAL SERVICES' };
-    } else {
-      registry.push({ name: pageData.title, slug: cleanSlug, category: 'CLINICAL SERVICES' });
+    try {
+      localStorage.setItem(`aevora_treatment_${cleanSlug}`, JSON.stringify(pageData));
+    } catch (quotaErr) {
+      console.warn('localStorage quota exceeded (large image data), continuing with database sync:', quotaErr);
     }
-    localStorage.setItem('aevora_custom_pages_list', JSON.stringify(registry));
 
-    // Background sync to MongoDB backend
-    fetch(`${API_BASE}/treatments`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: cleanSlug, ...pageData })
-    }).catch(err => console.log('Backend sync offline:', err.message));
+    try {
+      const registry = getCustomPagesRegistry();
+      const existingIdx = registry.findIndex(item => item.slug === cleanSlug);
+      if (existingIdx >= 0) {
+        registry[existingIdx] = { name: pageData.title, slug: cleanSlug, category: 'CLINICAL SERVICES' };
+      } else {
+        registry.push({ name: pageData.title, slug: cleanSlug, category: 'CLINICAL SERVICES' });
+      }
+      localStorage.setItem('aevora_custom_pages_list', JSON.stringify(registry));
+    } catch (regErr) {}
+
+    // Persist to MongoDB backend
+    try {
+      await fetch(`${API_BASE}/treatments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: cleanSlug, ...pageData })
+      });
+    } catch (err) {
+      console.warn('Backend sync notice:', err.message);
+    }
 
     return true;
   } catch (e) {
@@ -456,18 +466,23 @@ export const saveTreatmentPage = (slug, pageData) => {
 };
 
 // Delete or reset a treatment page
-export const deleteTreatmentPage = (slug) => {
+export const deleteTreatmentPage = async (slug) => {
   const cleanSlug = slugify(slug);
   try {
-    localStorage.removeItem(`aevora_treatment_${cleanSlug}`);
+    try {
+      localStorage.removeItem(`aevora_treatment_${cleanSlug}`);
+      const registry = getCustomPagesRegistry();
+      const filtered = registry.filter(item => item.slug !== cleanSlug);
+      localStorage.setItem('aevora_custom_pages_list', JSON.stringify(filtered));
+    } catch (e) {}
 
-    const registry = getCustomPagesRegistry();
-    const filtered = registry.filter(item => item.slug !== cleanSlug);
-    localStorage.setItem('aevora_custom_pages_list', JSON.stringify(filtered));
-
-    fetch(`${API_BASE}/treatments/${cleanSlug}`, {
-      method: 'DELETE'
-    }).catch(err => console.log('Backend sync offline:', err.message));
+    try {
+      await fetch(`${API_BASE}/treatments/${cleanSlug}`, {
+        method: 'DELETE'
+      });
+    } catch (err) {
+      console.warn('Backend delete notice:', err.message);
+    }
 
     return true;
   } catch (e) {

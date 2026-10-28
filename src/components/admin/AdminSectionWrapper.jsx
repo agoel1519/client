@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { EyeOff, Trash2, Edit } from 'lucide-react';
+import { getDbSetting, saveDbSetting } from '../../api/mongoApi';
 import './AdminSectionWrapper.css';
 
 const AdminSectionWrapper = ({ children, sectionName, onHide, onDelete, editLink }) => {
@@ -8,21 +9,52 @@ const AdminSectionWrapper = ({ children, sectionName, onHide, onDelete, editLink
 
   useEffect(() => {
     setIsAdmin(localStorage.getItem('aevora_admin_auth') === 'true');
-    // Check if this section is hidden in localStorage
-    const hiddenSections = JSON.parse(localStorage.getItem('aevora_hidden_sections') || '{}');
-    if (hiddenSections[sectionName]) {
-      setIsHidden(true);
-    }
+    
+    // Load hidden state from database, fallback to localStorage
+    getDbSetting('aevora_hidden_sections').then(saved => {
+      if (saved && typeof saved === 'object') {
+        setIsHidden(!!saved[sectionName]);
+        try {
+          localStorage.setItem('aevora_hidden_sections', JSON.stringify(saved));
+        } catch (e) {}
+      } else {
+        const local = JSON.parse(localStorage.getItem('aevora_hidden_sections') || '{}');
+        if (local[sectionName]) {
+          setIsHidden(true);
+        }
+      }
+    }).catch(() => {
+      const local = JSON.parse(localStorage.getItem('aevora_hidden_sections') || '{}');
+      if (local[sectionName]) {
+        setIsHidden(true);
+      }
+    });
   }, [sectionName]);
 
-  const toggleHide = () => {
-    const hiddenSections = JSON.parse(localStorage.getItem('aevora_hidden_sections') || '{}');
+  const toggleHide = async () => {
+    let hiddenSections = {};
+    try {
+      const dbSaved = await getDbSetting('aevora_hidden_sections');
+      if (dbSaved && typeof dbSaved === 'object') {
+        hiddenSections = { ...dbSaved };
+      } else {
+        hiddenSections = JSON.parse(localStorage.getItem('aevora_hidden_sections') || '{}');
+      }
+    } catch (e) {
+      hiddenSections = JSON.parse(localStorage.getItem('aevora_hidden_sections') || '{}');
+    }
+
     if (isHidden) {
       delete hiddenSections[sectionName];
     } else {
       hiddenSections[sectionName] = true;
     }
-    localStorage.setItem('aevora_hidden_sections', JSON.stringify(hiddenSections));
+
+    try {
+      localStorage.setItem('aevora_hidden_sections', JSON.stringify(hiddenSections));
+    } catch (e) {}
+
+    await saveDbSetting('aevora_hidden_sections', hiddenSections);
     setIsHidden(!isHidden);
     if (onHide) onHide(!isHidden);
   };
