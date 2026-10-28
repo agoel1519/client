@@ -20,9 +20,6 @@ export const API_BASE_URL = (() => {
     }
     return rawEnvUrl.replace(/\/+$/, '');
   }
-  if (isLocalhost) {
-    return 'http://localhost:5001';
-  }
   return PRODUCTION_API_URL;
 })();
 
